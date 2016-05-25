@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tonghang.server.mapper.TReasonCircleMapper" >
+  <resultMap id="BaseResultMap" type="com.tonghang.server.entity.TReasonCircle" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="reason_id" property="reasonId" jdbcType="INTEGER" />
+    <result column="circle_id" property="circleId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_reason_circle
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tonghang.server.entity.TReasonCircle" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_reason_circle (id, reason_id, circle_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{reasonId,jdbcType=INTEGER}, #{circleId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TReasonCircle" >
+    update t_reason_circle
+    set reason_id = #{reasonId,jdbcType=INTEGER},
+      circle_id = #{circleId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, reason_id, circle_id
+    from t_reason_circle
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, reason_id, circle_id
+    from t_reason_circle
+  </select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 全局的设置 -->
+	<settings>
+		<!-- 是否启用缓存 -->
+		<setting name="cacheEnabled" value="true" />
+		<!-- 延迟加载总开关 -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="aggressiveLazyLoading" value="false" />
+	</settings>
+
+	<!-- 配置别名 -->
+	<typeAliases>
+		<package name="com.tonghang.server.entity" />
+		<package name="com.tonghang.server.vo" />
+	</typeAliases>
+
+	<!-- 类型处理 -->
+<!-- 	<typeHandlers> -->
+<!-- 		<package name="com.tonghang.server.mybatis.handler" /> -->
+<!-- 	</typeHandlers> -->
+</configuration>

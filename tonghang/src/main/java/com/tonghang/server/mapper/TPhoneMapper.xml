@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tonghang.server.mapper.TPhoneMapper">
+	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TPhone">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="pic" property="pic" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="college" property="college" jdbcType="VARCHAR" />
+		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
+		<result column="province_id" property="provinceId" jdbcType="INTEGER" />
+		<result column="city_id" property="cityId" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="device" property="device" jdbcType="VARCHAR" />
+		<result column="longitude" property="longitude" jdbcType="DOUBLE" />
+		<result column="latitude" property="latitude" jdbcType="DOUBLE" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="language" property="language" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_phone
+		where id = #{id}
+	</delete>
+	<insert id="insert" parameterType="com.tonghang.server.entity.TPhone">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="BEFORE">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_phone (id, phone, password,
+		timestamp, name, pic,
+		sex,
+		position, college,
+		trade_id, province_id, city_id,
+		remark, device,
+		longitude,
+		latitude, state,language)
+		values (#{id}, #{phone},
+		#{password},
+		#{timestamp}, #{name}, #{pic},
+		#{sex}, #{position},
+		#{college},
+		#{tradeId}, #{provinceId}, #{cityId},
+		#{remark}, #{device},
+		#{longitude},
+		#{latitude}, #{state},#{language})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TPhone">
+		update t_phone
+		<set>
+			<if test="phone != null and phone != ''">
+				phone = #{phone},
+			</if>
+			<if test="password != null and password != ''">
+				password = #{password},
+			</if>
+			<if test="timestamp != null and timestamp != ''">
+				timestamp = #{timestamp},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="pic != null and pic != ''">
+				pic = #{pic},
+			</if>
+			<if test="sex != null and sex != ''">
+				sex = #{sex},
+			</if>
+			<if test="position != null and position != ''">
+				position = #{position},
+			</if>
+			<if test="college != null and college != ''">
+				college = #{college},
+			</if>
+			<if test="tradeId != null and tradeId != ''">
+				trade_id = #{tradeId},
+			</if>
+
+			<if test="provinceId != null and provinceId != ''">
+				province_id = #{provinceId},
+			</if>
+			<if test="cityId != null and cityId != ''">
+				city_id = #{cityId},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark},
+			</if>
+			<if test="device != null and device != ''">
+				device = #{device},
+			</if>
+			<if test="longitude != null and longitude != ''">
+				longitude = #{longitude},
+			</if>
+			<if test="latitude != null and latitude != ''">
+				latitude = #{latitude},
+			</if>
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+			<if test="language != null and language != ''">
+				language = #{language}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select *
+		from t_phone
+		where id = #{id}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select *
+		from t_phone
+	</select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+	<classPathEntry
+		location="F:\tomcatspringmvc\.m2\mysql\mysql-connector-java\5.1.6\mysql-connector-java-5.1.6.jar" />
+	<context id="context1" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/tonghang?useUnicode=true&amp;characterEncoding=utf8"
+			userId="root" password="123456" />
+		<javaModelGenerator targetPackage="com.tonghang.server.entity"
+			targetProject="E:\git\th\src\main\java" />
+		<sqlMapGenerator targetPackage="com.tonghang.server.mapper"
+			targetProject="E:\git\th\src\main\java" />
+		<javaClientGenerator targetPackage="com.tonghang.server.mapper"
+			targetProject="E:\git\th\src\main\java"
+			type="XMLMAPPER" />
+		<!-- 匹配所有表 -->
+		<table tableName="%">
+			<generatedKey column="id" sqlStatement="Mysql"/>
+		</table>
+<!-- 		<table tableName="t_visit_report"></table> -->
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tonghang.server.mapper.TCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.tonghang.server.entity.TComment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="circle_id" property="circleId" jdbcType="INTEGER" />
+    <result column="pid_id" property="pidId" jdbcType="INTEGER" />
+    <result column="reply_id" property="replyId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tonghang.server.entity.TComment" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_comment (id, circle_id, pid_id, 
+      reply_id, content)
+    values (#{id,jdbcType=INTEGER}, #{circleId,jdbcType=INTEGER}, #{pidId,jdbcType=INTEGER}, 
+      #{replyId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TComment" >
+    update t_comment
+    set circle_id = #{circleId,jdbcType=INTEGER},
+      pid_id = #{pidId,jdbcType=INTEGER},
+      reply_id = #{replyId,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, circle_id, pid_id, reply_id, content
+    from t_comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, circle_id, pid_id, reply_id, content
+    from t_comment
+  </select>
+</mapper>
