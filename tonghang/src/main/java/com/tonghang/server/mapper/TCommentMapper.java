@@ -1,6 +1,8 @@
 package com.tonghang.server.mapper;
 
+import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TComment;
+
 import java.util.List;
 
 public interface TCommentMapper {
@@ -13,4 +15,8 @@ public interface TCommentMapper {
     List<TComment> selectAll();
 
     int updateByPrimaryKey(TComment record);
+
+	List<TCircle> getCommentUnCheck();
+
+	List<TCircle> getCommentChecked();
 }

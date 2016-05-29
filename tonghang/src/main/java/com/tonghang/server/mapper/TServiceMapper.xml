@@ -7,11 +7,11 @@
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="pictures" property="pictures" jdbcType="VARCHAR" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="check" property="check" jdbcType="INTEGER" />
+    <result column="checked" property="checked" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_service
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
   </delete>
   <insert id="insert" parameterType="com.tonghang.server.entity.TService" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
@@ -20,26 +20,48 @@
     insert into t_service (id, title, description, 
       pictures, pid, check
       )
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{pictures,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, #{check,jdbcType=INTEGER}
+    values (#{id}, #{title}, #{description}, 
+      #{pictures}, #{pid}, #{check}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TService" >
     update t_service
-    set title = #{title,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      pictures = #{pictures,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=INTEGER},
-      check = #{check,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    <set>
+    	<if test="title != null and title != ''">
+    		title = #{title},
+    	</if>
+    	<if test="description != null and description != ''">
+    		description = #{description},
+    	</if>
+    	<if test="pictures != null and pictures != ''">
+    		pictures = #{pictures},
+    	</if>
+    	<if test="pid != null and pid != ''">
+    		pid = #{pid},
+    	</if>
+    	<if test="checked != null and checked != ''">
+    		checked = #{checked},
+    	</if>
+    </set>
+    where id = #{id}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, title, description, pictures, pid, check
+    select *
     from t_service
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, title, description, pictures, pid, check
+    select *
     from t_service
+  </select>
+   <select id="getServiceUnCheck" resultMap="BaseResultMap" >
+    select *
+    from t_service
+    where checked is null
+  </select>
+   <select id="getServiceChecked" resultMap="BaseResultMap" >
+    select *
+    from t_service
+    where checked is not null
   </select>
 </mapper>

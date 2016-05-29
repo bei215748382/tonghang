@@ -3,11 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="row">
-	<div id="breadcrumb" class="col-md-12">
-		<ol class="breadcrumb">
-			<li><a href="index.do">用户管理</a></li>
-			<li><a href="index.do#users_info.do">手机注册用户表</a></li>
-		</ol>
+	<div class="col-md-12">
+		<ul class="nav navbar-nav">
+			<li><a href="#" onclick="javacript:LoadAjaxContent('get_circle_unchecked')">同行圈审核</a></li>
+			<li><a href="#" onclick="javacript:LoadAjaxContent('get_service_unchecked')">服务审核</a></li>
+			<li><a href="#" onclick="javacript:LoadAjaxContent('get_comment_unchecked')">回复审核</a></li>
+		</ul>
 	</div>
 </div>
 <div class="row">
@@ -15,7 +16,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-usd"></i> <span>手机注册用户</span>|<a href="#" onclick="javacript:LoadAjaxContent('user_add.do')">添加</a>
+					 <a href="#" onclick="javacript:LoadAjaxContent('user_add.do')">待审核</a>&nbsp;&nbsp;<a href="#" onclick="javacript:LoadAjaxContent('user_add.do')">已审核</a>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -32,103 +33,30 @@
 					<thead>
 						<tr>
 							<th><label><input type="text" name="search_rate"
-									value="查找 id" class="search_init" /></label></th>
+									value="图片" class="search_init" /></label></th>
 							<th><label><input type="text" name="search_rate"
-									value="查找 手机号" class="search_init" /></label></th>
+									value="内容" class="search_init" /></label></th>
 							<th><label><input type="text" name="search_rate"
-									value="查找 注册时间" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
-									value="查找 操作" class="search_init" /></label></th>
+									value="作者状态" class="search_init" /></label></th>
 						</tr>
 					</thead>
 					<tbody>
 						<!-- Start: list_row -->
-						<c:forEach items="${users}" var="user">
+						<c:forEach items="${dataList}" var="data">
 							<tr>
-								<td>${user.id}</td>
-								<td>${user.phone}</td>
-								<td><fmt:formatDate value="${user.date}"
+								<td>${data.id}</td>
+								<td>${data.content}</td>
+								<td><fmt:formatDate value="${data.datetime}"
 										pattern="yyyy-MM-dd HH:MM:ss" /></td>
-								<td><a
-									href="#" onclick="javacript:LoadAjaxContent('user_edit.do?id=${user.id}&phone=${user.phone}')">编辑</a>|<a
-									href="user_delete.do?id=${user.id}">删除</a></td>
 							</tr>
 						</c:forEach>
 						<!-- End: list_row -->
 					</tbody>
 					<tfoot>
 						<tr>
-							<th>id</th>
-							<th>手机号</th>
-							<th>注册时间</th>
-							<th>操作</th>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
-		</div>
-		
-			<div class="box">
-			<div class="box-header">
-				<div class="box-name">
-					<i class="fa fa-usd"></i> <span>大众用户详细信息</span>
-				</div>
-				<div class="box-icons">
-					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-					</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-					</a> <a class="close-link"> <i class="fa fa-times"></i>
-					</a>
-				</div>
-				<div class="no-move"></div>
-			</div>
-			<div class="box-content no-padding">
-				<table
-					class="table table-bordered table-striped table-hover table-heading table-datatable"
-					id="datatable-4">
-					<thead>
-						<tr>
-							<th><label><input type="text" name="search_rate"
-									value="查找 id" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
-									value="查找 姓名" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
-									value="查找 年龄" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
-									value="查找 头像路径" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
-									value="查找 关联用户" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
-									value="查找 关联病人" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
-									value="查找 操作" class="search_init" /></label></th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- Start: list_row -->
-						<c:forEach items="${userExts}" var="user">
-							<tr>
-								<td>${user.id}</td>
-								<td>${user.name}</td>
-								<td><fmt:formatDate value="${user.birthday}" pattern="yyyy-MM-dd"/></td>
-								<td><img class="img-rounded" src="${user.pic }" alt="${user.pic }" onerror="this.src='../common/img/admin/avatar.jpg'"/>${user.pic }</td>
-								<td>${user.userId }</td>
-								<td>${user.patientId }</td>
-								<td><a
-									href="#" onclick="javacript:LoadAjaxContent('user_ext_edit.do?id=${user.id}')">编辑</a>|<a
-									href="user_ext_delete.do?id=${user.id}">删除</a></td>
-							</tr>
-						</c:forEach>
-						<!-- End: list_row -->
-					</tbody>
-					<tfoot>
-						<tr>
-							<th>id</th>
-							<th>姓名</th>
-							<th>出生</th>
-							<th>头像路径</th>
-							<th>关联用户</th>
-							<th>关联病人</th>
-							<th>操作</th>
+							<th>图片</th>
+							<th>内容</th>
+							<th>作者状态</th>
 						</tr>
 					</tfoot>
 				</table>

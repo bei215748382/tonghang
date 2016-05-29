@@ -1,6 +1,8 @@
 package com.tonghang.server.mapper;
 
+import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TService;
+
 import java.util.List;
 
 public interface TServiceMapper {
@@ -13,4 +15,8 @@ public interface TServiceMapper {
     List<TService> selectAll();
 
     int updateByPrimaryKey(TService record);
+
+	List<TCircle> getServiceUnCheck();
+
+	List<TCircle> getServiceChecked();
 }

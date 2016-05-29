@@ -13,4 +13,8 @@ public interface TCircleMapper {
     List<TCircle> selectAll();
 
     int updateByPrimaryKey(TCircle record);
+
+	List<TCircle> getCircleUnCheck();
+
+	List<TCircle> getCircleChecked();
 }

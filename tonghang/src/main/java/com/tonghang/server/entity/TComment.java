@@ -10,6 +10,8 @@ public class TComment {
     private Integer replyId;
 
     private String content;
+    
+    private Integer checked;
 
     public Integer getId() {
         return id;
@@ -50,4 +52,13 @@ public class TComment {
     public void setContent(String content) {
         this.content = content;
     }
+
+	public Integer getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Integer checked) {
+		this.checked = checked;
+	}
+    
 }

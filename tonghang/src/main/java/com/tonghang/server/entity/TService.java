@@ -11,7 +11,7 @@ public class TService {
 
     private Integer pid;
 
-    private Integer check;
+    private Integer checked;
 
     public Integer getId() {
         return id;
@@ -53,11 +53,12 @@ public class TService {
         this.pid = pid;
     }
 
-    public Integer getCheck() {
-        return check;
-    }
+	public Integer getChecked() {
+		return checked;
+	}
 
-    public void setCheck(Integer check) {
-        this.check = check;
-    }
+	public void setChecked(Integer checked) {
+		this.checked = checked;
+	}
+
 }

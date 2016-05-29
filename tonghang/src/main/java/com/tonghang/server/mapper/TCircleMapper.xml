@@ -12,7 +12,7 @@
     <result column="comment" property="comment" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="check" property="check" jdbcType="INTEGER" />
+    <result column="checked" property="checked" jdbcType="INTEGER" />
     <result column="pics" property="pics" jdbcType="VARCHAR" />
     <result column="area" property="area" jdbcType="VARCHAR" />
     <result column="trade_id" property="tradeId" jdbcType="INTEGER" />
@@ -20,7 +20,7 @@
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_circle
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
   </delete>
   <insert id="insert" parameterType="com.tonghang.server.entity.TCircle" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
@@ -29,41 +29,49 @@
     insert into t_circle (id, title, hot, 
       datetime, pic, page_view, 
       favour, comment, type, 
-      pid, check, pics, area, 
+      pid, checked, pics, area, 
       trade_id, content)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{hot,jdbcType=INTEGER}, 
-      #{datetime,jdbcType=TIMESTAMP}, #{pic,jdbcType=VARCHAR}, #{pageView,jdbcType=INTEGER}, 
-      #{favour,jdbcType=INTEGER}, #{comment,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{pid,jdbcType=INTEGER}, #{check,jdbcType=INTEGER}, #{pics,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
-      #{tradeId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+    values (#{id}, #{title}, #{hot}, 
+      #{datetime}, #{pic}, #{pageView}, 
+      #{favour}, #{comment}, #{type}, 
+      #{pid}, #{check}, #{pics}, #{area}, 
+      #{tradeId}, #{content})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TCircle" >
     update t_circle
-    set title = #{title,jdbcType=VARCHAR},
-      hot = #{hot,jdbcType=INTEGER},
-      datetime = #{datetime,jdbcType=TIMESTAMP},
-      pic = #{pic,jdbcType=VARCHAR},
-      page_view = #{pageView,jdbcType=INTEGER},
-      favour = #{favour,jdbcType=INTEGER},
-      comment = #{comment,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
-      pid = #{pid,jdbcType=INTEGER},
-      check = #{check,jdbcType=INTEGER},
-      pics = #{pics,jdbcType=VARCHAR},
-      area = #{area,jdbcType=VARCHAR},
-      trade_id = #{tradeId,jdbcType=INTEGER},
-      content = #{content,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    set title = #{title},
+      hot = #{hot},
+      datetime = #{datetime},
+      pic = #{pic},
+      page_view = #{pageView},
+      favour = #{favour},
+      comment = #{comment},
+      type = #{type},
+      pid = #{pid},
+      checked = #{checked},
+      pics = #{pics},
+      area = #{area},
+      trade_id = #{tradeId},
+      content = #{content}
+    where id = #{id}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, title, hot, datetime, pic, page_view, favour, comment, type, pid, check, 
-    pics, area, trade_id, content
+    select *
     from t_circle
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, title, hot, datetime, pic, page_view, favour, comment, type, pid, check, 
-    pics, area, trade_id, content
+    select *
     from t_circle
+  </select>
+  <select id="getCircleUnCheck" resultMap="BaseResultMap">
+  	select *
+    from t_circle
+    where checked is null
+  </select>
+  <select id="getCircleChecked" resultMap="BaseResultMap">
+  	select *
+    from t_circle
+    where checked is not null
   </select>
 </mapper>
