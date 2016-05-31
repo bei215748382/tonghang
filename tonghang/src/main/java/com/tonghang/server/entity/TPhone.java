@@ -38,6 +38,8 @@ public class TPhone {
     private Integer state;
     
     private String language;
+    
+    private Integer groupId;
 
     public Integer getId() {
         return id;
@@ -182,5 +184,13 @@ public class TPhone {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
     
 }

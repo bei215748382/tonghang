@@ -20,6 +20,22 @@
 		<result column="latitude" property="latitude" jdbcType="DOUBLE" />
 		<result column="state" property="state" jdbcType="INTEGER" />
 		<result column="language" property="language" jdbcType="VARCHAR" />
+		<result column="group_id" property="groupId" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap type="com.tonghang.server.vo.UserVo" id="UserVoResultMap">
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="group_id" property="groupId" jdbcType="INTEGER" />
+		<association property="trade" javaType="com.tonghang.server.entity.TTrade">
+			<result column="trade_name" property="name" jdbcType="VARCHAR" />
+		</association>
+		<collection property="services" ofType="com.tonghang.server.entity.TService">
+			<result column="title" property="title" jdbcType="VARCHAR"/>
+			<result column="description" property="description" jdbcType="VARCHAR"/>
+			<result column="pictures" property="pictures" jdbcType="VARCHAR"/>
+			<result column="checked" property="checked" jdbcType="INTEGER"/>
+		</collection>
 	</resultMap>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
@@ -38,7 +54,7 @@
 		trade_id, province_id, city_id,
 		remark, device,
 		longitude,
-		latitude, state,language)
+		latitude, state,language,group_id)
 		values (#{id}, #{phone},
 		#{password},
 		#{timestamp}, #{name}, #{pic},
@@ -47,7 +63,7 @@
 		#{tradeId}, #{provinceId}, #{cityId},
 		#{remark}, #{device},
 		#{longitude},
-		#{latitude}, #{state},#{language})
+		#{latitude}, #{state},#{language},#{groupId})
 	</insert>
 	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TPhone">
 		update t_phone
@@ -79,7 +95,6 @@
 			<if test="tradeId != null and tradeId != ''">
 				trade_id = #{tradeId},
 			</if>
-
 			<if test="provinceId != null and provinceId != ''">
 				province_id = #{provinceId},
 			</if>
@@ -102,7 +117,10 @@
 				state = #{state},
 			</if>
 			<if test="language != null and language != ''">
-				language = #{language}
+				language = #{language},
+			</if>
+			<if test="groupId != null and groupId != ''">
+				group_id = #{groupId}
 			</if>
 		</set>
 		where id = #{id}
@@ -116,5 +134,20 @@
 	<select id="selectAll" resultMap="BaseResultMap">
 		select *
 		from t_phone
+	</select>
+	<select id="getUsers" resultMap="UserVoResultMap">
+		select 
+		p.phone,
+		p.name,
+		p.group_id,
+		p.state,
+		t.name trade_name,
+		s.title,
+		s.description,
+		s.pictures,
+		s.checked
+		from t_phone p
+		left outer join t_service s on s.pid = p.id 
+		left outer join t_trade t on t.id = p.trade_id
 	</select>
 </mapper>

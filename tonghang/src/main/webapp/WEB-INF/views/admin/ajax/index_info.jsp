@@ -5,9 +5,12 @@
 <div class="row">
 	<div class="col-md-12">
 		<ul class="nav navbar-nav">
-			<li><a href="#" onclick="javacript:LoadAjaxContent('get_circle_unchecked')">同行圈审核</a></li>
-			<li><a href="#" onclick="javacript:LoadAjaxContent('get_service_unchecked')">服务审核</a></li>
-			<li><a href="#" onclick="javacript:LoadAjaxContent('get_comment_unchecked')">回复审核</a></li>
+			<li><a href="#"
+				onclick="select(1)">同行圈审核</a></li>
+			<li><a href="#"
+				onclick="select(2)">服务审核</a></li>
+			<li><a href="#"
+				onclick="select(3)">回复审核</a></li>
 		</ul>
 	</div>
 </div>
@@ -16,7 +19,8 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					 <a href="#" onclick="javacript:LoadAjaxContent('user_add.do')">待审核</a>&nbsp;&nbsp;<a href="#" onclick="javacript:LoadAjaxContent('user_add.do')">已审核</a>
+					<a href="#" onclick="javacript:uncheck()">待审核</a>&nbsp;&nbsp;<a
+						href="#" onclick="javacript:check()">已审核</a>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -65,6 +69,47 @@
 	</div>
 </div>
 <script type="text/javascript">
+	var selected;
+	function select(data) {
+		selected = data;
+		console.log(selected);
+		switch (selected) {
+		case 1:
+			LoadAjaxContent('index_info');
+			break;
+		case 2:
+			LoadAjaxContent('get_service_unchecked');
+			break;
+		default:
+			LoadAjaxContent('get_comment_unchecked');
+		}
+	}
+	function uncheck() {
+		console.log(selected);
+		switch (selected) {
+		case 1:
+			LoadAjaxContent('index_info');
+			break;
+		case 2:
+			LoadAjaxContent('get_service_unchecked');
+			break;
+		default:
+			LoadAjaxContent('get_comment_unchecked');
+		}
+	}
+	function check() {
+		console.log(selected);
+		switch (selected) {
+		case 1:
+			LoadAjaxContent('get_circle_checked');
+			break;
+		case 2:
+			LoadAjaxContent('get_service_checked');
+			break;
+		default:
+			javacript: LoadAjaxContent('get_comment_checked');
+		}
+	}
 	// Run Datables plugin and create 3 variants of settings
 	function AllTables() {
 		TestTable2();
@@ -79,36 +124,36 @@
 							'Search');
 				});
 	}
-	function TestTable4(){
+	function TestTable4() {
 		var asInitVals = [];
-		var oTable = $('#datatable-4').dataTable( {
-			"aaSorting": [[ 0, "asc" ]],
-			"sDom": "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
-			"sPaginationType": "bootstrap",
-			"oLanguage": {
-				"sSearch": "",
-				"sLengthMenu": '_MENU_'
-			},
-			bAutoWidth: false
-		});
+		var oTable = $('#datatable-4')
+				.dataTable(
+						{
+							"aaSorting" : [ [ 0, "asc" ] ],
+							"sDom" : "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
+							"sPaginationType" : "bootstrap",
+							"oLanguage" : {
+								"sSearch" : "",
+								"sLengthMenu" : '_MENU_'
+							},
+							bAutoWidth : false
+						});
 		var header_inputs = $("#datatable-4 thead input");
-		header_inputs.on('keyup', function(){
+		header_inputs.on('keyup', function() {
 			/* Filter on the column (the index) of this element */
-			oTable.fnFilter( this.value, header_inputs.index(this) );
-		})
-		.on('focus', function(){
-			if ( this.className == "search_init" ){
+			oTable.fnFilter(this.value, header_inputs.index(this));
+		}).on('focus', function() {
+			if (this.className == "search_init") {
 				this.className = "";
 				this.value = "";
 			}
-		})
-		.on('blur', function (i) {
-			if ( this.value == "" ){
+		}).on('blur', function(i) {
+			if (this.value == "") {
 				this.className = "search_init";
 				this.value = asInitVals[header_inputs.index(this)];
 			}
 		});
-		header_inputs.each( function (i) {
+		header_inputs.each(function(i) {
 			asInitVals[i] = this.value;
 		});
 	}

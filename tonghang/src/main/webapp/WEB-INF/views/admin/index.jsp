@@ -136,7 +136,7 @@
 					<ul class="dropdown-menu">
 						<li><a class="ajax-link" href=users_info>管理用户</a></li>
 						<li><a class="ajax-link" href=service_info>管理服务</a></li>
-						<li><a class="ajax-link" href=service_info>管理产业链</a></li>
+						<li><a class="ajax-link" href=industry_info>管理产业链</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">

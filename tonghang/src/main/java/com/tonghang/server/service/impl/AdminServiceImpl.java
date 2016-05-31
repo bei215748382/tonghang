@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCommentMapper;
+import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TServiceMapper;
-import com.tonghang.server.service.CheckService;
+import com.tonghang.server.service.AdminService;
+import com.tonghang.server.vo.UserVo;
 
 @Service
-public class CheckServiceImpl implements CheckService {
+public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private TCircleMapper tCircleMapper;
@@ -22,6 +24,9 @@ public class CheckServiceImpl implements CheckService {
 	
 	@Autowired
 	private TCommentMapper tCommentMapper;
+	
+	@Autowired
+	private TPhoneMapper tPhoneMapper;
 
 	@Override
 	public List<TCircle> getCircleUnCheck() {
@@ -52,5 +57,10 @@ public class CheckServiceImpl implements CheckService {
 	public List<TCircle> getCommentChecked() {
 		return tCommentMapper.getCommentChecked();
 	}
+
+    @Override
+    public List<UserVo> getUsers() {
+        return tPhoneMapper.getUsers();
+    }
 
 }
