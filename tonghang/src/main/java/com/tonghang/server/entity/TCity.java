@@ -7,6 +7,8 @@ public class TCity {
 
     private Integer provinceId;
 
+    private String enName;
+
     public Integer getId() {
         return id;
     }
@@ -30,4 +32,13 @@ public class TCity {
     public void setProvinceId(Integer provinceId) {
         this.provinceId = provinceId;
     }
+
+    public String getEnName() {
+        return enName;
+    }
+
+    public void setEnName(String enName) {
+        this.enName = enName;
+    }
+
 }
