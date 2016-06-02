@@ -6,6 +6,8 @@ public class TTrade {
     private String name;
 
     private Integer parentId;
+    
+    private String enName;
 
     public Integer getId() {
         return id;
@@ -30,4 +32,14 @@ public class TTrade {
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
+
+    public String getEnName() {
+        return enName;
+    }
+
+    public void setEnName(String enName) {
+        this.enName = enName;
+    }
+    
+    
 }
