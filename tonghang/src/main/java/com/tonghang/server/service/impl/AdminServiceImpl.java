@@ -11,6 +11,7 @@ import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.service.AdminService;
+import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
 @Service
@@ -27,7 +28,7 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private TPhoneMapper tPhoneMapper;
-
+	
 	@Override
 	public List<TCircle> getCircleUnCheck() {
 		return tCircleMapper.getCircleUnCheck();
@@ -61,6 +62,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<UserVo> getUsers() {
         return tPhoneMapper.getUsers();
+    }
+
+    @Override
+    public List<ServiceVo> getServices() {
+        return tServiceMapper.getServices();
+    }
+
+    @Override
+    public List<TCircle> getArticles() {
+        return tCircleMapper.selectAll();
     }
 
 }

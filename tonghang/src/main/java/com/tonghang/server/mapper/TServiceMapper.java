@@ -1,9 +1,10 @@
 package com.tonghang.server.mapper;
 
+import java.util.List;
+
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TService;
-
-import java.util.List;
+import com.tonghang.server.vo.ServiceVo;
 
 public interface TServiceMapper {
     int deleteByPrimaryKey(Integer id);
@@ -19,4 +20,6 @@ public interface TServiceMapper {
 	List<TCircle> getServiceUnCheck();
 
 	List<TCircle> getServiceChecked();
+
+    List<ServiceVo> getServices();
 }

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.service.AdminService;
+import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
 @Controller
@@ -85,6 +86,22 @@ public class AdminCol {
         ModelAndView mav = new ModelAndView("admin/ajax/users_info");
          List<UserVo> list = adminService.getUsers();
          mav.addObject("users", list);
+        return mav;
+    }
+    
+    @RequestMapping(value = "services_info")
+    public ModelAndView services_info() {
+        ModelAndView mav = new ModelAndView("admin/ajax/services_info");
+         List<ServiceVo> list = adminService.getServices();
+         mav.addObject("services", list);
+        return mav;
+    }
+    
+    @RequestMapping(value = "articles_info")
+    public ModelAndView articles_info() {
+        ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
+         List<TCircle> list = adminService.getArticles();
+         mav.addObject("articles", list);
         return mav;
     }
 }
