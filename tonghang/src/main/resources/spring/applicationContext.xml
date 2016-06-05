@@ -59,5 +59,15 @@
 	<!-- 支持上传文件 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+		
+		
+	<beans>
+		<bean id="ipInfoService"
+			class="com.tonghang.server.service.impl.IpInfoDetailServiceImpl" init-method="init">
+			<property name="ipIpDatafilePath" value="${ipip.data.filepath}">
+			</property>
+		</bean>
+	
+	</beans>
 	
 </beans>

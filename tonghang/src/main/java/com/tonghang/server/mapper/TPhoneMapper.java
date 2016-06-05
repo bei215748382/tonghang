@@ -17,4 +17,11 @@ public interface TPhoneMapper {
     int updateByPrimaryKey(TPhone record);
 
     List<UserVo> getUsers();
+
+    /**
+     * 根据手机号码进行查询
+     * @param phone
+     * @return
+     */
+    TPhone selectByPhone(String phone);
 }

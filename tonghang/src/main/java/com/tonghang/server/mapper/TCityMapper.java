@@ -1,6 +1,8 @@
 package com.tonghang.server.mapper;
 
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TProvince;
+
 import java.util.List;
 
 public interface TCityMapper {
@@ -13,4 +15,8 @@ public interface TCityMapper {
     List<TCity> selectAll();
 
     int updateByPrimaryKey(TCity record);
+
+    TCity selectByName(String name);
+    
+    List<TProvince> selectByProvinceId(Integer provinceId);
 }

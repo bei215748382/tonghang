@@ -1,25 +1,28 @@
-package com.tonghang.server.service.impl;
+package com.tonghang.server.util;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
-import com.tonghang.server.util.Constants;
 
-public class SMSService {
+public class SMSUtil {
 
-    private static Logger log = org.slf4j.LoggerFactory
-            .getLogger(SMSService.class);
-
-    public void sendSMS(String mobileNum, String content)
+    private static Logger log = LoggerFactory.getLogger(SMSUtil.class);
+    public static Map<String, String> codes = new HashMap<String, String>();
+    
+    public static void sendSMS(String mobileNum, String content)
             throws ServiceException {
+        String code = getRandNum(6);
         HttpClient client = new HttpClient();
         PostMethod post = new PostMethod("http://gbk.sms.webchinese.cn");
         post.addRequestHeader("Content-Type",
@@ -37,12 +40,13 @@ public class SMSService {
                     post.getResponseBodyAsString().getBytes("gbk"));
             log.info("mobile number:{},content:{},result{}", mobileNum, content,
                     result);
-            int code = Integer.valueOf(result);
-            if (code < 0) {
+            int resultCode = Integer.valueOf(result);
+            if (resultCode < 0) {
                 throw new ServiceException(ErrorCode.code10.getCode(),
                         ErrorCode.code10.getHttpCode(),
                         "error happen when send sms");
             }
+            codes.put(mobileNum, code);
             // TODO 根据短信服务商的反馈不同有不同的结果。
         } catch (HttpException e) {
             log.error(
@@ -62,5 +66,21 @@ public class SMSService {
         post.releaseConnection();
 
     }
+    
+    private static String getRandNum(int charCount) {
+        String charValue = "";
+        for (int i = 0; i < charCount; i++) {
+            char c = (char) (randomInt(0, 10) + '0');
+            charValue += String.valueOf(c);
+        }
+        return charValue;
 
+    }
+
+    private static int randomInt(int from, int to) {
+        Random r = new Random();
+        return from + r.nextInt(to - from);
+    }
+
+    
 }

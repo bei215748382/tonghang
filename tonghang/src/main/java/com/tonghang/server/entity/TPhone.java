@@ -36,10 +36,16 @@ public class TPhone {
     private Double latitude;
 
     private Integer state;
-    
+
     private String language;
-    
+
     private Integer groupId;
+
+    private String trade;// 行业名称
+
+    private String province;// 省份名称
+
+    private String city;// 城市名称
 
     public Integer getId() {
         return id;
@@ -177,13 +183,13 @@ public class TPhone {
         this.state = state;
     }
 
-	public String getLanguage() {
-		return language;
-	}
+    public String getLanguage() {
+        return language;
+    }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public Integer getGroupId() {
         return groupId;
@@ -192,5 +198,29 @@ public class TPhone {
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
-    
+
+    public String getTrade() {
+        return trade;
+    }
+
+    public void setTrade(String trade) {
+        this.trade = trade;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
 }

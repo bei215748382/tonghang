@@ -150,4 +150,12 @@
 		left outer join t_service s on s.pid = p.id 
 		left outer join t_trade t on t.id = p.trade_id
 	</select>
+	
+	<select id="selectByPhone" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select *
+		from t_phone
+		where phone = #{phone}
+	</select>
+	
 </mapper>

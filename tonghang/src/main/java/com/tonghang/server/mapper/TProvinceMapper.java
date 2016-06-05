@@ -13,4 +13,6 @@ public interface TProvinceMapper {
     List<TProvince> selectAll();
 
     int updateByPrimaryKey(TProvince record);
+    
+    TProvince selectByName(String name);
 }
