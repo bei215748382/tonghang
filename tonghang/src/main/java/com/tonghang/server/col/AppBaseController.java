@@ -1,6 +1,13 @@
 package com.tonghang.server.col;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.tonghang.server.exception.ErrorCode;
+import com.tonghang.server.exception.ServiceException;
 
 public class AppBaseController {
 
@@ -18,5 +25,22 @@ public class AppBaseController {
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    protected void checkParams(Map<String, String> params)
+            throws ServiceException {
+
+        if (params == null || params.size() <= 0) {
+            throw new ServiceException(ErrorCode.code20.getCode(),
+                    ErrorCode.code20.getHttpCode(), "params can not be null ");
+        }
+        for (String key : params.keySet()) {
+            String param = params.get(key);
+            if (StringUtils.isBlank(param)) {
+                throw new ServiceException(ErrorCode.code20.getCode(),
+                        ErrorCode.code20.getHttpCode(),
+                        "param[" + key + "] is needed.");
+            }
+        }
     }
 }

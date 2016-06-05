@@ -38,6 +38,7 @@ public class AppUserController extends AppBaseController{
         try {
             Map<String, String> params = (Map<String, String>) JSON
                     .parse(content);
+            checkParams(params);
             String mobileNum = params.get("mobile");
             String password = params.get("password");
             result.put("code", 200);
@@ -66,6 +67,7 @@ public class AppUserController extends AppBaseController{
         try {
             Map<String, String> params = (Map<String, String>) JSON
                     .parse(content);
+            checkParams(params);
             String mobileNum = params.get("mobile");
             String password = params.get("password");
             result.put("code", 200);
@@ -92,6 +94,7 @@ public class AppUserController extends AppBaseController{
         try {
             Map<String, String> params = (Map<String, String>) JSON
                     .parse(content);
+            checkParams(params);
             String mobileNum = params.get("mobile");
             String password = params.get("password");
             String code = params.get("code");
@@ -121,6 +124,7 @@ public class AppUserController extends AppBaseController{
         try {
             Map<String, String> params = (Map<String, String>) JSON
                     .parse(content);
+            checkParams(params);
             result.put("code", 200);
             result.put("msg", "success");
             Map<String, Object> data = userService.modifyInfo(baseRequest.getUserId(), params);
@@ -145,6 +149,7 @@ public class AppUserController extends AppBaseController{
         try {
             Map<String, String> params = (Map<String, String>) JSON
                     .parse(content);
+            checkParams(params);
             String targetUserId  = params.get("userId"); 
             Map<String, Object> data = userService.getInfo(targetUserId);
             result.put("code", 200);

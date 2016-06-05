@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.tonghang.server.common.dto.AccessToken;
 import com.tonghang.server.common.dto.BasicRequestDTO;
+import com.tonghang.server.common.dto.ResponseResult;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.util.CodecUtil;
@@ -30,10 +31,9 @@ public class AuthFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
         // 类路径+方法名
         log.info("======" + "begin======");
+        HttpServletRequest httpRequest = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
         try {
-
-            HttpServletRequest httpRequest = (HttpServletRequest) req;
-            HttpServletResponse response = (HttpServletResponse) res;
 
             String auth = "";
             String authorization = httpRequest.getHeader("Authorization");
@@ -104,6 +104,12 @@ public class AuthFilter implements Filter {
 
         } catch (Exception e) {
             log.error("======" + "error======msg:" + e);
+            response.getWriter()
+                    .println(ResponseResult.error(
+                            new ServiceException(ErrorCode.code10.getCode(),
+                                    ErrorCode.code10.getHttpCode(),
+                                    ErrorCode.code10.getDesc())));
+            return;
         }
         log.info("======" + "end======");
     }

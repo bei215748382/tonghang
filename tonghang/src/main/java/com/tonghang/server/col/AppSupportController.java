@@ -38,6 +38,7 @@ public class AppSupportController extends AppBaseController {
                 .getAttribute("requestDTO");
         String content = baseRequest.getContent();
         Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
         String mobileNum = params.get("mobile");
         String type = params.get("type");
         if ("1".equals(type)) {
@@ -56,6 +57,7 @@ public class AppSupportController extends AppBaseController {
                 .getAttribute("requestDTO");
         String content = baseRequest.getContent();
         Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
         String mobileNum = params.get("mobile");
         String code = params.get("code");
         smsService.verifyCode(mobileNum, code);
