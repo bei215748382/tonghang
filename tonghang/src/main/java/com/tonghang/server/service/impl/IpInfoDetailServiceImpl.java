@@ -1,8 +1,8 @@
 package com.tonghang.server.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tonghang.server.common.dto.IpInfoDetail;
 import com.tonghang.server.exception.ErrorCode;
@@ -37,7 +37,7 @@ public class IpInfoDetailServiceImpl   {
 		this.ipIpDatafilePath = ipIpDatafilePath;
 	}
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	public IpInfoDetail getInfoByIp(String ip) throws ServiceException {
 		String[] ips = ip.split(",");
@@ -59,7 +59,7 @@ public class IpInfoDetailServiceImpl   {
 		}
 
 		if (log.isDebugEnabled()) {
-			log.info(info);
+			log.info(info.toString());
 		}
 		if (ips.length > 1 && "*".equals(info.getCountryCode())) {
 			info = getIpInfoDetailByIp(ips[1]);
