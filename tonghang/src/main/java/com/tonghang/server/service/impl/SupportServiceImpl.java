@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.tonghang.server.common.dto.IpInfoDetail;
 import com.tonghang.server.entity.TCity;
@@ -16,6 +17,7 @@ import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
 
+@Service
 public class SupportServiceImpl {
 
     @Autowired

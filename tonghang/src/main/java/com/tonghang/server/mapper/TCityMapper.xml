@@ -35,7 +35,7 @@
     select id, name, en_name,province_id
     from t_city
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select id, name,en_name, province_id
     from t_city
     where name = #{name}
