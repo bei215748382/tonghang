@@ -37,8 +37,8 @@ public class UserService {
     @Autowired
     private TokenServiceImpl tokenService;
 
-    public Map<String, Object> registUser(String mobile, String password)
-            throws ServiceException {
+    public Map<String, Object> registUser(String mobile, String password,
+            String longitude, String latitude) throws ServiceException {
         TPhone user = userMapper.selectByPhone(mobile);
         if (user != null) {
             throw new ServiceException(ErrorCode.code100.getCode(),
@@ -48,6 +48,9 @@ public class UserService {
         user = new TPhone();
         user.setPhone(mobile);
         user.setPassword(password);
+        user.setLatitude(Double.valueOf(latitude));
+        user.setLongitude(Double.valueOf(longitude));
+        user.setLanguage("zh_CN");
         userMapper.insert(user);
         user = userMapper.selectByPhone(mobile);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -56,13 +59,25 @@ public class UserService {
         return data;
     }
 
-    public Map<String, Object> login(String mobileNum, String password)
-            throws ServiceException {
+    public Map<String, Object> login(String mobileNum, String password,
+            String longitude, String latitude) throws ServiceException {
         TPhone user = userMapper.selectByPhone(mobileNum);
+        boolean flag = false;
         if (user == null) {
             throw new ServiceException(ErrorCode.code102.getCode(),
                     ErrorCode.code102.getHttpCode(),
                     ErrorCode.code102.getDesc());
+        }
+        if (StringUtils.isNotEmpty(latitude)) {
+            user.setLatitude(Double.valueOf(latitude));
+            flag = true;
+        }
+        if (StringUtils.isNotEmpty(longitude)) {
+            user.setLongitude(Double.valueOf(longitude));
+            flag = true;
+        }
+        if (flag) {
+            userMapper.updateByPrimaryKey(user);
         }
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("userId", user.getId());

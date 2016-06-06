@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.tonghang.server.common.dto.BasicRequestDTO;
@@ -33,7 +34,7 @@ public class AppSupportController extends AppBaseController {
 
     @RequestMapping(value = "/getverifycode", method = { RequestMethod.POST,
             RequestMethod.GET })
-    public String getVerifyCode(HttpServletRequest request,
+    public @ResponseBody Object getVerifyCode(HttpServletRequest request,
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
@@ -53,12 +54,12 @@ public class AppSupportController extends AppBaseController {
         } else if ("2".equals(type)) {
             result.put("data", smsService.sendRetPasswordCode(mobileNum));
         }
-        return "succuess";
+        return result;
     }
 
     @RequestMapping(value = "/verifycode", method = { RequestMethod.POST,
             RequestMethod.GET })
-    public String verifyCode(HttpServletRequest request,
+    public @ResponseBody Object verifyCode(HttpServletRequest request,
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
@@ -67,20 +68,26 @@ public class AppSupportController extends AppBaseController {
         checkParams(params);
         String mobileNum = params.get("mobile");
         String code = params.get("code");
-        smsService.verifyCode(mobileNum, code);
-        return "succuess";
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", smsService.verifyCode(mobileNum, code));
+        return result;
     }
 
     @RequestMapping(value = "/getrecommendarea", method = { RequestMethod.POST,
             RequestMethod.GET })
-    public String getArea(HttpServletRequest request,
+    public @ResponseBody Object getArea(HttpServletRequest request,
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         String ip = getIp(request);
-
-        return JSON.toJSONString(
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data",
                 supportService.getAreaByIp(ip, baseRequest.getUserId()));
+        return result;
     }
 
 }

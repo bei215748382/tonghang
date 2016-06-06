@@ -3,11 +3,11 @@ package com.tonghang.server.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.mapper.TPhoneMapper;
@@ -30,7 +30,7 @@ public class SMSServiceImpl {
      * @return TODO
      * @throws ServiceException
      */
-    public String sendRegCode(String mobile) throws ServiceException {
+    public Map<String, Object> sendRegCode(String mobile) throws ServiceException {
         Map<String, Object> result = new HashMap<String, Object>();
         TPhone user = userMapper.selectByPhone(mobile);
         if (user == null) {
@@ -42,7 +42,7 @@ public class SMSServiceImpl {
             result.put("isRegist", "true");
             result.put("success", "false");
         }
-        return JSON.toJSONString(result);
+        return (result);
     }
 
     /**
@@ -51,7 +51,7 @@ public class SMSServiceImpl {
      * @param mobile
      * @throws ServiceException
      */
-    public String sendRetPasswordCode(String mobile) throws ServiceException {
+    public Map<String, Object> sendRetPasswordCode(String mobile) throws ServiceException {
 
         Map<String, Object> result = new HashMap<String, Object>();
         TPhone user = userMapper.selectByPhone(mobile);
@@ -66,7 +66,7 @@ public class SMSServiceImpl {
             result.put("success", "false");
         }
 
-        return JSON.toJSONString(result);
+        return (result);
     }
 
     /**
@@ -76,10 +76,17 @@ public class SMSServiceImpl {
      * @param code
      * @return
      */
-    public boolean verifyCode(String mobile, String code) {
+    public Map<String, Object> verifyCode(String mobile, String code) {
         boolean flag = false;
-        flag = SMSUtil.codes.get(mobile).equals(code) ? true : false;
-        return flag;
+        Map<String, Object> result = new HashMap<String, Object>();
+        String locationCode = SMSUtil.codes.get(mobile);
+        if (StringUtils.isNotBlank(locationCode)) {
+            flag = locationCode.equals(code) ? true : false;
+            result.put("success", "" + flag);
+        } else {
+            result.put("success", "false");
+        }
+        return (result);
 
     }
 

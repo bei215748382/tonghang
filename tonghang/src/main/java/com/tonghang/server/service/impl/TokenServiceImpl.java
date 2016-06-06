@@ -10,19 +10,18 @@ import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.util.CodecUtil;
 
 @Service
-public class TokenServiceImpl   {
-    private static final Logger log = LoggerFactory.getLogger(TokenServiceImpl.class);
-
+public class TokenServiceImpl {
+    private static final Logger log = LoggerFactory
+            .getLogger(TokenServiceImpl.class);
 
     public String generateAccessToken(TPhone user) throws ServiceException {
         AccessToken accessToken = new AccessToken();
         accessToken.setAuid(user.getId());
-        accessToken.setCurrenttime(System.currentTimeMillis());
-        accessToken.setExpriation(
-                accessToken.getCurrenttime() + 24*60*60*100);
+        accessToken
+                .setExpriation(System.currentTimeMillis() + 24 * 60 * 60 * 100);
         String token = CodecUtil.encodeToken2Ciphertext(accessToken.toString());
-        if(log.isDebugEnabled()){
-            log.debug("{} -> {}",accessToken,token);
+        if (log.isDebugEnabled()) {
+            log.debug("{} -> {}", accessToken, token);
         }
         return token;
     }

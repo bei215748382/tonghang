@@ -41,10 +41,12 @@ public class AppUserController extends AppBaseController{
             checkParams(params);
             String mobileNum = params.get("mobile");
             String password = params.get("password");
+            String longitude = params.get("longitude");
+            String latitude = params.get("latitude");
             result.put("code", 200);
             result.put("msg", "success");
             Map<String, Object> data = userService.registUser(mobileNum,
-                    password);
+                    password, longitude, latitude);
             result.put("data", data);
         } catch (ServiceException e) {
             result.put("code", e.getCode());
@@ -72,7 +74,7 @@ public class AppUserController extends AppBaseController{
             String password = params.get("password");
             result.put("code", 200);
             result.put("msg", "success");
-            Map<String, Object> data = userService.login(mobileNum, password);
+            Map<String, Object> data = userService.login(mobileNum, password, null, null);
             result.put("data", data);
         } catch (ServiceException e) {
             result.put("code", e.getCode());
