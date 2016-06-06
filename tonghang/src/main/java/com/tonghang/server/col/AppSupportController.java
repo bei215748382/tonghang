@@ -1,5 +1,6 @@
 package com.tonghang.server.col;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,14 +38,20 @@ public class AppSupportController extends AppBaseController {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         String content = baseRequest.getContent();
+        log.info(content);
         Map<String, String> params = (Map<String, String>) JSON.parse(content);
         checkParams(params);
         String mobileNum = params.get("mobile");
         String type = params.get("type");
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+
         if ("1".equals(type)) {
-            smsService.sendRegCode(params.get(mobileNum));
+            result.put("data", smsService.sendRegCode(mobileNum));
         } else if ("2".equals(type)) {
-            smsService.sendRetPasswordCode(mobileNum);
+            result.put("data", smsService.sendRetPasswordCode(mobileNum));
         }
         return "succuess";
     }

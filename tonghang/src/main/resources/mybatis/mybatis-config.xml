@@ -19,7 +19,7 @@
 	</typeAliases>
 
 	<!-- 类型处理 -->
-<!-- 	<typeHandlers> -->
-<!-- 		<package name="com.tonghang.server.mybatis.handler" /> -->
-<!-- 	</typeHandlers> -->
+	<typeHandlers>
+		<package name="com.tonghang.server.mybatis.handler" />
+	</typeHandlers>
 </configuration>

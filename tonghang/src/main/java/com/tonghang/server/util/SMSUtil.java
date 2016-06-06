@@ -19,7 +19,7 @@ public class SMSUtil {
 
     private static Logger log = LoggerFactory.getLogger(SMSUtil.class);
     public static Map<String, String> codes = new HashMap<String, String>();
-    
+
     public static void sendSMS(String mobileNum, String content)
             throws ServiceException {
         String code = getRandNum(6);
@@ -31,7 +31,7 @@ public class SMSUtil {
                 new NameValuePair("Uid", Constants.WANG_JIAN_UID),
                 new NameValuePair("Key", "e67d6add9007371bd1e9"),
                 new NameValuePair("smsMob", mobileNum),
-                new NameValuePair("smsText", content) };
+                new NameValuePair("smsText", content + code) };
         post.setRequestBody(data);
 
         try {
@@ -66,7 +66,7 @@ public class SMSUtil {
         post.releaseConnection();
 
     }
-    
+
     private static String getRandNum(int charCount) {
         String charValue = "";
         for (int i = 0; i < charCount; i++) {
@@ -82,5 +82,4 @@ public class SMSUtil {
         return from + r.nextInt(to - from);
     }
 
-    
 }

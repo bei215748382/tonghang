@@ -101,17 +101,23 @@ public class AuthFilter implements Filter {
             httpRequest.setAttribute("requestDTO", requestDTO);
 
             chain.doFilter(req, res);
-
         } catch (Exception e) {
             log.error("======" + "error======msg:" + e);
-            response.getWriter()
-                    .println(ResponseResult.error(
-                            new ServiceException(ErrorCode.code10.getCode(),
-                                    ErrorCode.code10.getHttpCode(),
-                                    ErrorCode.code10.getDesc())));
+            if (e instanceof ServiceException) {
+                response.getWriter()
+                        .println(ResponseResult.error((ServiceException) e));
+            } else {
+
+                response.getWriter()
+                        .println(ResponseResult.error(
+                                new ServiceException(ErrorCode.code10.getCode(),
+                                        ErrorCode.code10.getHttpCode(),
+                                        ErrorCode.code10.getDesc())));
+            }
             return;
         }
         log.info("======" + "end======");
+
     }
 
     public void init(FilterConfig arg0) throws ServletException {

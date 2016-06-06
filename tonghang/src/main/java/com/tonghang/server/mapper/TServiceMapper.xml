@@ -1,67 +1,93 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tonghang.server.mapper.TServiceMapper" >
-  <resultMap id="BaseResultMap" type="com.tonghang.server.entity.TService" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="pictures" property="pictures" jdbcType="VARCHAR" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="checked" property="checked" jdbcType="INTEGER" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_service
-    where id = #{id}
-  </delete>
-  <insert id="insert" parameterType="com.tonghang.server.entity.TService" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_service (id, title, description, 
-      pictures, pid, check
-      )
-    values (#{id}, #{title}, #{description}, 
-      #{pictures}, #{pid}, #{check}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TService" >
-    update t_service
-    <set>
-    	<if test="title != null and title != ''">
-    		title = #{title},
-    	</if>
-    	<if test="description != null and description != ''">
-    		description = #{description},
-    	</if>
-    	<if test="pictures != null and pictures != ''">
-    		pictures = #{pictures},
-    	</if>
-    	<if test="pid != null and pid != ''">
-    		pid = #{pid},
-    	</if>
-    	<if test="checked != null and checked != ''">
-    		checked = #{checked},
-    	</if>
-    </set>
-    where id = #{id}
-  </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select *
-    from t_service
-    where id = #{id}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select *
-    from t_service
-  </select>
-   <select id="getServiceUnCheck" resultMap="BaseResultMap" >
-    select *
-    from t_service
-    where checked is null
-  </select>
-   <select id="getServiceChecked" resultMap="BaseResultMap" >
-    select *
-    from t_service
-    where checked is not null
-  </select>
+<mapper namespace="com.tonghang.server.mapper.TServiceMapper">
+	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TService">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="pictures" property="pictures" jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="checked" property="checked" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ServiceVoResultMap" type="com.tonghang.server.vo.ServiceVo">
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="pictures" property="pictures"
+			typeHandler="com.tonghang.server.mybatis.handler.StringToListHandler" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="tradeName" property="trade" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_service
+		where id = #{id}
+	</delete>
+	<insert id="insert" parameterType="com.tonghang.server.entity.TService">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="BEFORE">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_service (id, title, description,
+		pictures, pid, check
+		)
+		values (#{id}, #{title}, #{description},
+		#{pictures}, #{pid}, #{check}
+		)
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TService">
+		update t_service
+		<set>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="description != null and description != ''">
+				description = #{description},
+			</if>
+			<if test="pictures != null and pictures != ''">
+				pictures = #{pictures},
+			</if>
+			<if test="pid != null and pid != ''">
+				pid = #{pid},
+			</if>
+			<if test="checked != null and checked != ''">
+				checked = #{checked},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select *
+		from t_service
+		where id = #{id}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select *
+		from t_service
+	</select>
+	<select id="getServiceUnCheck" resultMap="BaseResultMap">
+		select *
+		from t_service
+		where checked is null
+	</select>
+	<select id="getServiceChecked" resultMap="BaseResultMap">
+		select *
+		from t_service
+		where checked is not null
+	</select>
+	<select id="getServices" resultMap="ServiceVoResultMap">
+		select
+		s.title,
+		s.description,
+		s.pictures,
+		p.name,
+		p.phone,
+		p.state,
+		p.trade_id,
+		t.name tradeName
+		from t_service s
+		left outer join t_phone p on p.id = s.pid
+		left outer join t_trade t on t.id = p.trade_id
+	</select>
 </mapper>
