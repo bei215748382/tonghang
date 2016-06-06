@@ -1,6 +1,5 @@
 package com.tonghang.server.vo;
 
-import java.util.List;
 
 public class ServiceVo {
     
