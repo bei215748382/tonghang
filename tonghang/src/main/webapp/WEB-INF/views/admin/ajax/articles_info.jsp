@@ -8,7 +8,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					文章管理
+					<i class="fa fa-file"></i><span>文章管理 </span>&nbsp;|&nbsp;<button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('article_add')" >添加文章</button>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tonghang.server.entity.TCircle;
@@ -102,6 +103,19 @@ public class AdminCol {
         ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
          List<TCircle> list = adminService.getArticles();
          mav.addObject("articles", list);
+        return mav;
+    }
+    
+    @RequestMapping(value = "article_add")
+    public String article_add() {
+        return "admin/ajax/article_add";
+    }
+    
+    @RequestMapping(value = "article_add_json")
+    public ModelAndView article_add_json(MultipartFile file,TCircle circle) {
+        ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
+        List<TCircle> list = adminService.getArticles();
+        mav.addObject("articles", list);
         return mav;
     }
 }
