@@ -30,8 +30,8 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException {
         // 类路径+方法名
-        long time = System.currentTimeMillis();
-        log.info("======begin======URI {}", httpRequest.getRequestURI());
+        long startTime = System.currentTimeMillis();
+        log.info("======begin======");
         HttpServletRequest httpRequest = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         try {
@@ -118,7 +118,7 @@ public class AuthFilter implements Filter {
         }
         log.info("======begin======URI {}",
                 httpRequest.getRequestURI() + "cost {}",
-                System.currentTimeMillis() - time);
+                System.currentTimeMillis() - startTime);
 
     }
 
