@@ -11,6 +11,9 @@ public interface TProvinceMapper {
     TProvince selectByPrimaryKey(Integer id);
 
     List<TProvince> selectAll();
+    
+    List<TProvince> selectAllEn();
+    List<TProvince> selectAllZh();
 
     int updateByPrimaryKey(TProvince record);
     

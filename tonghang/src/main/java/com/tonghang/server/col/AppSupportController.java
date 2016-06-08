@@ -90,4 +90,48 @@ public class AppSupportController extends AppBaseController {
         return result;
     }
 
+    @RequestMapping(value = "/getprovince", method = { RequestMethod.POST,
+            RequestMethod.GET })
+    public @ResponseBody Object getProvince(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", supportService.getProvince(baseRequest.getUserId()));
+        return result;
+    }
+
+    @RequestMapping(value = "/getcity", method = { RequestMethod.POST,
+            RequestMethod.GET })
+    public @ResponseBody Object getCity(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        String content = baseRequest.getContent();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String provinceId = params.get("provinceId");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", supportService.getCityByProvinceId(
+                baseRequest.getUserId(), Integer.valueOf(provinceId)));
+        return result;
+    }
+
+    @RequestMapping(value = "/gettrade", method = { RequestMethod.POST,
+            RequestMethod.GET })
+    public @ResponseBody Object getTrade(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", supportService.getTrade(baseRequest.getUserId()));
+        return result;
+    }
+
 }

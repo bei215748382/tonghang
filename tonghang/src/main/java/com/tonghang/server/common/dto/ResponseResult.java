@@ -12,12 +12,8 @@ public class ResponseResult implements Serializable {
      */
     private static final long serialVersionUID = -3790744519135413489L;
 
-    public static String error(String message) {
-        return "{\"result\":false,\"data\":" + message + "}";
-    }
-
     public static String error(ServiceException e) {
-        return error(e.getMessage());
+        return "{\"code\":"+e.getCode()+",\"msg\":" + e.getMessage() + ",\"data\":\"\"}";
     }
 
     public static Object success(Object result) {
@@ -25,6 +21,6 @@ public class ResponseResult implements Serializable {
     }
 
     public static Object success() {
-        return "{\"result\":true}";
+        return "{\"code\":200,\"msg\":\"success\",\"data\":\"\"}";
     }
 }

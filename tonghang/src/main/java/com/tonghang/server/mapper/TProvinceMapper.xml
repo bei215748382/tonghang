@@ -36,4 +36,12 @@
     from t_province
     where name = #{name}
   </select>
+   <select id="selectAllZh" resultMap="BaseResultMap" >
+    select id, name 
+    from t_province
+  </select>
+   <select id="selectAllEn" resultMap="BaseResultMap" >
+    select id, en_name 
+    from t_province
+  </select>
 </mapper>

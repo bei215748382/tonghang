@@ -30,7 +30,8 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException {
         // 类路径+方法名
-        log.info("======" + "begin======");
+        long time = System.currentTimeMillis();
+        log.info("======begin======URI {}", httpRequest.getRequestURI());
         HttpServletRequest httpRequest = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         try {
@@ -50,7 +51,6 @@ public class AuthFilter implements Filter {
             String userId = httpRequest.getParameter("e");
             String accessToken = httpRequest.getParameter("f");
             String callback = httpRequest.getParameter("callback");
-            log.debug("URI {}", httpRequest.getRequestURI());
             log.info(
                     "request content = {},sign = {},time = {},appKey = {},userId = {},accessToken = {}",
                     content, sign, time, appKey, userId, accessToken);
@@ -116,7 +116,9 @@ public class AuthFilter implements Filter {
             }
             return;
         }
-        log.info("======" + "end======");
+        log.info("======begin======URI {}",
+                httpRequest.getRequestURI() + "cost {}",
+                System.currentTimeMillis() - time);
 
     }
 

@@ -17,6 +17,13 @@ public interface TCityMapper {
     int updateByPrimaryKey(TCity record);
 
     TCity selectByName(String name);
+
+    List<TCity> selectByProvinceId(Integer provinceId);
     
-    List<TProvince> selectByProvinceId(Integer provinceId);
+    List<TCity> selectByProvinceIdZh(Integer provinceId);
+    List<TCity> selectByProvinceIdEn(Integer provinceId);
+
+    List<TCity> selectMostUsed();
+    
+    List<TCity> selectMostUsedEn();
 }
