@@ -67,6 +67,7 @@ DROP TABLE IF EXISTS `t_city`;
 CREATE TABLE `t_city` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
+    `en_name` varchar(255) DEFAULT NULL,
   `province_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -145,6 +146,7 @@ DROP TABLE IF EXISTS `t_province`;
 CREATE TABLE `t_province` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
+    `en_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -202,6 +204,15 @@ DROP TABLE IF EXISTS `t_trade`;
 CREATE TABLE `t_trade` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
+    `en_name` varchar(255) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_track`;
+ create table  `t_track`  (
+ `id` int(11), NOT NULL AUTO_INCREMENT,
+ `pid` int(11),int(11) NOT NULL,
+ `create_time` timestamp default now())
+ ENGINE=InnoDB DEFAULT CHARSET=utf8;;
+

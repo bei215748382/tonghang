@@ -90,4 +90,12 @@
 		left outer join t_phone p on p.id = s.pid
 		left outer join t_trade t on t.id = p.trade_id
 	</select>
+	
+	<select id="getServicesByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		select  id,title,description,pictures 
+		from t_service
+		where  pid =#{userId} 
+		and  checked  !=1 
+	</select>
+	
 </mapper>
