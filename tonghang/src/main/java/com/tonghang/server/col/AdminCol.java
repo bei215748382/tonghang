@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TService;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -50,7 +51,7 @@ public class AdminCol {
     public ModelAndView get_service_unchecked(HttpServletRequest request,
             HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getServiceUnCheck();
+        List<TService> list = adminService.getServiceUnCheck();
         mav.addObject("dataList", list);
         return mav;
     }
@@ -59,7 +60,7 @@ public class AdminCol {
     public ModelAndView get_service_checked(HttpServletRequest request,
             HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getServiceChecked();
+        List<TService> list = adminService.getServiceChecked();
         mav.addObject("dataList", list);
         return mav;
     }

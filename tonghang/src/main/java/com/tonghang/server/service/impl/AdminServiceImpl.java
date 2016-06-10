@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TService;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
@@ -40,12 +41,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<TCircle> getServiceUnCheck() {
+	public List<TService> getServiceUnCheck() {
 		return tServiceMapper.getServiceUnCheck();
 	}
 
 	@Override
-	public List<TCircle> getServiceChecked() {
+	public List<TService> getServiceChecked() {
 		return tServiceMapper.getServiceChecked();
 	}
 
