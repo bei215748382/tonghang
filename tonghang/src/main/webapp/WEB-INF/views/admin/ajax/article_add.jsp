@@ -4,7 +4,7 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="index.do">行业资讯</a></li>
+			<li><a href="index#articles_info">行业资讯</a></li>
 			<li>添加文章</li>
 		</ol>
 	</div>
@@ -27,7 +27,7 @@
 			<div class="box-content">
 				<h4 class="page-header">填写文章信息</h4>
 				<form class="form-horizontal" role="form" method="POST"
-					id="articleForm" action="aritcle_add_json"
+					id="articleForm" action="article_add_json"
 					enctype="multipart/form-data">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">标题</label>
@@ -39,14 +39,11 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">设置可见产业链</label>
 						<div class="col-sm-4">
-							<select class="populate placeholder" name="userId"
+							<select class="populate placeholder" name=tradeId
 								id="s2_country">
-								<option value="">-- 选择一个关联用户 --</option>
-								<c:forEach items="${users}" var="user">
-									<c:if test="${user.id==userExt.userId}">
-										<option value="${user.id}" selected>${user.phone}</option>
-									</c:if>
-									<option value="${user.id}">${user.phone}</option>
+								<option value="">-- 选择一个产业 --</option>
+								<c:forEach items="${trades}" var="trade">
+									<option value="${trade.id}">${trade.name}</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -54,14 +51,11 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">设置可见地区</label>
 						<div class="col-sm-4">
-							<select class="populate placeholder" name="userId"
+							<select class="populate placeholder" name="area"
 								id="s2_country">
-								<option value="">-- 选择一个关联用户 --</option>
-								<c:forEach items="${users}" var="user">
-									<c:if test="${user.id==userExt.userId}">
-										<option value="${user.id}" selected>${user.phone}</option>
-									</c:if>
-									<option value="${user.id}">${user.phone}</option>
+								<option value="">-- 选择一个城市 --</option>
+								<c:forEach items="${cities}" var="city">
+									<option value="${city.name}">${city.name}</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -70,12 +64,12 @@
 						<label class="col-sm-2 control-label">&nbsp;</label>
 						<div class="col-sm-4">
 								<div class="radio-inline">
-									<label> <input type="radio" name="pregnant" 
+									<label> <input type="radio" name="checked" 
 										value="1"> 发送推送<i class="fa fa-circle-o"></i>
 									</label>
 								</div>
 								<div class="radio-inline">
-									<label> <input type="radio" name="tuijan" value="2">
+									<label> <input type="radio" name="hot" value="1">
 										设置推荐 <i class="fa fa-circle-o"></i>
 									</label>
 								</div>
@@ -97,17 +91,12 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">编辑正文</label>
 						<div class="col-sm-10">
-							<textarea class="form-control" rows="5" id="wysiwig_full"></textarea>
+							<textarea class="form-control" rows="5" id="wysiwig_full" name=content></textarea>
 						</div>
 					</div>
 					<div class="clearfix"></div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-2">
-							<button type="cancel" class="btn btn-default btn-label-left">
-								<span><i class="fa fa-clock-o txt-danger"></i></span> 取消
-							</button>
-						</div>
-						<div class="col-sm-2">
 							<button type="submit" class="btn btn-primary btn-label-left">
 								<span><i class="fa fa-clock-o"></i></span> 提交
 							</button>

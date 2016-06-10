@@ -1,5 +1,7 @@
 package com.tonghang.server.entity;
 
+import java.util.Date;
+
 public class TComment {
     private Integer id;
 
@@ -12,6 +14,8 @@ public class TComment {
     private String content;
     
     private Integer checked;
+    
+    private Date datetime;
 
     public Integer getId() {
         return id;
@@ -60,5 +64,13 @@ public class TComment {
 	public void setChecked(Integer checked) {
 		this.checked = checked;
 	}
+
+    public Date getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(Date datetime) {
+        this.datetime = datetime;
+    }
     
 }

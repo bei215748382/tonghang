@@ -1,5 +1,7 @@
 package com.tonghang.server.col;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TService;
+import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.service.AdminService;
+import com.tonghang.server.util.FileUtil;
+import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
@@ -102,21 +108,44 @@ public class AdminCol {
     @RequestMapping(value = "articles_info")
     public ModelAndView articles_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
-         List<TCircle> list = adminService.getArticles();
+         List<ArticlesVo> list = adminService.getArticles();
          mav.addObject("articles", list);
         return mav;
     }
     
     @RequestMapping(value = "article_add")
-    public String article_add() {
-        return "admin/ajax/article_add";
+    public ModelAndView article_add() {
+        ModelAndView mav = new ModelAndView("admin/ajax/article_add");
+        List<TCity> cities = adminService.getCities();
+        List<TTrade> trades = adminService.getTrades();
+        mav.addObject("cities", cities);
+        mav.addObject("trades", trades);
+        return mav;
     }
     
     @RequestMapping(value = "article_add_json")
-    public ModelAndView article_add_json(MultipartFile file,TCircle circle) {
-        ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
-        List<TCircle> list = adminService.getArticles();
-        mav.addObject("articles", list);
+    public void article_add_json(MultipartFile file,TCircle circle,HttpServletRequest request,HttpServletResponse response) throws IOException {
+        if (file != null && file.getOriginalFilename() != "") {
+            String pic = FileUtil.savePic(request, file);
+            circle.setPic(pic);
+        }
+        if(circle.getChecked()==1){
+            circle.setDatetime(new Date());//如果文章设置为发送，那么发布时间就设定
+        }
+        adminService.addArticle(circle);
+        response.sendRedirect("index#articles_info");
+    }
+    
+    @RequestMapping(value = "article_edit")
+    public ModelAndView article_edit(Integer id) {
+        ModelAndView mav = new ModelAndView("admin/ajax/article_edit");
+        ArticlesVo article = adminService.getArticle(id);
+        List<TCity> cities = adminService.getCities();
+        List<TTrade> trades = adminService.getTrades();
+        mav.addObject("cities", cities);
+        mav.addObject("trades", trades);
+        mav.addObject("article",article);
         return mav;
     }
+    
 }

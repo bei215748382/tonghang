@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="index.do">用户信息管理</a></li>
-			<li><a href="#"
-				onclick="javacript:LoadAjaxContent('user_ext_edit.do')">修改用户详情</a></li>
+			<li><a href="index#articles_info">行业资讯</a></li>
+			<li>编辑文章</li>
 		</ol>
 	</div>
 </div>
@@ -15,7 +15,7 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-search"></i> <span>修改用户详情</span>
+					<i class="fa fa-search"></i> <span>修改文章信息</span>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -26,127 +26,65 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content">
-				<h4 class="page-header">填写用户信息</h4>
+				<h4 class="page-header">填写文章信息</h4>
 				<form class="form-horizontal" role="form" method="POST"
-					id="defaultForm" action="user_ext_edit_json.do"
+					id="articleForm" action="article_edit_json"
 					enctype="multipart/form-data">
-					<input type="hidden" name="id" value="${userExt.id}" />
+					<input type="hidden" name="id" value="${article.id}">
+					<input type="hidden" id="tradeValue" value="${article.trade.id}">
+					<input type="hidden" id="cityValue" value="${article.area}">
 					<div class="form-group">
-						<label class="col-sm-2 control-label">姓名</label>
+						<label class="col-sm-2 control-label">标题</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" name="name"
-								value="${userExt.name}" />
+							<input type="text" class="form-control" name="title" value="${article.title}"
+								/>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">性别</label>
+						<label class="col-sm-2 control-label">设置可见产业链</label>
 						<div class="col-sm-4">
-							<c:if test="${userExt.sex=='男'}">
-								<div class="radio-inline">
-									<label> <input type="radio" name="sex" value="男"
-										checked> 男 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="sex" value="女">
-										女 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-							</c:if>
-							<c:if test="${userExt.sex=='女'}">
-								<div class="radio-inline">
-									<label> <input type="radio" name="sex" value="男">
-										男 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="sex" value="女"
-										checked> 女 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-							</c:if>
-							<c:if test="${userExt.sex==null || userExt.sex==''}">
-								<div class="radio-inline">
-									<label> <input type="radio" name="sex" value="男">
-										男 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="sex" value="女"
-										checked> 女 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-							</c:if>
+							<select class="populate placeholder" name=tradeId
+								id="trade">
+								<option value="">-- 选择一个产业 --</option>
+								<c:forEach items="${trades}" var="trade">
+									<option value="${trade.id}">${trade.name}</option>
+								</c:forEach>
+							</select>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">是否怀孕</label>
+						<label class="col-sm-2 control-label">设置可见地区</label>
 						<div class="col-sm-4">
-							<c:if test="${userExt.pregnant== 1}">
-								<div class="radio-inline">
-									<label> <input type="radio" name="pregnant" checked
-										value="1"> 没有<i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="pregnant" value="2">
-										怀孕 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-							</c:if>
-							<c:if test="${userExt.pregnant==2}">
-								<div class="radio-inline">
-									<label> <input type="radio" name="pregnant" 
-										value="1"> 没有<i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="pregnant" checked value="2">
-										怀孕 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-							</c:if>
-							<c:if test="${userExt.pregnant==null || userExt.pregnant==''}">
-								<div class="radio-inline">
-									<label> <input type="radio" name="pregnant" checked
-										value="1"> 没有<i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="pregnant" value="2">
-										怀孕 <i class="fa fa-circle-o"></i>
-									</label>
-								</div>
-							</c:if>
-
+							<select class="populate placeholder" name="area"
+								id="area">
+								<option value="">-- 选择一个城市 --</option>
+								<c:forEach items="${cities}" var="city">
+									<option value="${city.name}">${city.name}</option>
+								</c:forEach>
+							</select>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">身高</label>
+						<label class="col-sm-2 control-label">&nbsp;</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" name="height" value="${userExt.height}"/>
+								<div class="radio-inline">
+									<label> <input type="radio" name="checked" 
+										value="${article.checked}" id="checked"> 发送推送<i class="fa fa-circle-o"></i>
+									</label>
+								</div>
+								<div class="radio-inline">
+									<label> <input type="radio" name="hot" value="${article.hot}" id="hot">
+										设置推荐 <i class="fa fa-circle-o"></i>
+									</label>
+								</div>
 						</div>
-					</div>
+					</div>	
 					<div class="form-group">
-						<label class="col-sm-2 control-label">体重</label>
-						<div class="col-sm-4">
-							<input type="text" class="form-control" name="weight" value="${userExt.weight}"/>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">关联的病人id</label>
-						<div class="col-sm-4">
-							<input type="text" class="form-control" name="patientId"
-								value="${userExt.patientId}" readonly="readonly" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">头像</label>
+						<label class="col-sm-2 control-label">添加封面</label>
 						<div id="localImag" class="col-sm-4">
-							<img id="preview" class="img-rounded" src="${userExt.pic }"
-								alt="${userExt.pic }" />
+							<img id="preview" class="img-rounded" src="${article.pic}" alt="${article.pic}"/>
 							<div class="margin-top-15">
-								<input id="doc" type="file" name="file" value="${userExt.pic}"
+								<input id="doc" type="file" name="file" value="${article.pic}"
 									onchange="javascript:setImagePreview(this,localImag,preview);">
 							</div>
 						</div>
@@ -155,29 +93,14 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">属于哪个用户</label>
-						<div class="col-sm-4">
-							<select class="populate placeholder" name="userId"
-								id="s2_country">
-								<option value="">-- 选择一个关联用户 --</option>
-								<c:forEach items="${users}" var="user">
-									<c:if test="${user.id==userExt.userId}">
-										<option value="${user.id}" selected>${user.phone}</option>
-									</c:if>
-									<option value="${user.id}">${user.phone}</option>
-								</c:forEach>
-
-							</select>
+						<label class="col-sm-2 control-label">编辑正文</label>
+						<div class="col-sm-10">
+							<textarea class="form-control" rows="5" id="wysiwig_full" name=content>${article.content}</textarea>
 						</div>
 					</div>
 					<div class="clearfix"></div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-2">
-							<button type="cancel" class="btn btn-default btn-label-left">
-								<span><i class="fa fa-clock-o txt-danger"></i></span> 取消
-							</button>
-						</div>
-						<div class="col-sm-2">
 							<button type="submit" class="btn btn-primary btn-label-left">
 								<span><i class="fa fa-clock-o"></i></span> 提交
 							</button>
@@ -189,11 +112,27 @@
 	</div>
 </div>
 <script type="text/javascript">
+	function selected(){
+		var tradeValue = $("#tradeValue").val();
+		$("#trade").find("option[value='"+tradeValue+"']").attr("selected",true);//设置行业
+
+		var cityValue = $("#cityValue").val();
+		$("#area").find("option[value='"+cityValue+"']").attr("selected",true);//设置区域
+
+		if($("#checked").val()==1){
+			$("#checked").attr("checked","checked");
+		}//是否发送
+		if($("#hot").val()){
+			$("#hot").attr("checked","checked");
+		}//是否推荐
+	}
 	$(document).ready(function() {
+		TinyMCEStart('#wysiwig_full', 'extreme');
 		// Add tooltip to form-controls
 		$('.form-control').tooltip();
 		LoadBootstrapValidatorScript(DemoFormValidator);
 		// Add drag-n-drop feature to boxes
 		WinMove();
+		selected();
 	});
 </script>

@@ -8,7 +8,9 @@
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					<i class="fa fa-file"></i><span>文章管理 </span>&nbsp;|&nbsp;<button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('article_add')" >添加文章</button>
+					<i class="fa fa-file"></i><span>文章管理 </span>&nbsp;|&nbsp;
+					<button type="button" class="btn btn-default"
+						onclick="javaScript:LoadAjaxContent('article_add')">添加文章</button>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -49,14 +51,30 @@
 						<c:forEach items="${articles}" var="data">
 							<tr>
 								<td>${data.title}</td>
-								<td><fmt:formatDate value='${data.datetime}' pattern='yyyy-MM-dd HH:mm:ss' /></td>
-								<td>${data.tradeId }</td>
+								<td><fmt:formatDate value='${data.datetime}'
+										pattern='yyyy-MM-dd HH:mm:ss' /></td>
+								<td>${data.trade.name }</td>
 								<td>可见职能</td>
-								<td>${data.pageView}</td>
-								<td>${data.favour}</td>
-								<td>${data.comment}</td>
-								<td><c:if test="${data.hot == 1}">是</c:if><c:if test="${data.hot == 2}">否</c:if></td>
-								<td>查看 编辑 冻结</td>
+								<td><c:choose>
+										<c:when test="${data.pageView == null}">0</c:when>
+										<c:otherwise>${data.pageView}</c:otherwise>
+									</c:choose></td>
+								<td><c:choose>
+										<c:when test="${data.favour == null}">0</c:when>
+										<c:otherwise>${data.favour}</c:otherwise>
+									</c:choose></td>
+								<td><c:choose>
+										<c:when test="${data.comment == null}">0</c:when>
+										<c:otherwise>${data.comment}</c:otherwise>
+									</c:choose></td>
+								<td><c:choose>
+										<c:when test="${data.hot == 1}">是</c:when>
+										<c:otherwise>否</c:otherwise>
+									</c:choose></td>
+								<td><button type="button" class="btn btn-default">查看
+									</button>
+									<button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('article_edit?id=${data.id}')">编辑</button>
+									<button type="button" class="btn btn-default">冻结</button></td>
 							</tr>
 						</c:forEach>
 						<!-- End: list_row -->

@@ -3,7 +3,10 @@ package com.tonghang.server.service;
 import java.util.List;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TService;
+import com.tonghang.server.entity.TTrade;
+import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
@@ -25,6 +28,16 @@ public interface AdminService {
 
     List<ServiceVo> getServices();//获取所有服务信息
 
-    List<TCircle> getArticles();//获取文章列表成功
+    List<ArticlesVo> getArticles();//获取文章列表成功
+
+    List<TCity> getCities();//获取地区，城市
+
+    List<TTrade> getTrades();//获取行业
+
+    void addArticle(TCircle circle);//添加文章
+
+    ArticlesVo getArticle(Integer id);//获取单个文章编辑
+    
+    
 
 }

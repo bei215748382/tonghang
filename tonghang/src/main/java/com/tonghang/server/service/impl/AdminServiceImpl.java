@@ -6,12 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TService;
+import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.mapper.TCircleMapper;
+import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TServiceMapper;
+import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.service.AdminService;
+import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
@@ -29,6 +34,12 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private TPhoneMapper tPhoneMapper;
+	
+	@Autowired
+	private TCityMapper tCityMapper;
+	
+	@Autowired
+	private TTradeMapper tTradeMapper;
 	
 	@Override
 	public List<TCircle> getCircleUnCheck() {
@@ -71,8 +82,28 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<TCircle> getArticles() {
-        return tCircleMapper.selectAll();
+    public List<ArticlesVo> getArticles() {
+        return tCircleMapper.getArticles();
+    }
+
+    @Override
+    public List<TCity> getCities() {
+        return tCityMapper.selectAll();
+    }
+
+    @Override
+    public List<TTrade> getTrades() {
+        return tTradeMapper.selectAll();
+    }
+
+    @Override
+    public void addArticle(TCircle circle) {
+        tCircleMapper.insert(circle);
+    }
+
+    @Override
+    public ArticlesVo getArticle(Integer id) {
+        return tCircleMapper.getArticle(id);
     }
 
 }
