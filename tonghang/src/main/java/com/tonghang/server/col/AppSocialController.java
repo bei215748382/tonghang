@@ -27,7 +27,7 @@ public class AppSocialController extends AppBaseController {
 	private SocialServiceImpl socialService;
 
 	@RequestMapping(value = "/publishsns", method = { RequestMethod.POST, RequestMethod.PUT })
-	public @ResponseBody Object registUser(HttpServletRequest request, HttpServletResponse response,
+	public @ResponseBody Object publishSns(HttpServletRequest request, HttpServletResponse response,
 			MultipartFile[] pictures) {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
 		String content = baseRequest.getContent();

@@ -215,4 +215,27 @@ public class AppUserController extends AppBaseController {
 		return (result);
 	}
 
+	@RequestMapping(value = "/modifyicon", method = { RequestMethod.POST, RequestMethod.GET })
+	public @ResponseBody Object modifyIcon(HttpServletRequest request, HttpServletResponse response,
+			MultipartFile icon) {
+		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		String content = baseRequest.getContent();
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			Map<String, String> params = (Map<String, String>) JSON.parse(content);
+			checkParams(params);
+			Map<String, Object> data = userService.modifyIcon(baseRequest.getUserId().intValue(),icon);
+			result.put("code", 200);
+			result.put("msg", "success");
+			result.put("data", data);
+		} catch (ServiceException e) {
+			result.put("code", e.getCode());
+			result.put("msg", e.getMessage());
+			log.error("error when login." + e.getMessage());
+		}
+
+		return (result);
+	}
+
+	
 }

@@ -250,4 +250,18 @@ public class UserService {
 		return data;
 	}
 
+	public Map<String, Object> modifyIcon(int userId, MultipartFile icon) throws ServiceException {
+
+		TPhone user = userMapper.selectByPrimaryKey(userId);
+		if (user == null) {
+			throw new ServiceException(ErrorCode.code101.getCode(), ErrorCode.code101.getHttpCode(),
+					ErrorCode.code101.getDesc());
+		}
+		user.setPic("");// TODO 
+		userMapper.updateByPrimaryKey(user);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("user", userMapper.updateByPrimaryKey(user));
+		return data;
+	}
+
 }
