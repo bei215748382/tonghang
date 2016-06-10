@@ -12,6 +12,7 @@ import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
 import com.tonghang.server.entity.TService;
+import com.tonghang.server.entity.TTrack;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
@@ -19,6 +20,7 @@ import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TServiceMapper;
+import com.tonghang.server.mapper.TTrackMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.SMSUtil;
 
@@ -36,6 +38,9 @@ public class UserService {
 
 	@Autowired
 	private TCityMapper cityMapper;
+
+	@Autowired
+	private TTrackMapper trackMapper;
 
 	@Autowired
 	private TServiceMapper serviceMap;
@@ -195,8 +200,8 @@ public class UserService {
 
 	public Map<String, Object> addService(int userId, String name, String describe, MultipartFile[] pictures)
 			throws ServiceException {
-		// TODO  判断稳健是否为空，不为空上传，病记录文件路径。
-		String picturepath = null;//uploadFile();
+		// TODO 判断稳健是否为空，不为空上传，病记录文件路径。
+		String picturepath = null;// uploadFile();
 		TPhone user = userMapper.selectByPrimaryKey(userId);
 		if (user == null) {
 			throw new ServiceException(ErrorCode.code101.getCode(), ErrorCode.code101.getHttpCode(),
@@ -222,12 +227,26 @@ public class UserService {
 		}
 		TPhone targetUser = userMapper.selectByPrimaryKey(Integer.valueOf(targetUserId));
 		if (targetUser == null) {
-			throw new ServiceException(ErrorCode.code101.getCode(), ErrorCode.code101.getHttpCode(),
-					"查询的目标用户不存在");
+			throw new ServiceException(ErrorCode.code101.getCode(), ErrorCode.code101.getHttpCode(), "查询的目标用户不存在");
 		}
+		TTrack track = new TTrack();
+		track.setPid(userId);
+		track.setTargetPid(targetUser.getId());
+		trackMapper.insert(track);
 		Map<String, Object> data = new HashMap<String, Object>();
-		//TODO  此处需要记录足迹
 		data.put("services", serviceMap.getServicesByUserId(targetUser.getId()));
+		return data;
+	}
+
+	public Map<String, Object> getTrack(int userId) throws ServiceException {
+		TPhone user = userMapper.selectByPrimaryKey(userId);
+		if (user == null) {
+			throw new ServiceException(ErrorCode.code101.getCode(), ErrorCode.code101.getHttpCode(),
+					ErrorCode.code101.getDesc());
+		}
+
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("tracks", trackMapper.findOneBeenTrack(userId));
 		return data;
 	}
 

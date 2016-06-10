@@ -213,6 +213,7 @@ DROP TABLE IF EXISTS `t_track`;
  create table  `t_track`  (
  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
  `pid` int(11)  NOT NULL,
+ `target_pid` int(11)  NOT NULL,
  `create_time` timestamp default now())
  ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 

@@ -169,7 +169,7 @@ public class AppUserController extends AppBaseController {
 		return (result);
 	}
 
-	@RequestMapping(value = "/getservice", method = { RequestMethod.POST, RequestMethod.PUT })
+	@RequestMapping(value = "/getservice", method = { RequestMethod.POST, RequestMethod.GET})
 	public @ResponseBody Object getService(HttpServletRequest request, HttpServletResponse response,
 			MultipartFile[] pictures) {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
@@ -180,6 +180,29 @@ public class AppUserController extends AppBaseController {
 			checkParams(params);
 			String targetUserId = params.get("userId");
 			Map<String, Object> data = userService.getService(baseRequest.getUserId().intValue(), targetUserId);
+			result.put("code", 200);
+			result.put("msg", "success");
+			result.put("data", data);
+		} catch (ServiceException e) {
+			result.put("code", e.getCode());
+			result.put("msg", e.getMessage());
+			log.error("error when login." + e.getMessage());
+		}
+
+		return (result);
+	}
+	
+	
+	@RequestMapping(value = "/gettrack", method = { RequestMethod.POST, RequestMethod.GET })
+	public @ResponseBody Object geTtrack(HttpServletRequest request, HttpServletResponse response,
+			MultipartFile[] pictures) {
+		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		String content = baseRequest.getContent();
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			Map<String, String> params = (Map<String, String>) JSON.parse(content);
+			checkParams(params);
+			Map<String, Object> data = userService.getTrack(baseRequest.getUserId().intValue());
 			result.put("code", 200);
 			result.put("msg", "success");
 			result.put("data", data);
