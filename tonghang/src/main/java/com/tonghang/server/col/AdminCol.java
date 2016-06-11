@@ -19,6 +19,7 @@ import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.FileUtil;
+import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -148,4 +149,11 @@ public class AdminCol {
         return mav;
     }
     
+    @RequestMapping(value = "article_info")
+    public ModelAndView article_info(Integer id) {
+        ModelAndView mav = new ModelAndView("admin/ajax/article_info");
+         ArticleInfo article = adminService.getArticleInfo(id);
+         mav.addObject("article", article);
+        return mav;
+    }
 }

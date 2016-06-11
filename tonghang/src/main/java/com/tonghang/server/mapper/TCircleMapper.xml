@@ -40,6 +40,38 @@
 			<result column="trade_enName" property="enName" jdbcType="INTEGER" />
 		</association>
 	</resultMap>
+	<resultMap id="AritcleInfoResultMap" type="com.tonghang.server.vo.ArticleInfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="hot" property="hot" jdbcType="INTEGER" />
+		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+		<result column="pic" property="pic" jdbcType="VARCHAR" />
+		<result column="page_view" property="pageView" jdbcType="INTEGER" />
+		<result column="favour" property="favour" jdbcType="INTEGER" />
+		<result column="comment" property="comment" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="checked" property="checked" jdbcType="INTEGER" />
+		<result column="pics" property="pics" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<association property="trade" javaType="com.tonghang.server.entity.TTrade">
+			<result column="trade_id" property="id" jdbcType="INTEGER" />
+			<result column="trade_name" property="name" jdbcType="INTEGER" />
+			<result column="trade_pid" property="parentId" jdbcType="INTEGER" />
+			<result column="trade_enName" property="enName" jdbcType="INTEGER" />
+		</association>
+		<collection property="comments" ofType="com.tonghang.server.vo.CommentVo">
+			<result column="comment_id" property="id" jdbcType="INTEGER" />
+			<result column="comment_content" property="content" jdbcType="LONGVARCHAR" />
+			<result column="comment_pid" property="pidId" jdbcType="INTEGER" />
+			<result column="comment_reply" property="replyId" jdbcType="INTEGER" />
+			<result column="comment_checked" property="checked" jdbcType="INTEGER" />
+			<result column="commnet_datetime" property="datetime" jdbcType="TIMESTAMP" />
+			<result column="p_pic" property="ppic" jdbcType="VARCHAR" />
+			<result column="p_name" property="pname" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
 		t_circle
@@ -182,5 +214,41 @@
 		left outer join t_trade trade on trade.id =
 		t.trade_id
 		where t.id = #{id}
+	</select>
+	<select id="getArticleInfo" parameterType="java.lang.Integer" resultMap="AritcleInfoResultMap">
+		select
+		t.id,
+		t.title,
+		t.hot,
+		t.datetime,
+		t.pic,
+		t.page_view,
+		t.favour,
+		t.comment,
+		t.type,
+		t.pid,
+		t.checked,
+		t.pics,
+		t.area,
+		t.trade_id,
+		t.content,
+		trade.name trade_name,
+		trade.parent_id trade_pid,
+		trade.en_name
+		trade_enName,
+		comment.id comment_id,
+		comment.content comment_content,
+		comment.pid_id	comment_pid,
+		comment.reply_id comment_reply,
+		comment.checked comment_checked,
+		comment.datetime commnet_datetime,
+		p.pic p_pic,
+		p.name p_name	
+		from t_circle t
+		left outer join t_trade trade on trade.id =
+		t.trade_id
+		left outer join t_comment comment on comment.circle_id = t.id
+		left outer join t_phone p on p.id = comment.pid_id
+		where t.id = #{id} and comment.checked = 1;
 	</select>
 </mapper>

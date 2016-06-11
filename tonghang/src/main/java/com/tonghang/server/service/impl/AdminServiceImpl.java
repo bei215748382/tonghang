@@ -16,6 +16,7 @@ import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.service.AdminService;
+import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -104,6 +105,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ArticlesVo getArticle(Integer id) {
         return tCircleMapper.getArticle(id);
+    }
+
+    @Override
+    public ArticleInfo getArticleInfo(Integer id) {
+        return tCircleMapper.getArticleInfo(id);
     }
 
 }

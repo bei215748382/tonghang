@@ -71,7 +71,7 @@
 										<c:when test="${data.hot == 1}">是</c:when>
 										<c:otherwise>否</c:otherwise>
 									</c:choose></td>
-								<td><button type="button" class="btn btn-default">查看
+								<td><button type="button" class="btn btn-default"  onclick="javaScript:LoadAjaxContent('article_info?id=${data.id}')">查看
 									</button>
 									<button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('article_edit?id=${data.id}')">编辑</button>
 									<button type="button" class="btn btn-default">冻结</button></td>

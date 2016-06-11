@@ -6,6 +6,7 @@ import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
+import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -37,6 +38,8 @@ public interface AdminService {
     void addArticle(TCircle circle);//添加文章
 
     ArticlesVo getArticle(Integer id);//获取单个文章编辑
+
+    ArticleInfo getArticleInfo(Integer id);//查看文章
     
     
 
