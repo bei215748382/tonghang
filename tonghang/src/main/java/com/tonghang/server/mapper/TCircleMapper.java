@@ -19,8 +19,12 @@ public interface TCircleMapper {
 	List<TCircle> getCircleUnCheck();
 
 	List<TCircle> getCircleChecked();
+	
+	List<TCircle> getMyCircles(int userId);
 
     List<ArticlesVo> getArticles();
 
     ArticlesVo getArticle(Integer id);
+
+	List<TCircle> getFriendCircles(List<Integer> firendsId);
 }

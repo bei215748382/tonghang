@@ -1,5 +1,6 @@
 package com.tonghang.server.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
@@ -16,6 +18,7 @@ import com.tonghang.server.entity.TTrack;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
+import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
@@ -41,6 +44,9 @@ public class UserService {
 
 	@Autowired
 	private TTrackMapper trackMapper;
+	
+	@Autowired
+	private TCircleMapper circleMapper;
 
 	@Autowired
 	private TServiceMapper serviceMap;
@@ -217,6 +223,17 @@ public class UserService {
 		service.setPid(userId);
 		service.setPictures(picturepath);
 		serviceMap.insert(service);
+		
+		TCircle circle = new TCircle();
+		circle.setContent("我发布了新服务 \""+name+"\"");
+		circle.setPid(userId);
+		circle.setType(1);
+		circle.setDatetime(new Date());
+		circle.setTradeId(user.getTradeId());
+		circle.setPics("");//TODO  图片
+		circle.setArea("");//TODO 地区需修改成省市id
+		circleMapper.insert(circle);
+		
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("services", serviceMap.getServicesByUserId(userId));
 		return data;

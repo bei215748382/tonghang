@@ -86,6 +86,10 @@ public enum ErrorCode {
     /**用户未登录*/
     code117(500,117,"should  login first"),
 
+    /**好友关系未成立*/
+    code118(500,118,"not in  friendship"),
+
+    
     code150(500, 150, "follow  exist"),
     /** 用户昵称被保留 **/
     code160(500, 160, "not find solarise user"),

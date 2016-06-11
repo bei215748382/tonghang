@@ -3,14 +3,20 @@ package com.tonghang.server.mapper;
 import com.tonghang.server.entity.TFriend;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface TFriendMapper {
-    int deleteByPrimaryKey(Integer id);
+	int deleteByPrimaryKey(Integer id);
 
-    int insert(TFriend record);
+	int insert(TFriend record);
 
-    TFriend selectByPrimaryKey(Integer id);
+	TFriend selectByPrimaryKey(Integer id);
 
-    List<TFriend> selectAll();
+	List<TFriend> selectAll();
 
-    int updateByPrimaryKey(TFriend record);
+	int updateByPrimaryKey(TFriend record);
+
+	TFriend isFriends(@Param("userId") Integer userId, @Param("targetId") Integer targetUserId);
+
+	List<Integer> selectAllFriendsId(Integer userId);
 }

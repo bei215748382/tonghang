@@ -41,7 +41,59 @@ public class AppSocialController extends AppBaseController {
 		Map<String, Object> data = socialService.publishSns(baseRequest.getUserId().intValue(), txt, pictures);
 		result.put("data", data);
 
-		return (result);
+		return JSON.toJSONString(result);
 	}
 
+	@RequestMapping(value = "/browsesns", method = { RequestMethod.POST, RequestMethod.PUT })
+	public @ResponseBody Object browseSns(HttpServletRequest request, HttpServletResponse response ) throws ServiceException {
+		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
+		String content = baseRequest.getContent();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String pageSize = params.get("pageSize");
+		String pageNo = params.get("pageNo");
+		String userId = params.get("userId");
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = socialService.browseSns(baseRequest.getUserId().intValue(), userId, pageNo,pageSize);
+		result.put("data", data);
+
+		return JSON.toJSONString(result);
+	}
+
+	@RequestMapping(value = "/applyfriend", method = { RequestMethod.POST, RequestMethod.PUT })
+	public @ResponseBody Object applyFriend(HttpServletRequest request, HttpServletResponse response ) throws ServiceException {
+		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
+		String content = baseRequest.getContent();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String userId = params.get("userId");
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = socialService.applyFriend(baseRequest.getUserId().intValue(), userId);
+		result.put("data", data);
+
+		return JSON.toJSONString(result);
+	}
+	
+	@RequestMapping(value = "/friends", method = { RequestMethod.POST, RequestMethod.PUT })
+	public @ResponseBody Object friends(HttpServletRequest request, HttpServletResponse response ) throws ServiceException {
+		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
+		String content = baseRequest.getContent();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = socialService.friends(baseRequest.getUserId().intValue());
+		result.put("data", data);
+
+		return JSON.toJSONString(result);
+	}
+
+	
 }

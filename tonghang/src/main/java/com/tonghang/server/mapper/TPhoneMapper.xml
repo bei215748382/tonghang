@@ -157,5 +157,19 @@
 		from t_phone
 		where phone = #{phone}
 	</select>
+	<select  id="selectByIds" resultMap="BaseResultMap"  parameterType="list">
+		select id,name ,pic,sex
+		from t_phone 
+		where 1=1 
+		<if test="list!=null">
+		and id in (0
+		<foreach collection="list"  item="item"  index="index"  >
+		 , #{item}
+		</foreach>
+		)
+		</if> 
+	
+	
+	</select>
 	
 </mapper>

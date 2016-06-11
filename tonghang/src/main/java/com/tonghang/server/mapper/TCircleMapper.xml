@@ -41,7 +41,8 @@
 		</association>
 	</resultMap>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from t_circle
+		delete from
+		t_circle
 		where id = #{id}
 	</delete>
 	<insert id="insert" parameterType="com.tonghang.server.entity.TCircle">
@@ -51,14 +52,18 @@
 		</selectKey>
 		insert into t_circle (id, title, hot,
 		datetime, pic, page_view,
-		favour, comment, type,
+		favour,
+		comment, type,
 		pid, checked, pics, area,
 		trade_id, content)
-		values (#{id}, #{title}, #{hot},
+		values
+		(#{id}, #{title}, #{hot},
 		#{datetime}, #{pic}, #{pageView},
-		#{favour}, #{comment}, #{type},
+		#{favour},
+		#{comment}, #{type},
 		#{pid}, #{checked}, #{pics}, #{area},
-		#{tradeId}, #{content})
+		#{tradeId},
+		#{content})
 	</insert>
 	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TCircle">
 		update t_circle
@@ -69,11 +74,13 @@
 		page_view = #{pageView},
 		favour = #{favour},
 		comment = #{comment},
-		type = #{type},
+		type =
+		#{type},
 		pid = #{pid},
 		checked = #{checked},
 		pics = #{pics},
-		area = #{area},
+		area =
+		#{area},
 		trade_id = #{tradeId},
 		content = #{content}
 		where id = #{id}
@@ -98,51 +105,82 @@
 		from t_circle
 		where checked is not null
 	</select>
-	<select id="getArticles" resultMap="ArticlesVoResultMap">
-		select 
-		t.id, 
-		t.title, 
-		t.hot,
-		t.datetime, 
-		t.pic, 
-		t.page_view,
-		t.favour, 
-		t.comment, 
-		t.type,
-		t.pid, 
-		t.checked, 
-		t.pics, 
-		t.area,
-		t.trade_id, 
-		t.content,
-		trade.name trade_name,
-		trade.parent_id trade_pid,
-		trade.en_name trade_enName
-		from t_circle t
-		left outer join t_trade trade on trade.id = t.trade_id
+	<select id="getMyCircles" resultMap="BaseResultMap">
+		SELECT  *
+		FROM
+		t_circle
+		WHERE
+		pid = #{userId}
+		AND
+		checked !=0
+		ORDER BY
+		create_time desc
 	</select>
-	<select id="getArticle" parameterType="java.lang.Integer" resultMap="ArticlesVoResultMap">
-		select 
-		t.id, 
-		t.title, 
+	
+	<select id="getFriendCircles"  parameterType="list" resultMap="BaseResultMap">
+	SELECT * 
+	FROM t_circle
+	WHERE  checked  !=0    
+	<if test="list!=null">
+	and pid in (0 
+		<foreach collection="list"  item="item" index="index"   >
+		 , #{item} 
+		</foreach>
+		)    
+	</if>
+	
+	</select>
+	
+	<select id="getArticles" resultMap="ArticlesVoResultMap">
+		select
+		t.id,
+		t.title,
 		t.hot,
-		t.datetime, 
-		t.pic, 
+		t.datetime,
+		t.pic,
 		t.page_view,
-		t.favour, 
-		t.comment, 
+		t.favour,
+		t.comment,
 		t.type,
-		t.pid, 
-		t.checked, 
-		t.pics, 
+		t.pid,
+		t.checked,
+		t.pics,
 		t.area,
-		t.trade_id, 
+		t.trade_id,
 		t.content,
 		trade.name trade_name,
 		trade.parent_id trade_pid,
-		trade.en_name trade_enName
+		trade.en_name
+		trade_enName
 		from t_circle t
-		left outer join t_trade trade on trade.id = t.trade_id 
+		left outer join t_trade trade on trade.id =
+		t.trade_id
+	</select>
+	<select id="getArticle" parameterType="java.lang.Integer"
+		resultMap="ArticlesVoResultMap">
+		select
+		t.id,
+		t.title,
+		t.hot,
+		t.datetime,
+		t.pic,
+		t.page_view,
+		t.favour,
+		t.comment,
+		t.type,
+		t.pid,
+		t.checked,
+		t.pics,
+		t.area,
+		t.trade_id,
+		t.content,
+		trade.name trade_name,
+		trade.parent_id trade_pid,
+		trade.en_name
+		trade_enName
+		from t_circle t
+		left outer join t_trade trade on trade.id =
+		t.trade_id
 		where t.id = #{id}
 	</select>
 </mapper>
