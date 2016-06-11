@@ -77,7 +77,7 @@ public class AppSupportController extends AppBaseController {
 
     @RequestMapping(value = "/getrecommendarea", method = { RequestMethod.POST,
             RequestMethod.GET })
-    public @ResponseBody Object getArea(HttpServletRequest request,
+    public  @ResponseBody Object getArea(HttpServletRequest request,
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
@@ -88,7 +88,7 @@ public class AppSupportController extends AppBaseController {
         result.put("msg", "success");
         result.put("data",
                 supportService.getAreaByIp(ip, baseRequest.getUserId()));
-        return result;
+        return JSON.toJSONString(result);
     }
 
     @RequestMapping(value = "/getprovince", method = { RequestMethod.POST,
@@ -102,7 +102,7 @@ public class AppSupportController extends AppBaseController {
         result.put("code", 200);
         result.put("msg", "success");
         result.put("data", supportService.getProvince(baseRequest.getUserId()));
-        return result;
+        return JSON.toJSONString(result);
     }
 
     @RequestMapping(value = "/getcity", method = { RequestMethod.POST,
@@ -121,7 +121,7 @@ public class AppSupportController extends AppBaseController {
         result.put("msg", "success");
         result.put("data", supportService.getCityByProvinceId(
                 baseRequest.getUserId(), Integer.valueOf(provinceId)));
-        return result;
+        return JSON.toJSONString(result);
     }
 
     @RequestMapping(value = "/gettrade", method = { RequestMethod.POST,
@@ -135,7 +135,7 @@ public class AppSupportController extends AppBaseController {
         result.put("code", 200);
         result.put("msg", "success");
         result.put("data", supportService.getTrade(baseRequest.getUserId()));
-        return result;
+        return JSON.toJSONString(result);
     }
 
 }

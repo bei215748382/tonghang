@@ -58,8 +58,8 @@
 		province_id = #{provinceId}
 	</select>
 
-	<select id="selectMostUsed">
-		select city_id ,province_id, name
+	<select id="selectMostUsed" resultMap="BaseResultMap">
+		select id ,province_id, name
 		from t_phone
 		where
 		city_id is not null
@@ -70,8 +70,8 @@
 		limit 6;
 	</select>
 
-	<select id="selectMostUsedEn">
-		select city_id ,province_id, en_name
+	<select id="selectMostUsedEn" resultMap="BaseResultMap">
+		select id ,province_id, en_name
 		from t_phone
 		where
 		city_id is not null

@@ -132,6 +132,10 @@ public class UserService {
 		if (StringUtils.isNoneBlank(college)) {
 			user.setCollege(college);
 		}
+		String language = params.get("language");
+		if (StringUtils.isNoneBlank(language)) {
+			user.setLanguage(language);
+		}
 		String position = params.get("position");
 		if (StringUtils.isNoneBlank(position)) {
 			user.setPosition(position);
