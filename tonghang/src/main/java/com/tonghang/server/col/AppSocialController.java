@@ -28,22 +28,18 @@ public class AppSocialController extends AppBaseController {
 
 	@RequestMapping(value = "/publishsns", method = { RequestMethod.POST, RequestMethod.PUT })
 	public @ResponseBody Object publishSns(HttpServletRequest request, HttpServletResponse response,
-			MultipartFile[] pictures) {
+			MultipartFile[] pictures) throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			String txt = params.get("content");
-			result.put("code", 200);
-			result.put("msg", "success");
-			Map<String, Object> data = socialService.publishSns(baseRequest.getUserId().intValue(), txt, pictures);
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String txt = params.get("content");
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = socialService.publishSns(baseRequest.getUserId().intValue(), txt, pictures);
+		result.put("data", data);
 
 		return (result);
 	}

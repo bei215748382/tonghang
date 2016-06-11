@@ -83,6 +83,8 @@ public enum ErrorCode {
     code115(500,115,"user partner is not exist ,please confirm userid nad password"),
     /** 请求参数不能为null  */
     code116(500,116,"user partner request parameter is null"),
+    /**用户未登录*/
+    code117(500,117,"should  login first"),
 
     code150(500, 150, "follow  exist"),
     /** 用户昵称被保留 **/

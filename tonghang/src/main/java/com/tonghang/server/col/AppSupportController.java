@@ -81,6 +81,7 @@ public class AppSupportController extends AppBaseController {
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
         String ip = getIp(request);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 200);
@@ -96,6 +97,7 @@ public class AppSupportController extends AppBaseController {
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 200);
         result.put("msg", "success");
@@ -109,6 +111,7 @@ public class AppSupportController extends AppBaseController {
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
         String content = baseRequest.getContent();
         Map<String, String> params = (Map<String, String>) JSON.parse(content);
         checkParams(params);
@@ -127,6 +130,7 @@ public class AppSupportController extends AppBaseController {
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 200);
         result.put("msg", "success");

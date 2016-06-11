@@ -29,213 +29,170 @@ public class AppUserController extends AppBaseController {
 	private UserService userService;
 
 	@RequestMapping(value = "/regist", method = { RequestMethod.POST })
-	public @ResponseBody Object registUser(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody Object registUser(HttpServletRequest request, HttpServletResponse response)
+			throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			String mobileNum = params.get("mobile");
-			String password = params.get("password");
-			String longitude = params.get("longitude");
-			String latitude = params.get("latitude");
-			result.put("code", 200);
-			result.put("msg", "success");
-			Map<String, Object> data = userService.registUser(mobileNum, password, longitude, latitude);
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when regist." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String mobileNum = params.get("mobile");
+		String password = params.get("password");
+		String longitude = params.get("longitude");
+		String latitude = params.get("latitude");
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = userService.registUser(mobileNum, password, longitude, latitude);
+		result.put("data", data);
 
 		return (result);
 	}
 
 	@RequestMapping(value = "/login", method = { RequestMethod.POST, RequestMethod.GET })
-	public @ResponseBody Object login(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody Object login(HttpServletRequest request, HttpServletResponse response)
+			throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
 		baseRequest.getUserId();
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			String mobileNum = params.get("mobile");
-			String password = params.get("password");
-			result.put("code", 200);
-			result.put("msg", "success");
-			Map<String, Object> data = userService.login(mobileNum, password, null, null);
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String mobileNum = params.get("mobile");
+		String password = params.get("password");
+		String longitude = params.get("longitude");
+		String latitude = params.get("latitude");
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = userService.login(mobileNum, password, longitude, latitude);
+		result.put("data", data);
 
 		return (result);
 	}
 
 	@RequestMapping(value = "/password", method = { RequestMethod.POST, RequestMethod.PUT })
-	public @ResponseBody Object modifyPassword(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody Object modifyPassword(HttpServletRequest request, HttpServletResponse response)
+			throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			String mobileNum = params.get("mobile");
-			String password = params.get("password");
-			String code = params.get("code");
-			result.put("code", 200);
-			result.put("msg", "success");
-			Map<String, Object> data = userService.modifyPassword(mobileNum, password, code);
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String mobileNum = params.get("mobile");
+		String password = params.get("password");
+		String code = params.get("code");
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = userService.modifyPassword(mobileNum, password, code);
+		result.put("data", data);
 
 		return (result);
+
 	}
 
 	@RequestMapping(value = "/modifyinfo", method = { RequestMethod.POST, RequestMethod.PUT })
-	public @ResponseBody Object modifyInfo(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody Object modifyInfo(HttpServletRequest request, HttpServletResponse response)
+			throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			result.put("code", 200);
-			result.put("msg", "success");
-			Map<String, Object> data = userService.modifyInfo(baseRequest.getUserId(), params);
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		result.put("code", 200);
+		result.put("msg", "success");
+		Map<String, Object> data = userService.modifyInfo(baseRequest.getUserId(), params);
+		result.put("data", data);
 
 		return (result);
 	}
 
 	@RequestMapping(value = "/getinfo", method = { RequestMethod.POST, RequestMethod.PUT })
-	public @ResponseBody Object getInfo(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody Object getInfo(HttpServletRequest request, HttpServletResponse response)
+			throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			String targetUserId = params.get("userId");
-			Map<String, Object> data = userService.getInfo(targetUserId);
-			result.put("code", 200);
-			result.put("msg", "success");
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String targetUserId = params.get("userId");
+		Map<String, Object> data = userService.getInfo(targetUserId);
+		result.put("code", 200);
+		result.put("msg", "success");
+		result.put("data", data);
 
 		return (result);
 	}
 
 	@RequestMapping(value = "/addservice", method = { RequestMethod.POST, RequestMethod.PUT })
 	public @ResponseBody Object addService(HttpServletRequest request, HttpServletResponse response,
-			MultipartFile[] pictures) {
+			MultipartFile[] pictures) throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			String name = params.get("name");
-			String describe = params.get("describe");
-			Map<String, Object> data = userService.addService(baseRequest.getUserId().intValue(), name, describe,
-					pictures);
-			result.put("code", 200);
-			result.put("msg", "success");
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String name = params.get("name");
+		String describe = params.get("describe");
+		Map<String, Object> data = userService.addService(baseRequest.getUserId().intValue(), name, describe, pictures);
+		result.put("code", 200);
+		result.put("msg", "success");
+		result.put("data", data);
 
 		return (result);
 	}
 
-	@RequestMapping(value = "/getservice", method = { RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/getservice", method = { RequestMethod.POST, RequestMethod.GET })
 	public @ResponseBody Object getService(HttpServletRequest request, HttpServletResponse response,
-			MultipartFile[] pictures) {
+			MultipartFile[] pictures) throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			String targetUserId = params.get("userId");
-			Map<String, Object> data = userService.getService(baseRequest.getUserId().intValue(), targetUserId);
-			result.put("code", 200);
-			result.put("msg", "success");
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		String targetUserId = params.get("userId");
+		Map<String, Object> data = userService.getService(baseRequest.getUserId().intValue(), targetUserId);
+		result.put("code", 200);
+		result.put("msg", "success");
+		result.put("data", data);
 
 		return (result);
 	}
-	
-	
+
 	@RequestMapping(value = "/gettrack", method = { RequestMethod.POST, RequestMethod.GET })
 	public @ResponseBody Object geTtrack(HttpServletRequest request, HttpServletResponse response,
-			MultipartFile[] pictures) {
+			MultipartFile[] pictures) throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			Map<String, Object> data = userService.getTrack(baseRequest.getUserId().intValue());
-			result.put("code", 200);
-			result.put("msg", "success");
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		Map<String, Object> data = userService.getTrack(baseRequest.getUserId().intValue());
+		result.put("code", 200);
+		result.put("msg", "success");
+		result.put("data", data);
 
 		return (result);
 	}
 
 	@RequestMapping(value = "/modifyicon", method = { RequestMethod.POST, RequestMethod.GET })
-	public @ResponseBody Object modifyIcon(HttpServletRequest request, HttpServletResponse response,
-			MultipartFile icon) {
+	public @ResponseBody Object modifyIcon(HttpServletRequest request, HttpServletResponse response, MultipartFile icon)
+			throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			Map<String, String> params = (Map<String, String>) JSON.parse(content);
-			checkParams(params);
-			Map<String, Object> data = userService.modifyIcon(baseRequest.getUserId().intValue(),icon);
-			result.put("code", 200);
-			result.put("msg", "success");
-			result.put("data", data);
-		} catch (ServiceException e) {
-			result.put("code", e.getCode());
-			result.put("msg", e.getMessage());
-			log.error("error when login." + e.getMessage());
-		}
+		Map<String, String> params = (Map<String, String>) JSON.parse(content);
+		checkParams(params);
+		Map<String, Object> data = userService.modifyIcon(baseRequest.getUserId().intValue(), icon);
+		result.put("code", 200);
+		result.put("msg", "success");
+		result.put("data", data);
 
 		return (result);
 	}
 
-	
 }

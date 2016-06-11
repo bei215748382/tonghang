@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.tonghang.server.common.dto.AccessToken;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.exception.ServiceException;
@@ -19,7 +20,7 @@ public class TokenServiceImpl {
         accessToken.setAuid(user.getId());
         accessToken
                 .setExpriation(System.currentTimeMillis() + 24 * 60 * 60 * 100);
-        String token = CodecUtil.encodeToken2Ciphertext(accessToken.toString());
+        String token = CodecUtil.encodeToken2Ciphertext(JSON.toJSONString(accessToken));
         if (log.isDebugEnabled()) {
             log.debug("{} -> {}", accessToken, token);
         }
