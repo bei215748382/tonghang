@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -179,8 +180,8 @@ public class AppUserController extends AppBaseController {
 	}
 
 	@RequestMapping(value = "/modifyicon", method = { RequestMethod.POST, RequestMethod.GET })
-	public @ResponseBody Object modifyIcon(HttpServletRequest request, HttpServletResponse response, MultipartFile icon)
-			throws ServiceException {
+	public @ResponseBody Object modifyIcon(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "icon") MultipartFile icon) throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
 		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();

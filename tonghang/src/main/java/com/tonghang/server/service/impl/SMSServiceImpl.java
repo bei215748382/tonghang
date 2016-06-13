@@ -27,7 +27,7 @@ public class SMSServiceImpl {
      * 
      * @param mobile
      *            手机号
-     * @return TODO
+     * @return 
      * @throws ServiceException
      */
     public Map<String, Object> sendRegCode(String mobile) throws ServiceException {

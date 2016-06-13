@@ -1,5 +1,7 @@
 package com.tonghang.server.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aliyun.oss.model.ObjectMetadata;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
@@ -25,6 +28,7 @@ import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTrackMapper;
 import com.tonghang.server.mapper.TTradeMapper;
+import com.tonghang.server.util.OSSUtil;
 import com.tonghang.server.util.SMSUtil;
 
 @Service
@@ -44,7 +48,7 @@ public class UserService {
 
 	@Autowired
 	private TTrackMapper trackMapper;
-	
+
 	@Autowired
 	private TCircleMapper circleMapper;
 
@@ -223,17 +227,17 @@ public class UserService {
 		service.setPid(userId);
 		service.setPictures(picturepath);
 		serviceMap.insert(service);
-		
+
 		TCircle circle = new TCircle();
-		circle.setContent("我发布了新服务 \""+name+"\"");
+		circle.setContent("我发布了新服务 \"" + name + "\"");
 		circle.setPid(userId);
 		circle.setType(1);
 		circle.setDatetime(new Date());
 		circle.setTradeId(user.getTradeId());
-		circle.setPics("");//TODO  图片
-		circle.setArea("");//TODO 地区需修改成省市id
+		circle.setPics("");// TODO 图片
+		circle.setArea("");// TODO 地区需修改成省市id
 		circleMapper.insert(circle);
-		
+
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("services", serviceMap.getServicesByUserId(userId));
 		return data;
@@ -278,7 +282,17 @@ public class UserService {
 			throw new ServiceException(ErrorCode.code101.getCode(), ErrorCode.code101.getHttpCode(),
 					ErrorCode.code101.getDesc());
 		}
-		user.setPic("");// TODO 
+		ObjectMetadata metadata = new ObjectMetadata();
+		String filepath = "icon" + File.separatorChar + userId + File.separatorChar + icon.getName();
+		try {
+			metadata.setContentLength(icon.getBytes().length);
+			filepath = OSSUtil.instance().uploadOss(icon.getInputStream(), metadata, filepath);
+		} catch (IOException e) {
+			filepath = null;
+			throw new ServiceException(ErrorCode.code101.getCode(), ErrorCode.code101.getHttpCode(),
+					ErrorCode.code101.getDesc());
+		}
+		user.setPic(filepath);// TODO
 		userMapper.updateByPrimaryKey(user);
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("user", userMapper.updateByPrimaryKey(user));

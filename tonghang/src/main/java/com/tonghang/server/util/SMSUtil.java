@@ -38,7 +38,7 @@ public class SMSUtil {
             client.executeMethod(post);
             String result = new String(
                     post.getResponseBodyAsString().getBytes("gbk"));
-            log.info("mobile number:{},content:{},result{}", mobileNum, content,
+            log.info("mobile number:{},content:{},result{}", mobileNum, content + code,
                     result);
             int resultCode = Integer.valueOf(result);
             if (resultCode < 0) {
