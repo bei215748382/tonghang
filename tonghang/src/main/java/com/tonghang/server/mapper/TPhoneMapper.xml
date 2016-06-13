@@ -21,6 +21,7 @@
 		<result column="state" property="state" jdbcType="INTEGER" />
 		<result column="language" property="language" jdbcType="VARCHAR" />
 		<result column="group_id" property="groupId" jdbcType="INTEGER" />
+		<result column="company" property="company" jdbcType="VARCHAR"/>
 	</resultMap>
 	<resultMap type="com.tonghang.server.vo.UserVo" id="UserVoResultMap">
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -36,6 +37,10 @@
 			<result column="pictures" property="pictures" jdbcType="VARCHAR"/>
 			<result column="checked" property="checked" jdbcType="INTEGER"/>
 		</collection>
+	</resultMap>
+	<resultMap id="UserInfoResultMap" type="com.tonghang.server.entity.TPhone" extends="BaseResultMap">
+		<result column="trade_name" property="trade" jdbcType="VARCHAR" />
+		<result column="city_name" property="city" jdbcType="VARCHAR" />
 	</resultMap>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
@@ -168,8 +173,12 @@
 		</foreach>
 		)
 		</if> 
-	
-	
 	</select>
-	
+	<select id="getUserById" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
+		select p.*,city.name city_name,trade.name trade_name
+		from t_phone p
+		left outer join  t_city city on city.id = p.city_id
+		left outer join t_trade trade on trade.id = p.trade_id
+		where p.id = #{id}
+	</select>
 </mapper>

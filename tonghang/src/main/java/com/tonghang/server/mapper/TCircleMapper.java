@@ -3,6 +3,7 @@ package com.tonghang.server.mapper;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CircleVo;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface TCircleMapper {
 
     int updateByPrimaryKey(TCircle record);
 
-	List<TCircle> getCircleUnCheck();
+	List<CircleVo> getCircleUnCheck();
 
 	List<TCircle> getCircleChecked();
 	

@@ -10,17 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.FileUtil;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
@@ -40,9 +43,15 @@ public class AdminCol {
     public ModelAndView index_info(HttpServletRequest request,
             HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getCircleUnCheck();
+        List<CircleVo> list = adminService.getCircleUnCheck();
         mav.addObject("dataList", list);
         return mav;
+    }
+    
+    @RequestMapping(value="getUserById")
+    @ResponseBody
+    public TPhone getUserById(Integer id){
+        return adminService.getUserById(id);
     }
 
     @RequestMapping(value = "get_circle_checked")

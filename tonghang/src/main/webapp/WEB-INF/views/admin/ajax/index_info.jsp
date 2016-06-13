@@ -2,6 +2,19 @@
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<style>
+.wid-3{
+	width:30%;
+}
+
+.wid-4{
+	width:40%;
+}
+.wid-4,.wid-3{
+	float:left;
+}
+</style>
 <div class="row">
 	<div class="col-md-12">
 		<ul class="nav navbar-nav">
@@ -50,8 +63,11 @@
 							<tr>
 								<td>${data.id}</td>
 								<td>${data.content}</td>
-								<td><fmt:formatDate value="${data.datetime}"
-										pattern="yyyy-MM-dd HH:MM:ss" /></td>
+								<td>${data.phone.name}<br/>
+								<fmt:formatDate value="${data.datetime}"
+										pattern="yyyy-MM-dd HH:MM:ss" /><br/>
+										<button type="button" class="btn btn-default" onclick="user_info(${data.phone.id})">查看用户</button><br/>
+										<button type="button" class="btn btn-default">审核</button></td>
 							</tr>
 						</c:forEach>
 						<!-- End: list_row -->
@@ -69,10 +85,46 @@
 	</div>
 </div>
 <script type="text/javascript">
+	function user_info(id){
+		var url = "getUserById";
+		var data = {id:id};
+		$.get(url,data,function(data){
+			var form = '<div class="wid-3"><img src="'+data.pic+'" alt="头像" /></div>'
+			+'<div class="wid-4">'
+			+'<div>姓名：'+data.name+'</div>'
+			+'<div>手机号码：'+data.phone+'</div>'
+			+'<div>性别：'+data.sex+'</div>'
+			+'<div>行业：'+data.trade+'</div>'
+			+'<div>所在城市：'+data.city+'</div>'
+			+'<div>个人标签：'+data.remark+'</div>'
+			+'<br/>'
+			+'<div>所在公司：'+data.company+'</div>'
+			+'<div>职位：'+data.position+'</div>'
+			+'<div>毕业院校：'+data.college+'</div>'
+			+'</div>'
+			+'<div class="wid-3">'
+			+'<div>'
+			+'	<select>'
+			+'		<option>设置用户分组</option>'
+			+'		<option value="2">重要客户</option>'
+			+'		<option value="1" selected>普通客户（默认分组）</option>'
+			+'	</select>'
+			+'</div>'
+			+'<br/>'
+			+'<div>'
+			+'	<select>'
+			+'		<option>设置用户状态</option>'
+			+'		<option value="1" selected>激活</option>'
+			+'		<option value="2">冻结</option>'
+			+'	</select>'
+			+'</div>'
+			+'</div>';
+			OpenModalBox(id,form);
+		});
+	}
 	var selected;
 	function select(data) {
 		selected = data;
-		console.log(selected);
 		switch (selected) {
 		case 1:
 			LoadAjaxContent('index_info');
@@ -98,7 +150,6 @@
 		}
 	}
 	function check() {
-		console.log(selected);
 		switch (selected) {
 		case 1:
 			LoadAjaxContent('get_circle_checked');

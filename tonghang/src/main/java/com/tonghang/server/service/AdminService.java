@@ -4,16 +4,18 @@ import java.util.List;
 
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
 public interface AdminService {
 	
-	List<TCircle> getCircleUnCheck();//获取同行圈待审核的内容和已审核的内容,check等于2表示待审核
+	List<CircleVo> getCircleUnCheck();//获取同行圈待审核的内容和已审核的内容,check等于2表示待审核
 
 	List<TCircle> getCircleChecked();//获取同行圈待审核的内容和已审核的内容,0或者1表示已审核
 	
@@ -40,6 +42,8 @@ public interface AdminService {
     ArticlesVo getArticle(Integer id);//获取单个文章编辑
 
     ArticleInfo getArticleInfo(Integer id);//查看文章
+
+    TPhone getUserById(Integer id);//获取用户信息
     
     
 

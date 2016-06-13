@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.mapper.TCircleMapper;
@@ -18,6 +19,7 @@ import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
@@ -43,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
 	private TTradeMapper tTradeMapper;
 	
 	@Override
-	public List<TCircle> getCircleUnCheck() {
+	public List<CircleVo> getCircleUnCheck() {
 		return tCircleMapper.getCircleUnCheck();
 	}
 
@@ -110,6 +112,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ArticleInfo getArticleInfo(Integer id) {
         return tCircleMapper.getArticleInfo(id);
+    }
+
+    @Override
+    public TPhone getUserById(Integer id) {
+        return tPhoneMapper.getUserById(id);
     }
 
 }

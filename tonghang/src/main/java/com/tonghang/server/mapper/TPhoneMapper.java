@@ -26,4 +26,6 @@ public interface TPhoneMapper {
     TPhone selectByPhone(String phone);
 
 	List<TPhone> selectByIds(List<Integer> friendsId);
+
+    TPhone getUserById(Integer id);
 }

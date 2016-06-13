@@ -72,6 +72,44 @@
 			<result column="p_name" property="pname" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
+	<resultMap id="CircleVoResultMap" type="com.tonghang.server.vo.CircleVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="hot" property="hot" jdbcType="INTEGER" />
+		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+		<result column="pic" property="pic" jdbcType="VARCHAR" />
+		<result column="page_view" property="pageView" jdbcType="INTEGER" />
+		<result column="favour" property="favour" jdbcType="INTEGER" />
+		<result column="comment" property="comment" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="checked" property="checked" jdbcType="INTEGER" />
+		<result column="pics" property="pics" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<association property="phone" javaType="com.tonghang.server.entity.TPhone">
+			<id column="p_id" property="id" jdbcType="INTEGER" />
+			<result column="p_phone" property="phone" jdbcType="VARCHAR" />
+			<result column="p_password" property="password" jdbcType="VARCHAR" />
+			<result column="p_timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+			<result column="p_name" property="name" jdbcType="VARCHAR" />
+			<result column="p_pic" property="pic" jdbcType="VARCHAR" />
+			<result column="p_sex" property="sex" jdbcType="VARCHAR" />
+			<result column="p_position" property="position" jdbcType="VARCHAR" />
+			<result column="p_college" property="college" jdbcType="VARCHAR" />
+			<result column="p_trade_id" property="tradeId" jdbcType="INTEGER" />
+			<result column="p_province_id" property="provinceId" jdbcType="INTEGER" />
+			<result column="p_city_id" property="cityId" jdbcType="INTEGER" />
+			<result column="p_remark" property="remark" jdbcType="VARCHAR" />
+			<result column="p_device" property="device" jdbcType="VARCHAR" />
+			<result column="p_longitude" property="longitude" jdbcType="DOUBLE" />
+			<result column="p_latitude" property="latitude" jdbcType="DOUBLE" />
+			<result column="p_state" property="state" jdbcType="INTEGER" />
+			<result column="p_language" property="language" jdbcType="VARCHAR" />
+			<result column="p_group_id" property="groupId" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
 		t_circle
@@ -127,9 +165,30 @@
 		select *
 		from t_circle
 	</select>
-	<select id="getCircleUnCheck" resultMap="BaseResultMap">
-		select *
-		from t_circle
+	<select id="getCircleUnCheck" resultMap="CircleVoResultMap">
+		select 
+		c.*,
+		p.id p_id,
+		p.phone p_phone, 
+		p.password p_password,
+		p.timestamp p_timestamp, 
+		p.name p_name, 
+		p.pic p_pic,
+		p.sex p_sex,
+		p.position p_position, 
+		p.college p_college,
+		p.trade_id p_trade_id, 
+		p.province_id p_province_id, 
+		p.city_id p_city_id,
+		p.remark p_remark, 
+		p.device p_device,
+		p.longitude p_longitude,
+		p.latitude p_latitude, 
+		p.state p_state,
+		p.language p_language,
+		p.group_id p_group_id
+		from t_circle c
+		left outer join t_phone p on p.id = c.pid
 		where checked is null
 	</select>
 	<select id="getCircleChecked" resultMap="BaseResultMap">

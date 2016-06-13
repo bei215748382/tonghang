@@ -46,6 +46,8 @@ public class TPhone {
     private String province;// 省份名称
 
     private String city;// 城市名称
+    
+    private String company;
 
     public Integer getId() {
         return id;
@@ -221,6 +223,14 @@ public class TPhone {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
 }
