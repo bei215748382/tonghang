@@ -15,17 +15,17 @@ import com.tonghang.server.vo.UserVo;
 
 public interface AdminService {
 	
-	List<CircleVo> getCircleUnCheck();//获取同行圈待审核的内容和已审核的内容,check等于2表示待审核
+	List<CircleVo> getCircleUnCheck();//获取同行圈待审核的内容和已审核的内容,check等于null表示待审核
 
-	List<TCircle> getCircleChecked();//获取同行圈待审核的内容和已审核的内容,0或者1表示已审核
+	List<CircleVo> getCircleChecked();//获取同行圈待审核的内容和已审核的内容,1或者2表示已审核
 	
-	List<TService> getServiceUnCheck();//获取服务待审核的内容和已审核的内容,check等于2表示待审核
+	List<TService> getServiceUnCheck();//获取服务待审核的内容和已审核的内容,check等于null表示待审核
 	
-	List<TService> getServiceChecked();//获取服务待审核的内容和已审核的内容,0或者1表示已审核
+	List<TService> getServiceChecked();//获取服务待审核的内容和已审核的内容,1或者2表示已审核
 	
-	List<TCircle> getCommentUnCheck();//获取回复待审核的内容和已审核的内容,check等于2表示待审核
+	List<TCircle> getCommentUnCheck();//获取回复待审核的内容和已审核的内容,check等于null表示待审核
 	
-	List<TCircle> getCommentChecked();//获取回复待审核的内容和已审核的内容,0或者1表示已审核
+	List<TCircle> getCommentChecked();//获取回复待审核的内容和已审核的内容,1或者2表示已审核
 
 	List<UserVo> getUsers();//获取所有用户信息
 
@@ -44,6 +44,8 @@ public interface AdminService {
     ArticleInfo getArticleInfo(Integer id);//查看文章
 
     TPhone getUserById(Integer id);//获取用户信息
+
+    Boolean checkCircle(Integer id);//设置通过
     
     
 

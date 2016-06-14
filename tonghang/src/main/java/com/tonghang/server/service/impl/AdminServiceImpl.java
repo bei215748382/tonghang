@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<TCircle> getCircleChecked() {
+	public List<CircleVo> getCircleChecked() {
 		return  tCircleMapper.getCircleChecked();
 	}
 
@@ -117,6 +117,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public TPhone getUserById(Integer id) {
         return tPhoneMapper.getUserById(id);
+    }
+
+    @Override
+    public Boolean checkCircle(Integer id) {
+        return tCircleMapper.checkCircle(id);
     }
 
 }

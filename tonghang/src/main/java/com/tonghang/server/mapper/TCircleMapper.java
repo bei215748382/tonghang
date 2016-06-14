@@ -1,6 +1,7 @@
 package com.tonghang.server.mapper;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CircleVo;
@@ -20,7 +21,7 @@ public interface TCircleMapper {
 
 	List<CircleVo> getCircleUnCheck();
 
-	List<TCircle> getCircleChecked();
+	List<CircleVo> getCircleChecked();
 	
 	List<TCircle> getMyCircles(int userId);
 
@@ -31,4 +32,6 @@ public interface TCircleMapper {
 	List<TCircle> getFriendCircles(List<Integer> firendsId);
 
     ArticleInfo getArticleInfo(Integer id);
+
+    Boolean checkCircle(Integer id);
 }

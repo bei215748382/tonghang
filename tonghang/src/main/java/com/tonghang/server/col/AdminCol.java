@@ -53,12 +53,18 @@ public class AdminCol {
     public TPhone getUserById(Integer id){
         return adminService.getUserById(id);
     }
+    
+    @RequestMapping(value="checkCircle")
+    @ResponseBody
+    public Boolean checkCircle(Integer id){
+        return adminService.checkCircle(id);
+    }
 
     @RequestMapping(value = "get_circle_checked")
     public ModelAndView get_circle_checked(HttpServletRequest request,
             HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getCircleChecked();
+        List<CircleVo> list = adminService.getCircleChecked();
         mav.addObject("dataList", list);
         return mav;
     }
