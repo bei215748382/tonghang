@@ -6,8 +6,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import com.tonghang.server.common.dto.IpInfoDetail;
+import com.tonghang.server.common.vo.IpInfoDetail;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
@@ -48,6 +49,11 @@ public class SupportServiceImpl {
 			} else {
 				citys = cityMapper.selectMostUsedEn();
 			}
+			if (CollectionUtils.isEmpty(citys)) {
+			    TCity city =cityMapper.selectByPrimaryKey(17);
+			    city.setEnName(null);
+                citys.add(city);
+            }
 		} else {
 			throw new ServiceException(ErrorCode.code102.getCode(), ErrorCode.code102.getHttpCode(),
 					ErrorCode.code102.getDesc());

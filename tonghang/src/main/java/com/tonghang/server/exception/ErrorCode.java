@@ -89,6 +89,7 @@ public enum ErrorCode {
     /**好友关系未成立*/
     code118(500,118,"not in  friendship"),
 
+    code119(500,119,"user  had not config city and trade"),
     
     code150(500, 150, "follow  exist"),
     /** 用户昵称被保留 **/

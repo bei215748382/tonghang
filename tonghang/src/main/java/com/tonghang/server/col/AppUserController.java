@@ -98,11 +98,9 @@ public class AppUserController extends AppBaseController {
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, String> params = (Map<String, String>) JSON.parse(content);
-		checkParams(params);
 		result.put("code", 200);
 		result.put("msg", "success");
-		Map<String, Object> data = userService.modifyInfo(baseRequest.getUserId(), params);
-		result.put("data", data);
+		result.put("data", userService.modifyInfo(baseRequest.getUserId(), params));
 
 		return (result);
 	}
@@ -117,10 +115,9 @@ public class AppUserController extends AppBaseController {
 		Map<String, String> params = (Map<String, String>) JSON.parse(content);
 		checkParams(params);
 		String targetUserId = params.get("userId");
-		Map<String, Object> data = userService.getInfo(targetUserId);
 		result.put("code", 200);
 		result.put("msg", "success");
-		result.put("data", data);
+		result.put("data", userService.getInfo(targetUserId));
 
 		return (result);
 	}
@@ -183,15 +180,15 @@ public class AppUserController extends AppBaseController {
 	public @ResponseBody Object modifyIcon(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "icon") MultipartFile icon) throws ServiceException {
 		BasicRequestDTO baseRequest = (BasicRequestDTO) request.getAttribute("requestDTO");
+		log.info(request.getAttribute("e").toString());
 		checkUserLogin(baseRequest);
 		String content = baseRequest.getContent();
 		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, String> params = (Map<String, String>) JSON.parse(content);
 		checkParams(params);
-		Map<String, Object> data = userService.modifyIcon(baseRequest.getUserId().intValue(), icon);
 		result.put("code", 200);
 		result.put("msg", "success");
-		result.put("data", data);
+		result.put("data", userService.modifyIcon(baseRequest.getUserId().intValue(), icon));
 
 		return (result);
 	}

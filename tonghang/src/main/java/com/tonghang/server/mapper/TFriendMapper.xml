@@ -39,7 +39,7 @@
   <select  id="isFriends"  resultMap="BaseResultMap"   parameterType="integer" >
   	select id,pid,fid, confirm 
   	from  t_friend  where  (pid =#{userId}  and fid =#{targetUserId} and confirm = 1) 
-  	 or (tid =#{userId}  and pid =#{targetUserId} and confirm = 1)  limit 1
+  	 or (fid =#{userId}  and pid =#{targetUserId} and confirm = 1)  limit 1
   </select>
   <select id="selectAllFriendsId"  resultType="integer"  parameterType="integer">
   select pid  as id  from t_friend  where fid =#{userId}  and confirm =1 

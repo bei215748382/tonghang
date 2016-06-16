@@ -5,6 +5,8 @@ import com.tonghang.server.vo.UserVo;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface TPhoneMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -20,12 +22,16 @@ public interface TPhoneMapper {
 
     /**
      * 根据手机号码进行查询
+     * 
      * @param phone
      * @return
      */
     TPhone selectByPhone(String phone);
 
-	List<TPhone> selectByIds(List<Integer> friendsId);
+    List<TPhone> selectByIds(List<Integer> friendsId);
 
     TPhone getUserById(Integer id);
+
+    List<Integer> getUserIdByCityAndTrade(@Param("cityId") Integer cityId,
+            @Param("tradeId") Integer tradeId);
 }

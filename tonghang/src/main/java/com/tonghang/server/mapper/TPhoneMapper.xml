@@ -181,4 +181,18 @@
 		left outer join t_trade trade on trade.id = p.trade_id
 		where p.id = #{id}
 	</select>
+	
+	<select id="getUserIdByCityAndTrade" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
+		select id
+		from t_phone
+		where 1=1 
+		<if test="cityId!=null">
+		and city_id =#{cityId}
+		</if>
+		<if test="tradeId!=null">
+		and trade_id =#{tradeId}
+		</if>
+		 
+	</select>
+	
 </mapper>

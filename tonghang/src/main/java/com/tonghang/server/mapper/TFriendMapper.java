@@ -16,7 +16,7 @@ public interface TFriendMapper {
 
 	int updateByPrimaryKey(TFriend record);
 
-	TFriend isFriends(@Param("userId") Integer userId, @Param("targetId") Integer targetUserId);
+	TFriend isFriends(@Param("userId") Integer userId, @Param("targetUserId") Integer targetUserId);
 
 	List<Integer> selectAllFriendsId(Integer userId);
 }

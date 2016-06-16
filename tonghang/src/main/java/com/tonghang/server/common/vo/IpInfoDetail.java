@@ -1,4 +1,4 @@
-package com.tonghang.server.common.dto;
+package com.tonghang.server.common.vo;
 
 import java.io.Serializable;
 

@@ -385,5 +385,32 @@
 		where t.id = #{id} and
 		comment.checked = 1;
 	</select>
+	
+	<select id="getTradeArticles" resultMap="ArticlesVoResultMap"  parameterType="integer">
+		select
+		t.id,
+		t.title,
+		t.hot,
+		t.datetime,
+		t.pic,
+		t.page_view,
+		t.favour,
+		t.comment,
+		t.type,
+		t.pid,
+		t.checked,
+		t.pics,
+		t.area,
+		t.trade_id,
+		t.content,
+		trade.name trade_name,
+		trade.parent_id trade_pid,
+		trade.en_name
+		trade_enName
+		from t_circle t
+		left outer join t_trade trade on trade.id =
+		t.trade_id
+		where  t.trade_id =#{tradeId}
+	</select>
 
 </mapper>

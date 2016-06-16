@@ -1,12 +1,11 @@
 package com.tonghang.server.mapper;
 
+import java.util.List;
+
 import com.tonghang.server.entity.TCircle;
-import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CircleVo;
-
-import java.util.List;
 
 public interface TCircleMapper {
     int deleteByPrimaryKey(Integer id);
@@ -34,4 +33,6 @@ public interface TCircleMapper {
     ArticleInfo getArticleInfo(Integer id);
 
     Boolean checkCircle(Integer id);
+    
+    List<ArticlesVo> getTradeArticles(int tradeId);
 }
