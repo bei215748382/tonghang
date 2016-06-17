@@ -47,16 +47,16 @@ public class AdminCol {
         mav.addObject("dataList", list);
         return mav;
     }
-    
-    @RequestMapping(value="getUserById")
+
+    @RequestMapping(value = "getUserById")
     @ResponseBody
-    public TPhone getUserById(Integer id){
+    public TPhone getUserById(Integer id) {
         return adminService.getUserById(id);
     }
-    
-    @RequestMapping(value="checkCircle")
+
+    @RequestMapping(value = "checkCircle")
     @ResponseBody
-    public Boolean checkCircle(Integer id){
+    public Boolean checkCircle(Integer id) {
         return adminService.checkCircle(id);
     }
 
@@ -108,27 +108,27 @@ public class AdminCol {
     @RequestMapping(value = "users_info")
     public ModelAndView users_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/users_info");
-         List<UserVo> list = adminService.getUsers();
-         mav.addObject("users", list);
+        List<UserVo> list = adminService.getUsers();
+        mav.addObject("users", list);
         return mav;
     }
-    
+
     @RequestMapping(value = "services_info")
     public ModelAndView services_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/services_info");
-         List<ServiceVo> list = adminService.getServices();
-         mav.addObject("services", list);
+        List<ServiceVo> list = adminService.getServices();
+        mav.addObject("services", list);
         return mav;
     }
-    
+
     @RequestMapping(value = "articles_info")
     public ModelAndView articles_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
-         List<ArticlesVo> list = adminService.getArticles();
-         mav.addObject("articles", list);
+        List<ArticlesVo> list = adminService.getArticles();
+        mav.addObject("articles", list);
         return mav;
     }
-    
+
     @RequestMapping(value = "article_add")
     public ModelAndView article_add() {
         ModelAndView mav = new ModelAndView("admin/ajax/article_add");
@@ -138,20 +138,22 @@ public class AdminCol {
         mav.addObject("trades", trades);
         return mav;
     }
-    
+
     @RequestMapping(value = "article_add_json")
-    public void article_add_json(MultipartFile file,TCircle circle,HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void article_add_json(MultipartFile file, TCircle circle,
+            HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         if (file != null && file.getOriginalFilename() != "") {
             String pic = FileUtil.savePic(request, file);
             circle.setPic(pic);
         }
-        if(circle.getChecked()==1){
-            circle.setDatetime(new Date());//如果文章设置为发送，那么发布时间就设定
+        if (circle.getChecked() == 1) {
+            circle.setDatetime(new Date());// 如果文章设置为发送，那么发布时间就设定
         }
         adminService.addArticle(circle);
         response.sendRedirect("index#articles_info");
     }
-    
+
     @RequestMapping(value = "article_edit")
     public ModelAndView article_edit(Integer id) {
         ModelAndView mav = new ModelAndView("admin/ajax/article_edit");
@@ -160,15 +162,27 @@ public class AdminCol {
         List<TTrade> trades = adminService.getTrades();
         mav.addObject("cities", cities);
         mav.addObject("trades", trades);
-        mav.addObject("article",article);
+        mav.addObject("article", article);
         return mav;
     }
-    
+
     @RequestMapping(value = "article_info")
     public ModelAndView article_info(Integer id) {
         ModelAndView mav = new ModelAndView("admin/ajax/article_info");
-         ArticleInfo article = adminService.getArticleInfo(id);
-         mav.addObject("article", article);
+        ArticleInfo article = adminService.getArticleInfo(id);
+        mav.addObject("article", article);
+        return mav;
+    }
+
+    @RequestMapping(value = "user_increase_info")
+    public ModelAndView user_increase_info() {
+        ModelAndView mav = new ModelAndView("admin/ajax/user_increase_info");
+        return mav;
+    }
+    
+    @RequestMapping(value = "user_distribution_info")
+    public ModelAndView user_distribution_info() {
+        ModelAndView mav = new ModelAndView("admin/ajax/user_distribution_info");
         return mav;
     }
 }
