@@ -163,7 +163,7 @@
 		where phone = #{phone}
 	</select>
 	<select  id="selectByIds" resultMap="BaseResultMap"  parameterType="list">
-		select id,name ,pic,sex
+		select id,name ,pic,sex,phone 
 		from t_phone 
 		where 1=1 
 		<if test="list!=null">

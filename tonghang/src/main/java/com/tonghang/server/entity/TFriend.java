@@ -3,9 +3,9 @@ package com.tonghang.server.entity;
 public class TFriend {
     private Integer id;
 
-    private Integer pid;
+    private Integer pid;//申请者
 
-    private Integer fid;
+    private Integer fid;//被加好友者
 
     private Integer confirm;
 

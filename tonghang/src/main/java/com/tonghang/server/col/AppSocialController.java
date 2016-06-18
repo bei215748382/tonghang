@@ -5,15 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.plaf.multi.MultiListUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import com.tonghang.server.common.dto.BasicRequestDTO;
@@ -30,9 +27,7 @@ public class AppSocialController extends AppBaseController {
     @RequestMapping(value = "/publishsns", method = { RequestMethod.POST,
             RequestMethod.PUT })
     public @ResponseBody Object publishSns(HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestParam(value = "pictures", required = false) MultipartFile[] pictures)
-                    throws ServiceException {
+            HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         checkUserLogin(baseRequest);
@@ -40,11 +35,12 @@ public class AppSocialController extends AppBaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         Map<String, String> params = (Map<String, String>) JSON.parse(content);
         checkParams(params);
+        String files = baseRequest.getFilepaths();
         String txt = params.get("content");
         result.put("code", 200);
         result.put("msg", "success");
         Map<String, Object> data = socialService
-                .publishSns(baseRequest.getUserId().intValue(), txt, pictures);
+                .publishSns(baseRequest.getUserId().intValue(), txt, files);
         result.put("data", data);
 
         return JSON.toJSONString(result);
@@ -69,7 +65,6 @@ public class AppSocialController extends AppBaseController {
         Map<String, Object> data = socialService.browseSns(
                 baseRequest.getUserId().intValue(), userId, pageNo, pageSize);
         result.put("data", data);
-
         return JSON.toJSONString(result);
     }
 
@@ -116,6 +111,26 @@ public class AppSocialController extends AppBaseController {
         return JSON.toJSONString(result);
     }
 
+    @RequestMapping(value = "/confirmfriend", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object confirmFriend(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String userId = params.get("userId");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService
+                .confirmFriend(baseRequest.getUserId().intValue(), userId));
+
+        return JSON.toJSONString(result);
+    }
+
     /**
      * 我的好友列表
      * 
@@ -131,13 +146,11 @@ public class AppSocialController extends AppBaseController {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         checkUserLogin(baseRequest);
-        String content = baseRequest.getContent();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService
-                .friends(baseRequest.getUserId().intValue());
-        result.put("data", data);
+        result.put("data",
+                socialService.friends(baseRequest.getUserId().intValue()));
 
         return JSON.toJSONString(result);
     }
@@ -158,9 +171,53 @@ public class AppSocialController extends AppBaseController {
         String tradeId = params.get("tradeId");
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService
-                .browseArticle(baseRequest.getUserId().intValue(),tradeId,pageSize,pageNo);
+        Map<String, Object> data = socialService.browseArticle(
+                baseRequest.getUserId().intValue(), tradeId, pageSize, pageNo);
         result.put("data", data);
+
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping(value = "/comment", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object comment(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String id = params.get("id");
+        String comment = params.get("content");
+        String commentId = params.get("commentId");
+        result.put("code", 200);
+        result.put("msg", "success");
+        Map<String, Object> data = socialService.comment(
+                baseRequest.getUserId().intValue(), Integer.valueOf(id),
+                comment, commentId);
+        result.put("data", data);
+
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping(value = "/like", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object like(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String id = params.get("id");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService
+                .like(baseRequest.getUserId().intValue(), Integer.valueOf(id)));
 
         return JSON.toJSONString(result);
     }

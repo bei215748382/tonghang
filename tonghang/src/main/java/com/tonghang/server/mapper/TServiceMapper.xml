@@ -95,7 +95,7 @@
 		select  id,title,description,pictures 
 		from t_service
 		where  pid =#{userId} 
-		and  checked  !=1 
+		and  checked  !=0 
 	</select>
 	
 </mapper>

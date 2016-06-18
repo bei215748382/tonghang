@@ -13,4 +13,6 @@ public interface TNotificationMapper {
     List<TNotification> selectAll();
 
     int updateByPrimaryKey(TNotification record);
+    
+    List<TNotification> selectByPid(Integer userId);
 }

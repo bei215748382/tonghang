@@ -28,10 +28,9 @@ public class OSSUtil {
 	public String uploadOss(String filepath) throws IOException {
 
 		File videofile = new File(filepath);
-
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(videofile.getTotalSpace());
-		client.putObject(VideoBucket, videofile.getPath(), videofile, metadata);
+		client.putObject(VideoBucket, videofile.getName(), videofile, metadata);
 
 		videofile.delete();
 

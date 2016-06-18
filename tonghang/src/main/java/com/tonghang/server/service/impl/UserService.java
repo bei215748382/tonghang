@@ -1,6 +1,5 @@
 package com.tonghang.server.service.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,9 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.aliyun.oss.model.ObjectMetadata;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
@@ -62,7 +59,8 @@ public class UserService {
     private HuanXinServiceImpl huanXinService;
 
     public Map<String, Object> registUser(String mobile, String password,
-            String longitude, String latitude) throws ServiceException {
+            String longitude, String latitude, String device)
+                    throws ServiceException {
         TPhone user = userMapper.selectByPhone(mobile);
         if (user != null) {
             throw new ServiceException(ErrorCode.code100.getCode(),
@@ -72,9 +70,12 @@ public class UserService {
         user = new TPhone();
         user.setPhone(mobile);
         user.setPassword(password);
-        user.setLatitude(Double.valueOf(latitude));
-        user.setLongitude(Double.valueOf(longitude));
+        if (StringUtils.isNotBlank(latitude))
+            user.setLatitude(Double.valueOf(latitude));
+        if (StringUtils.isNotBlank(longitude))
+            user.setLongitude(Double.valueOf(longitude));
         user.setLanguage("zh_CN");
+        user.setDevice(device);
         userMapper.insert(user);
         user = userMapper.selectByPhone(mobile);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -93,9 +94,9 @@ public class UserService {
                     ErrorCode.code102.getHttpCode(),
                     ErrorCode.code102.getDesc());
         }
-//        if (!user.getPassword().equals(password)) {
-//            throw new ServiceException(ErrorCode.code103);
-//        }
+        // if (!user.getPassword().equals(password)) {
+        // throw new ServiceException(ErrorCode.code103);
+        // }
         if (StringUtils.isNotEmpty(latitude)) {
             user.setLatitude(Double.valueOf(latitude));
             flag = true;
@@ -122,15 +123,18 @@ public class UserService {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        if (!SMSUtil.codes.get(mobileNum).equals(code)) {
+        String locationCode = SMSUtil.codes.get(mobileNum);
+        Map<String, Object> data = new HashMap<String, Object>();
+        if (StringUtils.isNoneEmpty(locationCode)
+                && locationCode.equals(code)) {
+            user.setPassword(password);
+            userMapper.updateByPrimaryKey(user);
+            data.put("userId", user.getId());
+            data.put("token", tokenService.generateAccessToken(user));
+        } else {
             throw new ServiceException(ErrorCode.code70.getCode(),
                     ErrorCode.code70.getHttpCode(), ErrorCode.code70.getDesc());
         }
-        user.setPassword(password);
-        userMapper.updateByPrimaryKey(user);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("userId", user.getId());
-        data.put("token", tokenService.generateAccessToken(user));
         return data;
     }
 
@@ -182,10 +186,16 @@ public class UserService {
             user.setRemark(tags);
         }
         userMapper.updateByPrimaryKey(user);
+        user.setPassword(null);
         return user;
     }
 
     public Object getInfo(String targetUserId) throws ServiceException {
+        if (StringUtils.isBlank(targetUserId)) {
+            throw new ServiceException(ErrorCode.code22.getCode(),
+                    ErrorCode.code22.getHttpCode(),
+                    "userId:" + targetUserId + " is  illegal");
+        }
         TPhone user = userMapper
                 .selectByPrimaryKey(Integer.valueOf(targetUserId));
         if (user == null) {
@@ -223,25 +233,40 @@ public class UserService {
                 user.setCity(city.getEnName());
             }
         }
+        user.setPassword(null);
         return user;
 
     }
 
     public Map<String, Object> addService(int userId, String name,
-            String describe, MultipartFile[] pictures) throws ServiceException {
-        // TODO 判断稳健是否为空，不为空上传，病记录文件路径。
-        String picturepath = null;// uploadFile();
+            String describe, String pictures) throws ServiceException {
+
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             throw new ServiceException(ErrorCode.code101.getCode(),
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
+        if (StringUtils.isNotBlank(pictures)) {
+            String[] filepaths = pictures.split(",");
+            pictures = "";
+            for (String filepath : filepaths) {
+                try {
+                    filepath = OSSUtil.instance().uploadOss(filepath);
+                } catch (IOException e) {
+                    filepath = null;
+                    throw new ServiceException(ErrorCode.code601.getCode(),
+                            ErrorCode.code601.getHttpCode(),
+                            ErrorCode.code601.getDesc());
+                }
+                pictures += filepath + ",";
+            }
+        }
         TService service = new TService();
         service.setDescription(describe);
         service.setTitle(name);
         service.setPid(userId);
-        service.setPictures(picturepath);
+        service.setPictures(pictures);
         serviceMap.insert(service);
 
         TCircle circle = new TCircle();
@@ -250,7 +275,7 @@ public class UserService {
         circle.setType(1);
         circle.setDatetime(new Date());
         circle.setTradeId(user.getTradeId());
-        circle.setPics("");// TODO 图片
+        circle.setPics(pictures);
         circle.setArea("");// TODO 地区需修改成省市id
         circleMapper.insert(circle);
 
@@ -260,7 +285,7 @@ public class UserService {
 
     }
 
-    public Map<String, Object> getService(int userId, String targetUserId)
+    public Object getService(int userId, String targetUserId)
             throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -274,14 +299,13 @@ public class UserService {
             throw new ServiceException(ErrorCode.code101.getCode(),
                     ErrorCode.code101.getHttpCode(), "查询的目标用户不存在");
         }
-        TTrack track = new TTrack();
-        track.setPid(userId);
-        track.setTargetPid(targetUser.getId());
-        trackMapper.insert(track);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("services",
-                serviceMap.getServicesByUserId(targetUser.getId()));
-        return data;
+        if (user.getId() != targetUser.getId()) {
+            TTrack track = new TTrack();
+            track.setPid(userId);
+            track.setTargetPid(targetUser.getId());
+            trackMapper.insert(track);
+        }
+        return serviceMap.getServicesByUserId(targetUser.getId());
     }
 
     public Map<String, Object> getTrack(int userId) throws ServiceException {
@@ -297,8 +321,7 @@ public class UserService {
         return data;
     }
 
-    public Object modifyIcon(int userId, MultipartFile icon)
-            throws ServiceException {
+    public Object modifyIcon(int userId, String icon) throws ServiceException {
 
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -306,22 +329,24 @@ public class UserService {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        user.setPassword(null);
-        ObjectMetadata metadata = new ObjectMetadata();
-        String filepath = "icon" + File.separatorChar + userId
-                + File.separatorChar + icon.getName();
-        try {
-            metadata.setContentLength(icon.getBytes().length);
-            filepath = OSSUtil.instance().uploadOss(icon.getInputStream(),
-                    metadata, filepath);
-        } catch (IOException e) {
-            filepath = null;
-            throw new ServiceException(ErrorCode.code101.getCode(),
-                    ErrorCode.code101.getHttpCode(),
-                    ErrorCode.code101.getDesc());
+        if (StringUtils.isNotBlank(icon)) {
+            String[] filepaths = icon.split(",");
+            icon = "";
+            for (String filepath : filepaths) {
+                try {
+                    filepath = OSSUtil.instance().uploadOss(filepath);
+                } catch (IOException e) {
+                    filepath = null;
+                    throw new ServiceException(ErrorCode.code601.getCode(),
+                            ErrorCode.code601.getHttpCode(),
+                            ErrorCode.code601.getDesc());
+                }
+                icon += filepath + ",";
+            }
+            user.setPic(icon);//
+            userMapper.updateByPrimaryKey(user);
         }
-        user.setPic(filepath);//
-        userMapper.updateByPrimaryKey(user);
+        user.setPassword(null);
         return user;
     }
 

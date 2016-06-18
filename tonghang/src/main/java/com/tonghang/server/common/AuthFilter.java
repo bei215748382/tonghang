@@ -1,7 +1,12 @@
 package com.tonghang.server.common;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,6 +17,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +46,52 @@ public class AuthFilter implements Filter {
         log.info("======begin======");
         HttpServletRequest httpRequest = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+        String content = null;
+        String sign = null;
+        String time = null;
+        String appKey = null;
+        String userId = null;
+        String accessToken = null;
+        String filepaths = null;
         try {
             log.info(httpRequest.getContentType());
-            Map params = httpRequest.getParameterMap();
-            for (Object o : params.keySet()) {
-                log.info(o.toString() + " : " + params.get(o).toString());
+            Map param = new HashMap();
+            if (httpRequest.getContentType().contains("multipart/form-data")) {
+                DiskFileItemFactory factory = new DiskFileItemFactory();
+                ServletFileUpload upload = new ServletFileUpload(factory);
+                List items = upload.parseRequest(httpRequest);
+                String filePath = "";
+                for (Object object : items) {
+                    FileItem fileItem = (FileItem) object;
+                    if (fileItem.isFormField()) {
+                        param.put(fileItem.getFieldName(),
+                                fileItem.getString("utf-8"));// 如果你页面编码是utf-8的
+                    } else {
+                        String path = httpRequest.getSession()
+                                .getServletContext().getRealPath("/");
+                        path = path + System.currentTimeMillis()
+                                + RandomUtils.nextInt(0, 1000)
+                                + fileItem.getName().substring(
+                                        fileItem.getName().lastIndexOf("."));
+                        fileItem.write(new File(path));
+                        filePath += path + ",";
+                    }
+                }
+                param.put("files", filePath);
+                content = (String) param.get("a");
+                sign = (String) param.get("b");
+                time = (String) param.get("c");
+                appKey = (String) param.get("d");
+                userId = (String) param.get("e");
+                accessToken = (String) param.get("f");
+                filepaths = (String) param.get("files");
+            } else {
+                content = httpRequest.getParameter("a");
+                sign = httpRequest.getParameter("b");
+                time = httpRequest.getParameter("c");
+                appKey = httpRequest.getParameter("d");
+                userId = httpRequest.getParameter("e");
+                accessToken = httpRequest.getParameter("f");
             }
             String auth = "";
             String authorization = httpRequest.getHeader("Authorization");
@@ -51,16 +101,24 @@ public class AuthFilter implements Filter {
                 auth = httpRequest.getParameter("auth").trim();
             }
 
-            String content = httpRequest.getParameter("a");
-            String sign = httpRequest.getParameter("b");
-            String time = httpRequest.getParameter("c");
-            String appKey = httpRequest.getParameter("d");
-            String userId = httpRequest.getParameter("e");
-            String accessToken = httpRequest.getParameter("f");
-            String callback = httpRequest.getParameter("callback");
             log.info(
                     "request content = {},sign = {},time = {},appKey = {},userId = {},accessToken = {}",
                     content, sign, time, appKey, userId, accessToken);
+
+            Map<String, String> param1 = (Map<String, String>) JSON
+                    .parse(content);
+            if (param1 != null) {
+                String mobile = param1.get("mobile");
+                if (StringUtils.isNotBlank(mobile)) {
+                    Pattern p = Pattern.compile(
+                            "((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}");
+                    Matcher m = p.matcher(mobile);
+                    if (!m.matches()) {
+                        throw new ServiceException(ErrorCode.code120);
+                    }
+                }
+            }
+
             // if (auth == null || auth.equals("")) {
             // log.info("auth = {} is error", auth);
             // response.getWriter()
@@ -102,6 +160,7 @@ public class AuthFilter implements Filter {
             requestDTO.setAppkey(appKey);
             requestDTO.setAccessToken(accessToken);
             requestDTO.setContent(content);
+            requestDTO.setFilepaths(filepaths);
             if (StringUtils.isNotBlank(userId)) {
                 requestDTO.setUserId(Long.valueOf(userId));
                 // checkUserLogin(requestDTO);
@@ -110,10 +169,10 @@ public class AuthFilter implements Filter {
 
             chain.doFilter(req, res);
         } catch (Exception e) {
-            log.error("======" + "error======msg:" + e);
+            log.error("======" + "error======msg:" + e.getMessage());
             if (e.getCause() instanceof ServiceException) {
-                response.getWriter()
-                        .println(ResponseResult.error((ServiceException) e.getCause()));
+                response.getWriter().println(
+                        ResponseResult.error((ServiceException) e.getCause()));
             } else {
 
                 response.getWriter()
@@ -174,11 +233,16 @@ public class AuthFilter implements Filter {
         }
         return at;
     }
-    
+
     public static void main(String[] args) {
-        Exception e = new ServiceException(ErrorCode.code0);
-        System.out.println(e instanceof ServiceException);
-        
+        String mobile = "12267851229";
+        if (StringUtils.isNotBlank(mobile)) {
+            Pattern p = Pattern
+                    .compile("((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}");
+            Matcher m = p.matcher(mobile);
+            System.out.println(m.matches());
+        }
+
     }
 
 }

@@ -18,6 +18,8 @@ public class BasicRequestDTO implements Serializable {
 
     private String appkey;
 
+    private String filepaths;
+
     public String getContent() {
         return content;
     }
@@ -48,6 +50,14 @@ public class BasicRequestDTO implements Serializable {
 
     public void setAppkey(String appkey) {
         this.appkey = appkey;
+    }
+
+    public String getFilepaths() {
+        return filepaths;
+    }
+
+    public void setFilepaths(String filepaths) {
+        this.filepaths = filepaths;
     }
 
     @Override

@@ -8,14 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.tonghang.server.common.vo.IpInfoDetail;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.mapper.TCityMapper;
+import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
@@ -34,6 +35,8 @@ public class SupportServiceImpl {
 	private TCityMapper cityMapper;
 	@Autowired
 	private TTradeMapper tradeMapper;
+	@Autowired
+	private TNotificationMapper notificationMapper;
 
 	public List<TCity> getAreaByIp(String ip, Long userId) throws ServiceException {
 		List<TCity> citys = new ArrayList<TCity>();
@@ -125,5 +128,20 @@ public class SupportServiceImpl {
 		}
 		return trades;
 	}
+
+    public Object getMessage(Integer userId) throws ServiceException {
+        TPhone user = userDao.selectByPrimaryKey(userId.intValue());
+        List<TNotification> notifications = new ArrayList<TNotification>();
+        if (user != null) {
+            notifications = notificationMapper.selectByPid(userId);
+            for(TNotification bean :notifications){
+                notificationMapper.deleteByPrimaryKey(bean.getId());
+            }
+        } else {
+            throw new ServiceException(ErrorCode.code102.getCode(), ErrorCode.code102.getHttpCode(),
+                    ErrorCode.code102.getDesc());
+        }
+        return notifications;
+    }
 
 }

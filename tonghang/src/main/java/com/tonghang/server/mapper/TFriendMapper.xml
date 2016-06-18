@@ -46,4 +46,11 @@
   union select fid as id  from t_friend where pid =#{userId}  and confirm =1 
   
   </select>
+  
+  <select  id="friendNotConfirm"  resultMap="BaseResultMap"   parameterType="integer" >
+  	select id,pid,fid, confirm 
+  	from  t_friend  where  (fid =#{userId}  and pid =#{targetUserId} and confirm is null )  limit 1
+  </select>
+  
+  
 </mapper>

@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tonghang.server.mapper.TNotificationMapper" >
-  <resultMap id="BaseResultMap" type="com.tonghang.server.entity.TNotification" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="content_id" property="contentId" jdbcType="INTEGER" />
-    <result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
-    <result column="url" property="url" jdbcType="VARCHAR" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_notification
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.tonghang.server.entity.TNotification" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_notification (id, type, title, 
-      pid, content, content_id, 
-      datetime, url)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{pid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{contentId,jdbcType=INTEGER}, 
-      #{datetime,jdbcType=TIMESTAMP}, #{url,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TNotification" >
-    update t_notification
-    set type = #{type,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=INTEGER},
-      content = #{content,jdbcType=VARCHAR},
-      content_id = #{contentId,jdbcType=INTEGER},
-      datetime = #{datetime,jdbcType=TIMESTAMP},
-      url = #{url,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, type, title, pid, content, content_id, datetime, url
-    from t_notification
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select id, type, title, pid, content, content_id, datetime, url
-    from t_notification
-  </select>
+<mapper namespace="com.tonghang.server.mapper.TNotificationMapper">
+	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TNotification">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="content_id" property="contentId" jdbcType="INTEGER" />
+		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_notification
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.tonghang.server.entity.TNotification">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="BEFORE">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_notification (id, type, title,
+		pid, content, content_id,
+		datetime, url)
+		values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR},
+		#{pid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{contentId,jdbcType=INTEGER},
+		#{datetime,jdbcType=TIMESTAMP}, #{url,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TNotification">
+		update t_notification
+		set type = #{type,jdbcType=VARCHAR},
+		title = #{title,jdbcType=VARCHAR},
+		pid = #{pid,jdbcType=INTEGER},
+		content = #{content,jdbcType=VARCHAR},
+		content_id = #{contentId,jdbcType=INTEGER},
+		datetime = #{datetime,jdbcType=TIMESTAMP},
+		url = #{url,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select id, type, title, pid, content, content_id, datetime, url
+		from t_notification
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select id, type, title, pid, content, content_id, datetime, url
+		from t_notification
+	</select>
+	<select id="selectByPid" resultMap="BaseResultMap">
+		select id, type, title, pid, content, content_id, datetime, url
+		from t_notification where pid =#{pid}
+	</select>
 </mapper>

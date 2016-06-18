@@ -269,7 +269,7 @@
 		AND
 		checked !=0
 		ORDER BY
-		create_time desc
+		datetime desc
 	</select>
 
 	<select id="getFriendCircles" parameterType="list" resultMap="BaseResultMap">

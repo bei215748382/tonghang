@@ -17,7 +17,6 @@ import com.tonghang.server.common.vo.Credentail;
 import com.tonghang.server.common.vo.EaseUser;
 import com.tonghang.server.common.vo.Token;
 import com.tonghang.server.common.vo.TokenCredentail;
-import com.tonghang.server.entity.im.EasemobIMUsers;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.util.Constants;
@@ -35,30 +34,54 @@ public class HuanXinServiceImpl {
 
     public String getUser(String username) throws ServiceException {
 
+        
+        
+        
+        URL tokenUrl = HTTPClientUtils
+                .getURL(Constants.APPKEY.replace("#", "/") + "/token");
+        ObjectNode dataNode = factory.objectNode();
+        dataNode.put("grant_type", "client_credentials");
+        dataNode.put("client_id", Constants.APP_CLIENT_ID);
+        dataNode.put("client_secret", Constants.APP_CLIENT_SECRET);
+        ObjectNode resultNode = HTTPClientUtils.sendHTTPRequest(tokenUrl, null,
+                dataNode, HTTPMethod.METHOD_POST);
+        String jsonStr = resultNode.toString();
+        log.info("getToken jsonString: " + jsonStr);
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        if (!jsonObject.containsKey("access_token")) {
+            log.error(jsonObject.toJSONString());
+            throw new ServiceException(ErrorCode.code880);
+        }
+        String token = jsonObject.getString("access_token");
+        URL userUrl = HTTPClientUtils
+                .getURL(Constants.APPKEY.replace("#", "/") + "/users/" + username);
         String password = MD5
                 .getMD5(MD5.getMD5(username) + Constants.PASSWORD_KEY);
-        String jsonStr = EasemobIMUsers.getIMUsersByPrimaryKey(username)
-                .toString();
-        log.info("getIMUsersByPrimaryKey return result:" + jsonStr);
-        JSONObject jsonObject = JSON.parseObject(jsonStr);
-        if (!jsonObject.containsKey("entities")) {
-            ObjectNode dataNode = JsonNodeFactory.instance.objectNode();
-            dataNode.put("username", username);
-            dataNode.put("password", password);
-            jsonStr = EasemobIMUsers.createNewIMUserSingle(dataNode).toString();
-            log.info("createNewIMUserSingle return result:" + jsonStr);
+        Token creditToken = new Token(token);
+        Credentail credentail = new TokenCredentail(creditToken);
+        resultNode =null;
+        try {
+             resultNode = HTTPClientUtils.sendHTTPRequest(userUrl, credentail, null,
+                    HTTPMethod.METHOD_GET);
+            jsonStr = resultNode.toString();
             jsonObject = JSON.parseObject(jsonStr);
-        }
-        if (!jsonObject.containsKey("entities")) {
+            if (!jsonObject.containsKey("entities")) {
+                return createUser(username);
+            }
+            List<EaseUser> users =
+                    JSONArray.parseArray(jsonObject.getString("entities"), EaseUser.class);
+            if (users != null && users.size() > 0) {
+                return password;
+            }
+        } catch (Exception e) {
             throw new ServiceException(ErrorCode.code880);
-
         }
-        List<EaseUser> users = JSONArray
-                .parseArray(jsonObject.getString("entities"), EaseUser.class);
-        if (users != null && users.size() > 0) {
-            return password;
-        }
-        throw new ServiceException(ErrorCode.code880);
+        return null;
+        
+        
+        
+        
+        
     }
 
     public String createUser(String username) throws ServiceException {

@@ -51,8 +51,8 @@ public enum ErrorCode {
     /** 小影平台上传令牌不正确或者已经过期 */
     code60(500, 60, "uploadtoken invalid or no longer valid"),
     code70(500, 70, "verify code wrong "),
-    /** 手机号已注册j     */
-    code100(500,100,"tel number has been registed"),
+    /** 手机号已被注册     */
+    code100(500,100,"tel number has  been  registed"),
     //
     /** 用户唯一标识码不存在 */
     code101(500, 101, "auid invalid"),
@@ -91,22 +91,25 @@ public enum ErrorCode {
 
     code119(500,119,"user  had not config city and trade"),
     
+    /** 手机号不可用     */
+    code120(500,120,"tel number is illegal"),
+    
     code150(500, 150, "follow  exist"),
     /** 用户昵称被保留 **/
     code160(500, 160, "not find solarise user"),
     //
     /** 手机imei和mac地址已变化，请重新注册 */
     code201(500, 201, "imei and mac changed"),
+    /** 无权删除评论 **/
+    code300(500, 300, "circle or article not exist"),
     //
     /** 文件上传异常，请和服务器同步数据 */
-    code601(500, 601, "File upload error,need synchronize data"),
+    code601(500, 601, "File upload error"),
     /** 文件MD5校验不符，上传失败 */
     code602(500, 602, "file md5 mismatch"),
     /** 文件上传获取token失败 */
     code603(500, 603, "get uploadtoken failed"),
 
-    /** 无权删除评论 **/
-    code855(500, 855, "No auth to delete the comment"),
     
     /** ip地址解析失败 **/
     code856(500, 856, "IP parse Failed"),
