@@ -62,9 +62,8 @@ public class AppSocialController extends AppBaseController {
         String userId = params.get("userId");
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService.browseSns(
-                baseRequest.getUserId().intValue(), userId, pageNo, pageSize);
-        result.put("data", data);
+        result.put("data", socialService.browseSns(
+                baseRequest.getUserId().intValue(), userId, pageNo, pageSize));
         return JSON.toJSONString(result);
     }
 
@@ -83,9 +82,8 @@ public class AppSocialController extends AppBaseController {
         String pageNo = params.get("pageNo");
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService.browseLikeSns(
-                baseRequest.getUserId().intValue(), pageNo, pageSize);
-        result.put("data", data);
+        result.put("data", socialService.browseLikeSns(
+                baseRequest.getUserId().intValue(), pageNo, pageSize));
 
         return JSON.toJSONString(result);
     }

@@ -8,44 +8,51 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 
 public class OSSUtil {
-	private String host = "http://oss-cn-shanghai.aliyuncs.com";
-	private OSSClient client = new OSSClient(host, "PlQXvaWcQFfnraoC", "yHr0DLbxZ71BCu4KHADhGUKdZGMUMA");
-	private String VideoBucket = "tonghangimg";
-	private String videoPath = "http://tonghangimg.oss-cn-shanghai.aliyuncs.com";
-	private static OSSUtil ossUtil;
+    private String host = "http://oss-cn-shanghai.aliyuncs.com";
+    private OSSClient client = new OSSClient(host, "PlQXvaWcQFfnraoC",
+            "yHr0DLbxZ71BCu4KHADhGUKdZGMUMA");
+    private String VideoBucket = "tonghangimg";
+    private String videoPath = "http://tonghangimg.oss-cn-shanghai.aliyuncs.com";
+    private static OSSUtil ossUtil;
 
-	private OSSUtil() {
+    private OSSUtil() {
 
-	}
+    }
 
-	public static OSSUtil instance() {
-		if (ossUtil == null) {
-			ossUtil = new OSSUtil();
-		}
-		return ossUtil;
-	}
+    public static OSSUtil instance() {
+        if (ossUtil == null) {
+            ossUtil = new OSSUtil();
+        }
+        return ossUtil;
+    }
 
-	public String uploadOss(String filepath) throws IOException {
+    public String uploadOss(String filepath, String key) throws IOException {
 
-		File videofile = new File(filepath);
-		ObjectMetadata metadata = new ObjectMetadata();
-		metadata.setContentLength(videofile.getTotalSpace());
-		client.putObject(VideoBucket, videofile.getName(), videofile, metadata);
+        File videofile = new File(filepath);
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(videofile.length());
+        client.putObject(VideoBucket,
+                key + File.separatorChar + videofile.getName(), videofile,
+                metadata);
+        videofile.deleteOnExit();
+        if(videofile.exists()){
+            videofile.delete();
+        }
+        return videoPath + File.separatorChar + key + File.separatorChar
+                + videofile.getName();
+    }
 
-		videofile.delete();
+    public String uploadOss(InputStream inputstream, ObjectMetadata metadata,
+            String path) throws IOException {
 
-		return videoPath + filepath;
-	}
+        client.putObject(VideoBucket, path, inputstream, metadata);
+        return videoPath + path;
+    }
 
-	public String uploadOss(InputStream inputstream, ObjectMetadata metadata, String path) throws IOException {
+    public static void main(String[] args) throws IOException {
 
-		client.putObject(VideoBucket, path, inputstream, metadata);
-		return videoPath + path;
-	}
-
-	public static void main(String[] args) throws IOException {
-
-		OSSUtil.instance().uploadOss("G://nginx.conf");
-	}
+        File videofile = new File("G://录音099.amr");
+        System.err.println(videofile.getName());
+    }
 
 }

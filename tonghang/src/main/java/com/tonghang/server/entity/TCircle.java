@@ -152,4 +152,34 @@ public class TCircle {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	
+
+    public TCircle() {
+        super();
+    }
+
+    public TCircle(Integer id, String title, Integer hot, Date datetime,
+            String pic, Integer pageView, Integer favour, Integer comment,
+            Integer type, Integer pid, Integer checked, String pics,
+            String area, Integer tradeId, String content) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.hot = hot;
+        this.datetime = datetime;
+        this.pic = pic;
+        this.pageView = pageView;
+        this.favour = favour;
+        this.comment = comment;
+        this.type = type;
+        this.pid = pid;
+        this.checked = checked;
+        this.pics = pics;
+        this.area = area;
+        this.tradeId = tradeId;
+        this.content = content;
+    }
+	
+	
 }

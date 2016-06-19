@@ -102,8 +102,9 @@ public class AuthFilter implements Filter {
             }
 
             log.info(
-                    "request content = {},sign = {},time = {},appKey = {},userId = {},accessToken = {}",
-                    content, sign, time, appKey, userId, accessToken);
+                    "request content = {},sign = {},time = {},appKey = {},userId = {},accessToken = {},files = {}",
+                    content, sign, time, appKey, userId, accessToken,
+                    filepaths);
 
             Map<String, String> param1 = (Map<String, String>) JSON
                     .parse(content);

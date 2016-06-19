@@ -252,7 +252,7 @@ public class UserService {
             pictures = "";
             for (String filepath : filepaths) {
                 try {
-                    filepath = OSSUtil.instance().uploadOss(filepath);
+                    filepath = OSSUtil.instance().uploadOss(filepath, String.valueOf(userId));
                 } catch (IOException e) {
                     filepath = null;
                     throw new ServiceException(ErrorCode.code601.getCode(),
@@ -334,7 +334,7 @@ public class UserService {
             icon = "";
             for (String filepath : filepaths) {
                 try {
-                    filepath = OSSUtil.instance().uploadOss(filepath);
+                    filepath = OSSUtil.instance().uploadOss(filepath, String.valueOf(userId));
                 } catch (IOException e) {
                     filepath = null;
                     throw new ServiceException(ErrorCode.code601.getCode(),

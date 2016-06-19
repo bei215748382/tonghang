@@ -11,11 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonghang.server.common.dto.TCircleDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TFriend;
 import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
+import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.mapper.TCircleMapper;
@@ -23,6 +25,7 @@ import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TFriendMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
+import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
 import com.tonghang.server.util.OSSUtil;
 
@@ -35,9 +38,11 @@ public class SocialServiceImpl {
     private TPhoneMapper userMapper;
 
     @Autowired
-    private TFriendMapper friendMap;
+    private TFriendMapper friendMapper;
     @Autowired
-    private TCommentMapper commentMap;
+    private TCommentMapper commentMapper;
+    @Autowired
+    private TTradeMapper tradeMapper;
     @Autowired
     private TNotificationMapper notificationMapper;
 
@@ -54,7 +59,7 @@ public class SocialServiceImpl {
             pictures = "";
             for (String filepath : filepaths) {
                 try {
-                    filepath = OSSUtil.instance().uploadOss(filepath);
+                    filepath = OSSUtil.instance().uploadOss(filepath, String.valueOf(userId));
                 } catch (IOException e) {
                     filepath = null;
                     throw new ServiceException(ErrorCode.code601.getCode(),
@@ -70,6 +75,7 @@ public class SocialServiceImpl {
         circle.setType(1);
         circle.setDatetime(new Date());
         circle.setTradeId(user.getTradeId());
+        circle.setComment(0);
         circle.setPics(pictures);
         circle.setArea("");// TODO 地区需修改成省市id
         circleMapper.insert(circle);
@@ -87,7 +93,6 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        Map<String, Object> result = new HashMap<String, Object>();
         if (StringUtils.isBlank(pageSize) || StringUtils.isNumeric(pageSize)
                 || Integer.valueOf(pageSize) <= 0) {
             pageSize = "10";
@@ -106,7 +111,7 @@ public class SocialServiceImpl {
                         "user  been  look up  not   exist");
             }
 
-            TFriend friend = friendMap.isFriends(user.getId(),
+            TFriend friend = friendMapper.isFriends(user.getId(),
                     targetUser.getId());
             if (friend != null) {
                 circles = circleMapper.getMyCircles(targetUser.getId());
@@ -116,15 +121,22 @@ public class SocialServiceImpl {
                         ErrorCode.code118.getDesc());
             }
         } else {
-            List<Integer> firendsId = friendMap
+            List<Integer> firendsId = friendMapper
                     .selectAllFriendsId(user.getId());
             if (firendsId == null) {
                 firendsId = new ArrayList<Integer>();
             }
             circles = circleMapper.getFriendCircles(firendsId);
-            // TODO 加用户信息
         }
-        return circles;
+        List<TCircleDTO> result = new ArrayList<TCircleDTO>();
+        for(TCircle circle:circles){
+            TPhone u = userMapper.selectByPrimaryKey(circle.getPid());
+            TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
+            List<TComment> comments = commentMapper.selectByCircleId(circle.getId());
+            result.add(TCircleDTO.builder(circle, u, comments, trade));
+            
+        }
+        return result;
     }
 
     public Map<String, Object> applyFriend(int userId, String targetUserId)
@@ -151,7 +163,7 @@ public class SocialServiceImpl {
         TFriend friend = new TFriend();
         friend.setPid(user.getId());
         friend.setFid(targetUser.getId());
-        friendMap.insert(friend);
+        friendMapper.insert(friend);
         TNotification notification = new TNotification();
         notification.setPid(targetUser.getId());
         notification.setContent("有新的好友申请");
@@ -160,7 +172,7 @@ public class SocialServiceImpl {
         notification.setType(NotificationTypeEnum.Friend.getCode());
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("friend",
-                friendMap.isFriends(user.getId(), targetUser.getId()));
+                friendMapper.isFriends(user.getId(), targetUser.getId()));
         return null;
     }
 
@@ -171,7 +183,7 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        List<Integer> friendsId = friendMap.selectAllFriendsId(user.getId());
+        List<Integer> friendsId = friendMapper.selectAllFriendsId(user.getId());
         if (friendsId == null) {
             friendsId = new ArrayList<Integer>();
         }
@@ -179,7 +191,7 @@ public class SocialServiceImpl {
         return friends;
     }
 
-    public Map<String, Object> browseLikeSns(int userId, String pageNo,
+    public Object browseLikeSns(int userId, String pageNo,
             String pageSize) throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -187,7 +199,6 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        Map<String, Object> result = new HashMap<String, Object>();
         if (StringUtils.isBlank(pageSize) || StringUtils.isNumeric(pageSize)
                 || Integer.valueOf(pageSize) <= 0) {
             pageSize = "10";
@@ -208,8 +219,18 @@ public class SocialServiceImpl {
             usersId = new ArrayList<Integer>();
         }
         List<TCircle> circles = circleMapper.getFriendCircles(usersId);
-        result.put("sns", circles);
+        
+        List<TCircleDTO> result = new ArrayList<TCircleDTO>();
+        for(TCircle circle:circles){
+            TPhone u = userMapper.selectByPrimaryKey(circle.getPid());
+            TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
+            List<TComment> comments = commentMapper.selectByCircleId(circle.getId());
+            result.add(TCircleDTO.builder(circle, u, comments, trade));
+            
+        }
         return result;
+        
+        
     }
 
     public Map<String, Object> browseArticle(int userId, String tradeId,
@@ -256,12 +277,12 @@ public class SocialServiceImpl {
             notification.setContent(txt);
             notification.setDatetime(new Date());
             notification.setContentId(circleId);
-            notification.setPid(commentMap
+            notification.setPid(commentMapper
                     .selectByPrimaryKey(Integer.valueOf(commentId)).getPidId());
             notification.setTitle("有人评论你的评论");
             notification.setType("1");
         }
-        commentMap.insert(comment);
+        commentMapper.insert(comment);
         Integer pid = circleMapper.selectByPrimaryKey(circleId).getPid();
         TNotification notification = new TNotification();
         notification.setContent(txt);
@@ -271,7 +292,9 @@ public class SocialServiceImpl {
         notification.setTitle("你的同行圈收到评论");
         notification.setType("1");
         notificationMapper.insert(notification);
-        List<TComment> comments = commentMap.selectByCircleId(circleId);
+        circle.setComment(circle.getComment()+1);//TODO  存在数据库并发隔离性问题  建议改成查询comment数量
+        circleMapper.updateByPrimaryKey(circle);
+        List<TComment> comments = commentMapper.selectByCircleId(circleId);
         result.put("comments", comments);
         return result;
     }
@@ -300,11 +323,11 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        TFriend friend = friendMap.friendNotConfirm(user.getId(),
+        TFriend friend = friendMapper.friendNotConfirm(user.getId(),
                 Integer.valueOf(targetUserId));
         if (friend != null) {
             friend.setConfirm(1);
-            friendMap.updateByPrimaryKey(friend);
+            friendMapper.updateByPrimaryKey(friend);
         } else {
             throw new ServiceException(ErrorCode.code22);
         }
