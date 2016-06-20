@@ -99,7 +99,7 @@ public class SocialServiceImpl {
         }
         if (StringUtils.isBlank(pageNo) || StringUtils.isNumeric(pageNo)
                 || Integer.valueOf(pageNo) <= 0) {
-            pageNo = "1";
+            pageNo = "0";
         }
         List<TCircle> circles = new ArrayList<TCircle>();
         if (StringUtils.isNotBlank(targetUserId)) {
@@ -110,23 +110,24 @@ public class SocialServiceImpl {
                         ErrorCode.code101.getHttpCode(),
                         "user  been  look up  not   exist");
             }
-
-            TFriend friend = friendMapper.isFriends(user.getId(),
-                    targetUser.getId());
-            if (friend != null) {
-                circles = circleMapper.getMyCircles(targetUser.getId());
-            } else {
-                throw new ServiceException(ErrorCode.code118.getCode(),
-                        ErrorCode.code118.getHttpCode(),
-                        ErrorCode.code118.getDesc());
-            }
+            circles = circleMapper.getMyCircles(targetUser.getId());
+//            TFriend friend = friendMapper.isFriends(user.getId(),
+//                    targetUser.getId());
+//            if (friend != null) {
+//                circles = circleMapper.getMyCircles(targetUser.getId());
+//            } else {
+//                throw new ServiceException(ErrorCode.code118.getCode(),
+//                        ErrorCode.code118.getHttpCode(),
+//                        ErrorCode.code118.getDesc());
+//            }
         } else {
-            List<Integer> firendsId = friendMapper
-                    .selectAllFriendsId(user.getId());
-            if (firendsId == null) {
-                firendsId = new ArrayList<Integer>();
-            }
-            circles = circleMapper.getFriendCircles(firendsId);
+//            List<Integer> firendsId = friendMapper
+//                    .selectAllFriendsId(user.getId());
+//            if (firendsId == null) {
+//                firendsId = new ArrayList<Integer>();
+//            }
+//            circles = circleMapper.getFriendCircles(firendsId);
+            circles = circleMapper.getAllCircleShow(Integer.valueOf(pageNo),Integer.valueOf(pageSize));
         }
         List<TCircleDTO> result = new ArrayList<TCircleDTO>();
         for(TCircle circle:circles){
@@ -191,7 +192,7 @@ public class SocialServiceImpl {
         return friends;
     }
 
-    public Object browseLikeSns(int userId, String pageNo,
+    public Object guessLike(int userId, String pageNo,
             String pageSize) throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -205,7 +206,7 @@ public class SocialServiceImpl {
         }
         if (StringUtils.isBlank(pageNo) || StringUtils.isNumeric(pageNo)
                 || Integer.valueOf(pageNo) <= 0) {
-            pageNo = "1";
+            pageNo = "0";
         }
         if ((user.getCityId() == null || user.getCityId() == 0)
                 && (user.getTradeId() == null || user.getTradeId() == 0)) {

@@ -29,10 +29,10 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_service (id, title, description,
-		pictures, pid, check
+		pictures, pid, checked
 		)
 		values (#{id}, #{title}, #{description},
-		#{pictures}, #{pid}, #{check}
+		#{pictures}, #{pid}, #{checked}
 		)
 	</insert>
 	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TService">
@@ -95,7 +95,7 @@
 		select  id,title,description,pictures 
 		from t_service
 		where  pid =#{userId} 
-		and  checked  !=0 
+		and  (checked  !=0 or checked is null) 
 	</select>
 	
 </mapper>

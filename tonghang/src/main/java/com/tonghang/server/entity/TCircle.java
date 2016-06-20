@@ -19,7 +19,7 @@ public class TCircle {
 
 	private Integer comment;
 
-	private Integer type;
+	private Integer type;//1 同行圈 2资讯
 
 	private Integer pid;
 

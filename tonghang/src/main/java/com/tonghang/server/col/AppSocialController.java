@@ -67,9 +67,9 @@ public class AppSocialController extends AppBaseController {
         return JSON.toJSONString(result);
     }
 
-    @RequestMapping(value = "/browselikesns", method = { RequestMethod.POST,
+    @RequestMapping(value = "/guesslike", method = { RequestMethod.POST,
             RequestMethod.GET })
-    public @ResponseBody Object browseLikeSns(HttpServletRequest request,
+    public @ResponseBody Object guessLike(HttpServletRequest request,
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
@@ -82,7 +82,7 @@ public class AppSocialController extends AppBaseController {
         String pageNo = params.get("pageNo");
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", socialService.browseLikeSns(
+        result.put("data", socialService.guessLike(
                 baseRequest.getUserId().intValue(), pageNo, pageSize));
 
         return JSON.toJSONString(result);

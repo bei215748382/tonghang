@@ -1,14 +1,17 @@
 package com.tonghang.server.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonghang.server.common.dto.TServiceDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
@@ -238,8 +241,8 @@ public class UserService {
 
     }
 
-    public Map<String, Object> addService(int userId, String name,
-            String describe, String pictures) throws ServiceException {
+    public Object addService(int userId, String name, String describe,
+            String pictures) throws ServiceException {
 
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -252,7 +255,8 @@ public class UserService {
             pictures = "";
             for (String filepath : filepaths) {
                 try {
-                    filepath = OSSUtil.instance().uploadOss(filepath, String.valueOf(userId));
+                    filepath = OSSUtil.instance().uploadOss(filepath,
+                            String.valueOf(userId));
                 } catch (IOException e) {
                     filepath = null;
                     throw new ServiceException(ErrorCode.code601.getCode(),
@@ -278,10 +282,8 @@ public class UserService {
         circle.setPics(pictures);
         circle.setArea("");// TODO 地区需修改成省市id
         circleMapper.insert(circle);
-
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("services", serviceMap.getServicesByUserId(userId));
-        return data;
+        TServiceDTO result = new TServiceDTO(service);
+        return result;
 
     }
 
@@ -305,7 +307,14 @@ public class UserService {
             track.setTargetPid(targetUser.getId());
             trackMapper.insert(track);
         }
-        return serviceMap.getServicesByUserId(targetUser.getId());
+        List<TServiceDTO> result = new ArrayList<TServiceDTO>();
+        List<TService> services = serviceMap
+                .getServicesByUserId(targetUser.getId());
+        for (TService bean : services) {
+            TServiceDTO service = new TServiceDTO(bean);
+            result.add(service);
+        }
+        return result;
     }
 
     public Map<String, Object> getTrack(int userId) throws ServiceException {
@@ -334,7 +343,8 @@ public class UserService {
             icon = "";
             for (String filepath : filepaths) {
                 try {
-                    filepath = OSSUtil.instance().uploadOss(filepath, String.valueOf(userId));
+                    filepath = OSSUtil.instance().uploadOss(filepath,
+                            String.valueOf(userId));
                 } catch (IOException e) {
                     filepath = null;
                     throw new ServiceException(ErrorCode.code601.getCode(),

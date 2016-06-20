@@ -267,22 +267,23 @@
 		WHERE
 		pid = #{userId}
 		AND
-		checked !=0
+		(checked !=0 or checked is null)  
 		ORDER BY
 		datetime desc
 	</select>
 
-	<select id="getFriendCircles" parameterType="list" resultMap="BaseResultMap">
+	<select id="getAllCircleShow" parameterType="list" resultMap="BaseResultMap">
 		SELECT *
 		FROM t_circle
-		WHERE checked !=0
-		<if test="list!=null">
-			and pid in (0
-			<foreach collection="list" item="item" index="index">
-				, #{item}
-			</foreach>
-			)
+		WHERE (checked !=0 or checked is null)
+		AND type = 1  
+		<if test="pageNo!=0">
+		AND id &lt; #{pageNo}
 		</if>
+		ORDER BY
+		datetime desc
+		limit #{pageSize} 
+		
 
 	</select>
 

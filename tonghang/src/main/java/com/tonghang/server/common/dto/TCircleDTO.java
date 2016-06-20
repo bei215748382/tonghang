@@ -28,6 +28,18 @@ public class TCircleDTO extends TCircle implements Serializable {
     private String company;
 
     private List<TComment> comments;
+    
+    private String[] imgs;
+    
+    public String[] getImgs() {
+        return imgs;
+    }
+
+    public void setImgs() {
+        if(StringUtils.isNotBlank(getPics()))
+        imgs = getPics().split(",");
+
+    }
 
     public String getIcon() {
         return icon;
@@ -110,7 +122,8 @@ public class TCircleDTO extends TCircle implements Serializable {
         bean.setName(user.getName());
         bean.setCompany(user.getCompany());
         bean.setComments(comments);
-
+        bean.setImgs();
+        bean.setPics(null);
         return bean;
     }
 

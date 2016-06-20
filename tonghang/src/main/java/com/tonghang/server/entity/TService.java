@@ -61,4 +61,21 @@ public class TService {
 		this.checked = checked;
 	}
 
+    public TService(Integer id, String title, String description,
+            String pictures, Integer pid, Integer checked) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.pictures = pictures;
+        this.pid = pid;
+        this.checked = checked;
+    }
+
+    public TService() {
+        super();
+    }
+	
+	
+
 }

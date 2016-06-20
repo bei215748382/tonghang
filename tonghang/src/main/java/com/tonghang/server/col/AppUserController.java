@@ -139,8 +139,7 @@ public class AppUserController extends AppBaseController {
     @RequestMapping(value = "/addservice", method = { RequestMethod.POST,
             RequestMethod.PUT })
     public @ResponseBody Object addService(HttpServletRequest request,
-            HttpServletResponse response)
-                    throws ServiceException {
+            HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         checkUserLogin(baseRequest);
@@ -151,11 +150,10 @@ public class AppUserController extends AppBaseController {
         String name = params.get("name");
         String describe = params.get("describe");
         String files = baseRequest.getFilepaths();
-        Map<String, Object> data = userService.addService(
-                baseRequest.getUserId().intValue(), name, describe, files);
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", data);
+        result.put("data", userService.addService(
+                baseRequest.getUserId().intValue(), name, describe, files));
 
         return JSON.toJSONString(result);
     }
@@ -183,8 +181,7 @@ public class AppUserController extends AppBaseController {
     @RequestMapping(value = "/gettrack", method = { RequestMethod.POST,
             RequestMethod.GET })
     public @ResponseBody Object geTtrack(HttpServletRequest request,
-            HttpServletResponse response)
-                    throws ServiceException {
+            HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         checkUserLogin(baseRequest);
@@ -201,8 +198,7 @@ public class AppUserController extends AppBaseController {
     @RequestMapping(value = "/modifyicon", method = { RequestMethod.POST,
             RequestMethod.GET })
     public @ResponseBody Object modifyIcon(HttpServletRequest request,
-            HttpServletResponse response)
-                    throws ServiceException {
+            HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         checkUserLogin(baseRequest);

@@ -35,4 +35,6 @@ public interface TCircleMapper {
     Boolean checkCircle(Integer id);
     
     List<ArticlesVo> getTradeArticles(int tradeId);
+
+    List<TCircle> getAllCircleShow(int pageNo, int pageSize);
 }
