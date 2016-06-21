@@ -173,7 +173,7 @@
 						 <span class="hidden-xs">权限</span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a class="ajax-link" href="admin_user_info">权限管理</a></li>
+						<li><a class="ajax-link" href="admin_user_permission">权限管理</a></li>
 					</ul>
 				</li>
 			</ul>

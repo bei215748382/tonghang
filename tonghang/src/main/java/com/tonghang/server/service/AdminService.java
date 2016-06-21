@@ -2,6 +2,7 @@ package com.tonghang.server.service;
 
 import java.util.List;
 
+import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
@@ -46,6 +47,8 @@ public interface AdminService {
     TPhone getUserById(Integer id);//获取用户信息
 
     Boolean checkCircle(Integer id);//设置通过
+
+    List<TAdminUser> getAdminUsers();//查找所有后台账户
     
     
 

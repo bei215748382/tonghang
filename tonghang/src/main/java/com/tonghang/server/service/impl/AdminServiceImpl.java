@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
+import com.tonghang.server.mapper.TAdminUserMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
@@ -43,6 +45,9 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private TTradeMapper tTradeMapper;
+	
+	@Autowired
+	private TAdminUserMapper tAdminUserMapper;
 	
 	@Override
 	public List<CircleVo> getCircleUnCheck() {
@@ -122,6 +127,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Boolean checkCircle(Integer id) {
         return tCircleMapper.checkCircle(id);
+    }
+
+    @Override
+    public List<TAdminUser> getAdminUsers() {
+        return tAdminUserMapper.selectAll();
     }
 
 }

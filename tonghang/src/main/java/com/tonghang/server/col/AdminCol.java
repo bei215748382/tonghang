@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
@@ -183,6 +184,14 @@ public class AdminCol {
     @RequestMapping(value = "user_distribution_info")
     public ModelAndView user_distribution_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/user_distribution_info");
+        return mav;
+    }
+    
+    @RequestMapping(value = "admin_user_info")
+    public ModelAndView admin_user_info() {
+        ModelAndView mav = new ModelAndView("admin/ajax/admin_user_info");
+        List<TAdminUser> list = adminService.getAdminUsers();
+        mav.addObject("users", list);
         return mav;
     }
 }
