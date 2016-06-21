@@ -22,15 +22,15 @@ public class TServiceDTO extends TService implements Serializable {
         return imgs;
     }
 
-    public void setImgs() {
-        if(StringUtils.isNotBlank(getPictures()))
-        imgs = getPictures().split(",");
+    public void setImgs(String pics) {
+        if(StringUtils.isNotBlank(pics))
+        imgs = pics.split(",");
 
     }
 
     public static TServiceDTO builder(TService bean) {
         TServiceDTO dto = new TServiceDTO(bean);
-        dto.setImgs();
+        dto.setImgs(bean.getPictures());
         dto.setPictures(null);
         return dto;
     }

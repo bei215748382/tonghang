@@ -268,6 +268,7 @@
 		pid = #{userId}
 		AND
 		(checked !=0 or checked is null)  
+		AND type = 1  
 		ORDER BY
 		datetime desc
 	</select>

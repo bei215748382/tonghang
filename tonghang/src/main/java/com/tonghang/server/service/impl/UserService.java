@@ -340,20 +340,19 @@ public class UserService {
         }
         if (StringUtils.isNotBlank(icon)) {
             String[] filepaths = icon.split(",");
-            icon = "";
-            for (String filepath : filepaths) {
+            if (filepaths != null && filepaths.length >= 1) {
+                icon = filepaths[0];
                 try {
-                    filepath = OSSUtil.instance().uploadOss(filepath,
+                    icon = OSSUtil.instance().uploadOss(icon,
                             String.valueOf(userId));
                 } catch (IOException e) {
-                    filepath = null;
+                    icon = null;
                     throw new ServiceException(ErrorCode.code601.getCode(),
                             ErrorCode.code601.getHttpCode(),
                             ErrorCode.code601.getDesc());
                 }
-                icon += filepath + ",";
+                user.setPic(icon);//
             }
-            user.setPic(icon);//
             userMapper.updateByPrimaryKey(user);
         }
         user.setPassword(null);
