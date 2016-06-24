@@ -12,7 +12,7 @@ public class OSSUtil {
     private OSSClient client = new OSSClient(host, "PlQXvaWcQFfnraoC",
             "yHr0DLbxZ71BCu4KHADhGUKdZGMUMA");
     private String VideoBucket = "tonghangimg";
-    private String videoPath = "http://tonghangimg.oss-cn-shanghai.aliyuncs.com";
+    private String videoPath = "http://tonghangimg.img-cn-shanghai.aliyuncs.com";
     private static OSSUtil ossUtil;
 
     private OSSUtil() {

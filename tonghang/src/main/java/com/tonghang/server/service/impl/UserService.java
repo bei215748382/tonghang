@@ -359,4 +359,54 @@ public class UserService {
         return user;
     }
 
+    public Object updateService(int userId, String id, String name,
+            String describe, String pictures) throws ServiceException {
+
+        TPhone user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            throw new ServiceException(ErrorCode.code101.getCode(),
+                    ErrorCode.code101.getHttpCode(),
+                    ErrorCode.code101.getDesc());
+        }
+        TService service = serviceMap.selectByPrimaryKey(Integer.valueOf(id));
+        if(service == null){
+            throw new ServiceException(ErrorCode.code200);
+        }
+        if (StringUtils.isNotBlank(pictures)) {
+            String[] filepaths = pictures.split(",");
+            pictures = "";
+            for (String filepath : filepaths) {
+                try {
+                    filepath = OSSUtil.instance().uploadOss(filepath,
+                            String.valueOf(userId));
+                } catch (IOException e) {
+                    filepath = null;
+                    throw new ServiceException(ErrorCode.code601.getCode(),
+                            ErrorCode.code601.getHttpCode(),
+                            ErrorCode.code601.getDesc());
+                }
+                pictures += filepath + ",";
+            }
+        }
+        
+        service.setDescription(describe);
+        service.setTitle(name);
+        service.setPid(userId);
+        service.setPictures(pictures);
+        serviceMap.updateByPrimaryKey(service);
+
+        TCircle circle = new TCircle();
+        circle.setContent("我发布了新服务 \"" + name + "\"");
+        circle.setPid(userId);
+        circle.setType(1);
+        circle.setDatetime(new Date());
+        circle.setTradeId(user.getTradeId());
+        circle.setPics(pictures);
+        circle.setArea("");// TODO 地区需修改成省市id
+        circleMapper.insert(circle);
+        TServiceDTO result = new TServiceDTO(service);
+        return result;
+
+    }
+
 }

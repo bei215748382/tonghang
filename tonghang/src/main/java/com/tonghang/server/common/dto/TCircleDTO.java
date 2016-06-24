@@ -90,10 +90,10 @@ public class TCircleDTO extends TCircle implements Serializable {
     }
 
     public TCircleDTO(Integer id, String title, Integer hot, Date datetime,
-            String pic, Integer pageView, Integer favour, Integer comment,
+            String pic, Integer pageView, Integer favour, Integer comment,Integer share,
             Integer type, Integer pid, Integer checked, String pics,
             String area, Integer tradeId, String content) {
-        super(id, title, hot, datetime, pic, pageView, favour, comment, type,
+        super(id, title, hot, datetime, pic, pageView, favour, comment,share, type,
                 pid, checked, pics, area, tradeId, content);
         // TODO Auto-generated constructor stub
     }
@@ -101,9 +101,11 @@ public class TCircleDTO extends TCircle implements Serializable {
     public TCircleDTO(TCircle circle) {
         super(circle.getId(), circle.getTitle(), circle.getHot(),
                 circle.getDatetime(), circle.getPic(), circle.getPageView(),
-                circle.getFavour(), circle.getComment(), circle.getType(),
+                circle.getFavour(), circle.getComment(),circle.getShare(), circle.getType(),
                 circle.getPid(), circle.getChecked(), circle.getPics(),
                 circle.getArea(), circle.getTradeId(), circle.getContent());
+        this.setImgs(circle.getPics());
+        this.setPics(null);
     }
 
     public static TCircleDTO builder(TCircle circle, TPhone user,

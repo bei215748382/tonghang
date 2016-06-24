@@ -2,6 +2,8 @@ package com.tonghang.server.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
@@ -36,5 +38,5 @@ public interface TCircleMapper {
     
     List<ArticlesVo> getTradeArticles(int tradeId);
 
-    List<TCircle> getAllCircleShow(int pageNo, int pageSize);
+    List<TCircle> getAllCircleShow(@Param("pageNo")int pageNo,@Param("pageSize") int pageSize);
 }

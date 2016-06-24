@@ -45,6 +45,8 @@ public class SocialServiceImpl {
     private TTradeMapper tradeMapper;
     @Autowired
     private TNotificationMapper notificationMapper;
+    @Autowired
+    private UserService userService;
 
     public Map<String, Object> publishSns(int userId, String txt,
             String pictures) throws ServiceException {
@@ -59,7 +61,8 @@ public class SocialServiceImpl {
             pictures = "";
             for (String filepath : filepaths) {
                 try {
-                    filepath = OSSUtil.instance().uploadOss(filepath, String.valueOf(userId));
+                    filepath = OSSUtil.instance().uploadOss(filepath,
+                            String.valueOf(userId));
                 } catch (IOException e) {
                     filepath = null;
                     throw new ServiceException(ErrorCode.code601.getCode(),
@@ -111,31 +114,33 @@ public class SocialServiceImpl {
                         "user  been  look up  not   exist");
             }
             circles = circleMapper.getMyCircles(targetUser.getId());
-//            TFriend friend = friendMapper.isFriends(user.getId(),
-//                    targetUser.getId());
-//            if (friend != null) {
-//                circles = circleMapper.getMyCircles(targetUser.getId());
-//            } else {
-//                throw new ServiceException(ErrorCode.code118.getCode(),
-//                        ErrorCode.code118.getHttpCode(),
-//                        ErrorCode.code118.getDesc());
-//            }
+            // TFriend friend = friendMapper.isFriends(user.getId(),
+            // targetUser.getId());
+            // if (friend != null) {
+            // circles = circleMapper.getMyCircles(targetUser.getId());
+            // } else {
+            // throw new ServiceException(ErrorCode.code118.getCode(),
+            // ErrorCode.code118.getHttpCode(),
+            // ErrorCode.code118.getDesc());
+            // }
         } else {
-//            List<Integer> firendsId = friendMapper
-//                    .selectAllFriendsId(user.getId());
-//            if (firendsId == null) {
-//                firendsId = new ArrayList<Integer>();
-//            }
-//            circles = circleMapper.getFriendCircles(firendsId);
-            circles = circleMapper.getAllCircleShow(Integer.valueOf(pageNo),Integer.valueOf(pageSize));
+            // List<Integer> firendsId = friendMapper
+            // .selectAllFriendsId(user.getId());
+            // if (firendsId == null) {
+            // firendsId = new ArrayList<Integer>();
+            // }
+            // circles = circleMapper.getFriendCircles(firendsId);
+            circles = circleMapper.getAllCircleShow(Integer.valueOf(pageNo),
+                    Integer.valueOf(pageSize));
         }
         List<TCircleDTO> result = new ArrayList<TCircleDTO>();
-        for(TCircle circle:circles){
+        for (TCircle circle : circles) {
             TPhone u = userMapper.selectByPrimaryKey(circle.getPid());
             TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
-            List<TComment> comments = commentMapper.selectByCircleId(circle.getId());
+            List<TComment> comments = commentMapper
+                    .selectByCircleId(circle.getId());
             result.add(TCircleDTO.builder(circle, u, comments, trade));
-            
+
         }
         return result;
     }
@@ -192,8 +197,8 @@ public class SocialServiceImpl {
         return friends;
     }
 
-    public Object guessLike(int userId, String pageNo,
-            String pageSize) throws ServiceException {
+    public Object guessLike(int userId, String pageNo, String pageSize)
+            throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             throw new ServiceException(ErrorCode.code101.getCode(),
@@ -220,18 +225,18 @@ public class SocialServiceImpl {
             usersId = new ArrayList<Integer>();
         }
         List<TCircle> circles = circleMapper.getFriendCircles(usersId);
-        
+
         List<TCircleDTO> result = new ArrayList<TCircleDTO>();
-        for(TCircle circle:circles){
+        for (TCircle circle : circles) {
             TPhone u = userMapper.selectByPrimaryKey(circle.getPid());
             TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
-            List<TComment> comments = commentMapper.selectByCircleId(circle.getId());
+            List<TComment> comments = commentMapper
+                    .selectByCircleId(circle.getId());
             result.add(TCircleDTO.builder(circle, u, comments, trade));
-            
+
         }
         return result;
-        
-        
+
     }
 
     public Map<String, Object> browseArticle(int userId, String tradeId,
@@ -293,7 +298,8 @@ public class SocialServiceImpl {
         notification.setTitle("你的同行圈收到评论");
         notification.setType("1");
         notificationMapper.insert(notification);
-        circle.setComment(circle.getComment()+1);//TODO  存在数据库并发隔离性问题  建议改成查询comment数量
+        circle.setComment(circle.getComment() + 1);// TODO 存在数据库并发隔离性问题
+                                                   // 建议改成查询comment数量
         circleMapper.updateByPrimaryKey(circle);
         List<TComment> comments = commentMapper.selectByCircleId(circleId);
         result.put("comments", comments);
@@ -307,7 +313,6 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        Map<String, Object> result = new HashMap<String, Object>();
         TCircle circle = circleMapper.selectByPrimaryKey(circleId);
         if (circle == null) {
             throw new ServiceException(ErrorCode.code300);
@@ -333,6 +338,23 @@ public class SocialServiceImpl {
             throw new ServiceException(ErrorCode.code22);
         }
         return friend;
+    }
+
+    public Object homepage(String userId, String targetUserId) throws ServiceException {
+        TPhone user = userMapper.selectByPrimaryKey(Integer.valueOf(userId));
+        if (user == null) {
+            throw new ServiceException(ErrorCode.code101.getCode(),
+                    ErrorCode.code101.getHttpCode(),
+                    ErrorCode.code101.getDesc());
+        }
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("user", userService.getInfo(userId));
+        result.put("service", userService.getService(Integer.valueOf(userId), targetUserId));
+        List<TCircle> circles = circleMapper.getMyCircles(Integer.valueOf(targetUserId));
+        if(circles !=null && circles.size()>0){
+            result.put("circle", new TCircleDTO(circles.get(0)));
+        }
+        return result;
     }
 
 }

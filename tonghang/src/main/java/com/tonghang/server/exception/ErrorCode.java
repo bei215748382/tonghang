@@ -99,7 +99,7 @@ public enum ErrorCode {
     code160(500, 160, "not find solarise user"),
     //
     /** 手机imei和mac地址已变化，请重新注册 */
-    code201(500, 201, "imei and mac changed"),
+    code200(500, 200, "service not exist"),
     /** 无权删除评论 **/
     code300(500, 300, "circle or article not exist"),
     //

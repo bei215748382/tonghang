@@ -157,6 +157,30 @@ public class AppUserController extends AppBaseController {
 
         return JSON.toJSONString(result);
     }
+    
+    @RequestMapping(value = "/updateservice", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object updateService(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String name = params.get("name");
+        String describe = params.get("describe");
+        String id = params.get("id");
+        String files = baseRequest.getFilepaths();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", userService.updateService(
+                baseRequest.getUserId().intValue(), id, name, describe, files));
+
+        return JSON.toJSONString(result);
+    }
+    
 
     @RequestMapping(value = "/getservice", method = { RequestMethod.POST,
             RequestMethod.GET })

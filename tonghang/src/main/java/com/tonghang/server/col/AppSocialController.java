@@ -220,4 +220,23 @@ public class AppSocialController extends AppBaseController {
         return JSON.toJSONString(result);
     }
 
+    @RequestMapping(value = "/homepage", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object homepage(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String id = params.get("userId");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService.homepage(baseRequest.getUserId().toString(), id));
+
+        return JSON.toJSONString(result);
+    }
+
 }
