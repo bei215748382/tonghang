@@ -194,4 +194,23 @@ public class AdminCol {
         mav.addObject("users", list);
         return mav;
     }
+    
+    @ResponseBody
+    @RequestMapping(value = "add_admin_user")
+    public Boolean add_admin_user(TAdminUser user) {
+        return adminService.saveAdminUser(user);
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "get_admin_user")
+    public TAdminUser get_admin_user(Integer id) {
+        return adminService.getAdminUser(id);
+    }
+    
+    
+    @ResponseBody
+    @RequestMapping(value = "edit_admin_user")
+    public Boolean edit_admin_user(TAdminUser user) {
+        return adminService.editAdminUser(user);
+    }
 }

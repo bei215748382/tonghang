@@ -2,13 +2,13 @@
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
 				<div class="box-name">
-					后台账户
+					后台账户&nbsp;&nbsp;|&nbsp;&nbsp;<button  type="button" class="btn btn-default" onclick="openModal()">添加</button>
 				</div>
 				<div class="box-icons">
 					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -41,7 +41,7 @@
 								<td>${data.username}</td>
 								<td>${data.role}</td>
 								<td>${data.description}</td>
-								<td><button type="button" class="btn btn-default">编辑</button></td>
+								<td><button type="button" class="btn btn-default" onclick="edit(${data.id})">编辑</button></td>
 							</tr>
 						</c:forEach>
 						<!-- End: list_row -->
@@ -51,10 +51,15 @@
 		</div>
 	</div>
 </div>
+<script src="${ctx}/common/js/admin/admin_user_info.js"></script>
 <script type="text/javascript">
 	// Run Datables plugin and create 3 variants of settings
 	function AllTables() {
 		TestTable2();
+		LoadSelect2Script(MakeSelect2);
+	}
+	function MakeSelect2() {
+		$('select').select2();
 	}
 	$(document).ready(function() {
 		// Load Datatables and run plugin on tables 

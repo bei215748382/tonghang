@@ -49,6 +49,12 @@ public interface AdminService {
     Boolean checkCircle(Integer id);//设置通过
 
     List<TAdminUser> getAdminUsers();//查找所有后台账户
+
+    Boolean saveAdminUser(TAdminUser user);//保存管理用户
+
+    TAdminUser getAdminUser(Integer id);//获取管理用户
+
+    Boolean editAdminUser(TAdminUser user);//编辑管理用户
     
     
 
