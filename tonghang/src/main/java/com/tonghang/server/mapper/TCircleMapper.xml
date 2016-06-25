@@ -325,6 +325,7 @@
 		from t_circle t
 		left outer join t_trade trade on trade.id =
 		t.trade_id
+		where  type = 2
 	</select>
 	<select id="getArticle" parameterType="java.lang.Integer"
 		resultMap="ArticlesVoResultMap">
@@ -402,7 +403,7 @@
 		join t_phone p on p.id =
 		comment.pid_id
 		where t.id = #{id} and
-		comment.checked = 1;
+		comment.checked = 1
 	</select>
 	
 	<select id="getTradeArticles" resultMap="ArticlesVoResultMap"  parameterType="integer">
@@ -431,7 +432,7 @@
 		from t_circle t
 		left outer join t_trade trade on trade.id =
 		t.trade_id
-		where  t.trade_id =#{tradeId}
+		where  t.trade_id =#{tradeId} and type = 2
 	</select>
 
 </mapper>

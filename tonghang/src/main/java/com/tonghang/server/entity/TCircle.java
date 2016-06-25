@@ -21,7 +21,10 @@ public class TCircle {
 
     private Integer share;
 
-    private Integer type;// 1 同行圈 2资讯
+    /**
+     *  1 同行圈 2资讯
+     */
+    private Integer type;
 
     private Integer pid;
 

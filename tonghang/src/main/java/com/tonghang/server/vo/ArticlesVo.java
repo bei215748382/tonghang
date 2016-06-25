@@ -20,6 +20,8 @@ public class ArticlesVo {
     private Integer favour;
 
     private Integer comment;
+    
+    private Integer share;
 
     private Integer type;
 
@@ -36,6 +38,15 @@ public class ArticlesVo {
     private String content;
     
     private String url;
+    
+
+    public Integer getShare() {
+        return share;
+    }
+
+    public void setShare(Integer share) {
+        this.share = share;
+    }
 
     public String getUrl() {
         return url;
