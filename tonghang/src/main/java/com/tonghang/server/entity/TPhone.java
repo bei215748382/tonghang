@@ -20,6 +20,8 @@ public class TPhone {
     private String position;
 
     private String college;
+    
+    private String education;
 
     private Integer tradeId;
 
@@ -232,5 +234,14 @@ public class TPhone {
     public void setCompany(String company) {
         this.company = company;
     }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+    
 
 }

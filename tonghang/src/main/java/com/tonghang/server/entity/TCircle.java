@@ -35,6 +35,17 @@ public class TCircle {
 
     private String content;
 
+    private String url;
+    
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -164,30 +175,25 @@ public class TCircle {
     }
 
     public TCircle() {
-        super();
     }
 
-    public TCircle(Integer id, String title, Integer hot, Date datetime,
-            String pic, Integer pageView, Integer favour, Integer comment,
-            Integer share, Integer type, Integer pid, Integer checked,
-            String pics, String area, Integer tradeId, String content) {
-        super();
-        this.id = id;
-        this.title = title;
-        this.hot = hot;
-        this.datetime = datetime;
-        this.pic = pic;
-        this.pageView = pageView;
-        this.favour = favour;
-        this.comment = comment;
-        this.share = share;
-        this.type = type;
-        this.pid = pid;
-        this.checked = checked;
-        this.pics = pics;
-        this.area = area;
-        this.tradeId = tradeId;
-        this.content = content;
+    public TCircle(TCircle circle) {
+        this.id = circle.getId();
+        this.title = circle.getTitle();
+        this.hot = circle.getHot();
+        this.datetime = circle.getDatetime();
+        this.pic = circle.getPic();
+        this.pageView = circle.getPageView();
+        this.favour = circle.getFavour();
+        this.comment = circle.getComment();
+        this.share = circle.getShare();
+        this.type = circle.getType();
+        this.pid = circle.getPid();
+        this.checked = circle.getChecked();
+        this.pics = circle.getPics();
+        this.area = circle.getArea();
+        this.tradeId = circle.getTradeId();
+        this.content = circle.getContent();
     }
 
 }

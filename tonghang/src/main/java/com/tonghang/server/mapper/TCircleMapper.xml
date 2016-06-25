@@ -18,6 +18,7 @@
 		<result column="area" property="area" jdbcType="VARCHAR" />
 		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
 	</resultMap>
 	<resultMap id="ArticlesVoResultMap" type="com.tonghang.server.vo.ArticlesVo">
 		<id column="id" property="id" jdbcType="INTEGER" />
@@ -35,6 +36,7 @@
 		<result column="pics" property="pics" jdbcType="VARCHAR" />
 		<result column="area" property="area" jdbcType="VARCHAR" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
 		<association property="trade" javaType="com.tonghang.server.entity.TTrade">
 			<result column="trade_id" property="id" jdbcType="INTEGER" />
 			<result column="trade_name" property="name" jdbcType="INTEGER" />
@@ -58,6 +60,7 @@
 		<result column="pics" property="pics" jdbcType="VARCHAR" />
 		<result column="area" property="area" jdbcType="VARCHAR" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
 		<association property="trade" javaType="com.tonghang.server.entity.TTrade">
 			<result column="trade_id" property="id" jdbcType="INTEGER" />
 			<result column="trade_name" property="name" jdbcType="INTEGER" />
@@ -93,6 +96,7 @@
 		<result column="area" property="area" jdbcType="VARCHAR" />
 		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
 		<association property="phone" javaType="com.tonghang.server.entity.TPhone">
 			<id column="p_id" property="id" jdbcType="INTEGER" />
 			<result column="p_phone" property="phone" jdbcType="VARCHAR" />
@@ -130,7 +134,7 @@
 		favour,
 		comment, type,
 		pid, checked, pics, area,
-		trade_id, content)
+		trade_id, content,url)
 		values
 		(#{id}, #{title}, #{hot},
 		#{datetime}, #{pic}, #{pageView},
@@ -138,7 +142,7 @@
 		#{comment}, #{type},
 		#{pid}, #{checked}, #{pics}, #{area},
 		#{tradeId},
-		#{content})
+		#{content},#{url})
 	</insert>
 	<update id="checkCircle" parameterType="java.lang.Integer">
 		update t_circle
@@ -313,6 +317,7 @@
 		t.area,
 		t.trade_id,
 		t.content,
+		t.url,
 		trade.name trade_name,
 		trade.parent_id trade_pid,
 		trade.en_name
@@ -340,6 +345,7 @@
 		t.area,
 		t.trade_id,
 		t.content,
+		t.url,
 		trade.name trade_name,
 		trade.parent_id trade_pid,
 		trade.en_name
@@ -369,6 +375,7 @@
 		t.area,
 		t.trade_id,
 		t.content,
+		t.url,
 		trade.name trade_name,
 		trade.parent_id trade_pid,
 		trade.en_name
@@ -416,6 +423,7 @@
 		t.area,
 		t.trade_id,
 		t.content,
+		t.url,
 		trade.name trade_name,
 		trade.parent_id trade_pid,
 		trade.en_name

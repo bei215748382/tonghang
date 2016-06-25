@@ -21,4 +21,8 @@ public interface TFriendMapper {
 	TFriend friendNotConfirm(@Param("userId") Integer userId, @Param("targetUserId") Integer targetUserId);
 	
 	List<Integer> selectAllFriendsId(Integer userId);
+	
+	List<TFriend>  selectApplyNotConfirm(@Param("userId") Integer userId);
+
+    List<TFriend> selectBeenApplyNotConfirm(Integer userId);
 }

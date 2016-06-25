@@ -5,141 +5,151 @@ import java.util.Date;
 import com.tonghang.server.entity.TTrade;
 
 public class ArticlesVo {
-	private Integer id;
+    private Integer id;
 
-	private String title;
+    private String title;
 
-	private Integer hot;
+    private Integer hot;
 
-	private Date datetime;
+    private Date datetime;
 
-	private String pic;
+    private String pic;
 
-	private Integer pageView;
+    private Integer pageView;
 
-	private Integer favour;
+    private Integer favour;
 
-	private Integer comment;
+    private Integer comment;
 
-	private Integer type;
+    private Integer type;
 
-	private Integer pid;
+    private Integer pid;
 
-	private Integer checked;
+    private Integer checked;
 
-	private String pics;
+    private String pics;
 
-	private String area;
+    private String area;
 
-	private TTrade trade;
+    private TTrade trade;
 
-	private String content;
+    private String content;
+    
+    private String url;
 
-	public Integer getId() {
-		return id;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getHot() {
-		return hot;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setHot(Integer hot) {
-		this.hot = hot;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public Date getDatetime() {
-		return datetime;
-	}
+    public Integer getHot() {
+        return hot;
+    }
 
-	public void setDatetime(Date datetime) {
-		this.datetime = datetime;
-	}
+    public void setHot(Integer hot) {
+        this.hot = hot;
+    }
 
-	public String getPic() {
-		return pic;
-	}
+    public Date getDatetime() {
+        return datetime;
+    }
 
-	public void setPic(String pic) {
-		this.pic = pic;
-	}
+    public void setDatetime(Date datetime) {
+        this.datetime = datetime;
+    }
 
-	public Integer getPageView() {
-		return pageView;
-	}
+    public String getPic() {
+        return pic;
+    }
 
-	public void setPageView(Integer pageView) {
-		this.pageView = pageView;
-	}
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
 
-	public Integer getFavour() {
-		return favour;
-	}
+    public Integer getPageView() {
+        return pageView;
+    }
 
-	public void setFavour(Integer favour) {
-		this.favour = favour;
-	}
+    public void setPageView(Integer pageView) {
+        this.pageView = pageView;
+    }
 
-	public Integer getComment() {
-		return comment;
-	}
+    public Integer getFavour() {
+        return favour;
+    }
 
-	public void setComment(Integer comment) {
-		this.comment = comment;
-	}
+    public void setFavour(Integer favour) {
+        this.favour = favour;
+    }
 
-	public Integer getType() {
-		return type;
-	}
+    public Integer getComment() {
+        return comment;
+    }
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+    public void setComment(Integer comment) {
+        this.comment = comment;
+    }
 
-	public Integer getPid() {
-		return pid;
-	}
+    public Integer getType() {
+        return type;
+    }
 
-	public void setPid(Integer pid) {
-		this.pid = pid;
-	}
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
-	public Integer getChecked() {
-		return checked;
-	}
+    public Integer getPid() {
+        return pid;
+    }
 
-	public void setChecked(Integer checked) {
-		this.checked = checked;
-	}
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
 
-	public String getPics() {
-		return pics;
-	}
+    public Integer getChecked() {
+        return checked;
+    }
 
-	public void setPics(String pics) {
-		this.pics = pics;
-	}
+    public void setChecked(Integer checked) {
+        this.checked = checked;
+    }
 
-	public String getArea() {
-		return area;
-	}
+    public String getPics() {
+        return pics;
+    }
 
-	public void setArea(String area) {
-		this.area = area;
-	}
+    public void setPics(String pics) {
+        this.pics = pics;
+    }
 
-	public TTrade getTrade() {
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public TTrade getTrade() {
         return trade;
     }
 
@@ -148,10 +158,10 @@ public class ArticlesVo {
     }
 
     public String getContent() {
-		return content;
-	}
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

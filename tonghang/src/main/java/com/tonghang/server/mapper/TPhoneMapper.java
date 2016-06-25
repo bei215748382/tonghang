@@ -34,4 +34,6 @@ public interface TPhoneMapper {
 
     List<Integer> getUserIdByCityAndTrade(@Param("cityId") Integer cityId,
             @Param("tradeId") Integer tradeId);
+    
+    TPhone getUserInfoById(Integer id);
 }

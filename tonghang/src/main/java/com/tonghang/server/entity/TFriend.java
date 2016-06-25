@@ -3,9 +3,9 @@ package com.tonghang.server.entity;
 public class TFriend {
     private Integer id;
 
-    private Integer pid;//申请者
+    private Integer pid;// 申请者
 
-    private Integer fid;//被加好友者
+    private Integer fid;// 被加好友者
 
     private Integer confirm;
 
@@ -39,5 +39,15 @@ public class TFriend {
 
     public void setConfirm(Integer confirm) {
         this.confirm = confirm;
+    }
+
+    public TFriend() {
+    }
+
+    public TFriend(TFriend bean) {
+        this.confirm = bean.confirm;
+        this.fid = bean.fid;
+        this.pid = bean.getPid();
+        this.id = bean.getId();
     }
 }

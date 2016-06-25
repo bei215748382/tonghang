@@ -11,6 +11,7 @@
 		<result column="sex" property="sex" jdbcType="VARCHAR" />
 		<result column="position" property="position" jdbcType="VARCHAR" />
 		<result column="college" property="college" jdbcType="VARCHAR" />
+		<result column="education" property="education" jdbcType="VARCHAR" />
 		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
 		<result column="province_id" property="provinceId" jdbcType="INTEGER" />
 		<result column="city_id" property="cityId" jdbcType="INTEGER" />
@@ -55,7 +56,7 @@
 		insert into t_phone (id, phone, password,
 		timestamp, name, pic,
 		sex,
-		position, college,
+		position, college,education,
 		trade_id, province_id, city_id,
 		remark, device,
 		longitude,
@@ -64,7 +65,7 @@
 		#{password},
 		#{timestamp}, #{name}, #{pic},
 		#{sex}, #{position},
-		#{college},
+		#{college},#{education},
 		#{tradeId}, #{provinceId}, #{cityId},
 		#{remark}, #{device},
 		#{longitude},
@@ -96,6 +97,9 @@
 			</if>
 			<if test="college != null and college != ''">
 				college = #{college},
+			</if>
+			<if test="education != null and education != ''">
+				education = #{education},
 			</if>
 			<if test="tradeId != null and tradeId != ''">
 				trade_id = #{tradeId},
@@ -191,6 +195,14 @@
 		p.city_id =#{cityId}
 		and p.trade_id =#{tradeId}
 		 
+	</select>
+	
+	<select id="getUserInfoById" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
+		select p.company,p.name,p.position,p.pic,p.college,p.education,p.remark,city.name city_name,trade.name trade_name
+		from t_phone p
+		left outer join  t_city city on city.id = p.city_id
+		left outer join t_trade trade on trade.id = p.trade_id
+		where p.id = #{id}
 	</select>
 	
 </mapper>

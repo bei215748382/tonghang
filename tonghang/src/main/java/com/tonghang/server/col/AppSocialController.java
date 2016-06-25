@@ -238,5 +238,22 @@ public class AppSocialController extends AppBaseController {
 
         return JSON.toJSONString(result);
     }
+    
+    @RequestMapping(value = "/friendapply", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object friendApply(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService.friendApply(baseRequest.getUserId().toString()));
+
+        return JSON.toJSONString(result);
+    }
 
 }
