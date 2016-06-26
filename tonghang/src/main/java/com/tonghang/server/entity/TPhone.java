@@ -20,7 +20,7 @@ public class TPhone {
     private String position;
 
     private String college;
-    
+
     private String education;
 
     private Integer tradeId;
@@ -48,8 +48,33 @@ public class TPhone {
     private String province;// 省份名称
 
     private String city;// 城市名称
-    
+
     private String company;
+
+    public TPhone() {
+    }
+
+    public TPhone(TPhone user) {
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.name = user.getName();
+        this.pic = user.getPic();
+        this.sex = user.getSex();
+        this.position = user.getPosition();
+        this.college = user.getCollege();
+        this.education = user.getEducation();
+        this.tradeId = user.getTradeId();
+        this.provinceId = user.getTradeId();
+        this.cityId = user.getCityId();
+        this.remark = user.getRemark();
+        this.longitude = user.getLongitude();
+        this.language = user.getLanguage();
+        this.groupId = user.getGroupId();
+        this.trade = user.getTrade();
+        this.province = user.getProvince();
+        this.city = user.getCity();
+        this.company = user.getCompany();
+    }
 
     public Integer getId() {
         return id;
@@ -242,6 +267,5 @@ public class TPhone {
     public void setEducation(String education) {
         this.education = education;
     }
-    
 
 }
