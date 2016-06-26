@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.tonghang.server.common.dto.TCircleDTO;
 import com.tonghang.server.common.dto.TCommentDTO;
 import com.tonghang.server.common.dto.TFriendDTO;
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TCircleLike;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TFriend;
 import com.tonghang.server.entity.TNotification;
@@ -22,6 +24,7 @@ import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
+import com.tonghang.server.mapper.TCircleLikeMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TFriendMapper;
@@ -30,6 +33,7 @@ import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
 import com.tonghang.server.util.OSSUtil;
+import com.tonghang.server.vo.ArticlesVo;
 
 @Service
 public class SocialServiceImpl {
@@ -49,6 +53,8 @@ public class SocialServiceImpl {
     private TNotificationMapper notificationMapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TCircleLikeMapper likeMapper;
 
     public Object publishSns(int userId, String txt, String pictures)
             throws ServiceException {
@@ -169,7 +175,15 @@ public class SocialServiceImpl {
                     }
                 }
             }
-            result.add(TCircleDTO.builder(circle, u, commentdto, trade));
+            TCircleDTO dto = TCircleDTO.builder(circle, u, commentdto, trade);
+            TCircleLike like = likeMapper.selectByCircleIdAndPid(circle.getId(),
+                    user.getId());
+            if (like == null) {
+                dto.setLike(false);
+            } else {
+                dto.setLike(true);
+            }
+            result.add(dto);
 
         }
         return result;
@@ -279,20 +293,30 @@ public class SocialServiceImpl {
 
     }
 
-    public Map<String, Object> browseArticle(int userId, String tradeId,
-            String pageSize, String pageNo) throws ServiceException {
+    public Object browseArticle(int userId, String tradeId, String pageSize,
+            String pageNo) throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             throw new ServiceException(ErrorCode.code101.getCode(),
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        Map<String, Object> result = new HashMap<String, Object>();
+        List<ArticlesVo> result = new ArrayList<ArticlesVo>();
+        List<ArticlesVo> articles = new ArrayList<ArticlesVo>();
         if (StringUtils.isNotBlank(tradeId) || StringUtils.isNumeric(tradeId)) {
-            result.put("articles",
-                    circleMapper.getTradeArticles(Integer.valueOf(tradeId)));
+            articles = circleMapper.getTradeArticles(Integer.valueOf(tradeId));
         } else {
-            result.put("articles", circleMapper.getArticles());
+            articles = circleMapper.getArticles();
+        }
+        for (ArticlesVo bean : articles) {
+            TCircleLike like = likeMapper.selectByCircleIdAndPid(bean.getId(),
+                    userId);
+            if (like != null) {
+                bean.setLike(true);
+            } else {
+                bean.setLike(false);
+            }
+            result.add(bean);
         }
         return result;
     }
@@ -362,7 +386,18 @@ public class SocialServiceImpl {
         if (circle == null) {
             throw new ServiceException(ErrorCode.code300);
         }
-        circle.setFavour(circle.getFavour() + 1);
+        TCircleLike like = likeMapper.selectByCircleIdAndPid(circleId, userId);
+        if (like == null) {
+            circle.setFavour(circle.getFavour() + 1);
+            like = new TCircleLike();
+            like.setPid(userId);
+            like.setCircleId(circleId);
+            likeMapper.insert(like);
+        } else {
+            circle.setFavour(circle.getFavour() - 1);
+            likeMapper.deleteById(like.getId());
+        }
+        circleMapper.updateByPrimaryKey(circle);
         return "success";
     }
 

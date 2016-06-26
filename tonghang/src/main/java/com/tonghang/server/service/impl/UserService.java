@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tonghang.server.common.dto.TServiceDTO;
+import com.tonghang.server.common.dto.TTrackDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
@@ -285,6 +286,7 @@ public class UserService {
         circle.setTradeId(user.getTradeId());
         circle.setPics(pictures);
         circle.setArea("");// TODO 地区需修改成省市id
+        circle.setComment(0);
         circleMapper.insert(circle);
         TServiceDTO result = new TServiceDTO(service);
         return result;
@@ -321,7 +323,7 @@ public class UserService {
         return result;
     }
 
-    public Map<String, Object> getTrack(int userId) throws ServiceException {
+    public Object getTrack(int userId) throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             throw new ServiceException(ErrorCode.code101.getCode(),
@@ -329,9 +331,13 @@ public class UserService {
                     ErrorCode.code101.getDesc());
         }
 
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("tracks", trackMapper.findOneBeenTrack(userId));
-        return data;
+        List<TTrack> tracks = trackMapper.findOneBeenTrack(userId);
+        List<TTrackDTO> result = new ArrayList<TTrackDTO>();
+        for(TTrack bean :tracks){
+            TPhone userinfo = userMapper.getUserInfoById(bean.getPid()); 
+            result.add(new TTrackDTO(bean, userinfo));
+        }
+        return result;
     }
 
     public Object modifyIcon(int userId, String icon) throws ServiceException {
@@ -373,7 +379,7 @@ public class UserService {
                     ErrorCode.code101.getDesc());
         }
         TService service = serviceMap.selectByPrimaryKey(Integer.valueOf(id));
-        if(service == null){
+        if (service == null) {
             throw new ServiceException(ErrorCode.code200);
         }
         if (StringUtils.isNotBlank(pictures)) {
@@ -392,7 +398,7 @@ public class UserService {
                 pictures += filepath + ",";
             }
         }
-        
+
         service.setDescription(describe);
         service.setTitle(name);
         service.setPid(userId);

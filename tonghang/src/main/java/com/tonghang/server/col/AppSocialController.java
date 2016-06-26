@@ -167,9 +167,8 @@ public class AppSocialController extends AppBaseController {
         String tradeId = params.get("tradeId");
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService.browseArticle(
-                baseRequest.getUserId().intValue(), tradeId, pageSize, pageNo);
-        result.put("data", data);
+        result.put("data", socialService.browseArticle(
+                baseRequest.getUserId().intValue(), tradeId, pageSize, pageNo));
 
         return JSON.toJSONString(result);
     }

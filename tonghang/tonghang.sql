@@ -36,9 +36,10 @@ CREATE TABLE `t_circle` (
   `datetime` datetime DEFAULT NULL,
   `pic` varchar(255) DEFAULT NULL,
   `content` text,
-  `page_view` int(255) DEFAULT NULL,
-  `favour` int(255) DEFAULT NULL,
-  `comment` int(255) DEFAULT NULL,
+  `page_view` int(255) DEFAULT 0,
+  `favour` int(255) DEFAULT 0,
+  `comment` int(255) DEFAULT 0,
+  `share` int(255) DEFAULT 0,
   `type` int(255) DEFAULT NULL,
   `pid` int(11) DEFAULT NULL,
   `check` int(255) DEFAULT NULL,
@@ -215,5 +216,12 @@ DROP TABLE IF EXISTS `t_track`;
  `pid` int(11)  NOT NULL,
  `target_pid` int(11)  NOT NULL,
  `create_time` timestamp default now())
- ENGINE=InnoDB DEFAULT CHARSET=utf8;;
+ ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_circle_like`;
+ create table  `t_circle_like`  (
+ `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `pid` int(11)  NOT NULL,
+ `circle_pid` int(11)  NOT NULL,
+ `create_time` timestamp default now())
+ ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -20,6 +20,16 @@ public class TCircleDTO extends TCircle implements Serializable {
     private List<TCommentDTO> comments;
 
     private String[] imgs;
+    
+    private boolean like;
+
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
 
     public String[] getImgs() {
         return imgs;

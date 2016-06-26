@@ -130,16 +130,13 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_circle (id, title, hot,
-		datetime, pic, page_view,
-		favour,
-		comment, type,
+		datetime, pic, 
+		type,
 		pid, checked, pics, area,
 		trade_id, content,url)
 		values
 		(#{id}, #{title}, #{hot},
-		#{datetime}, #{pic}, #{pageView},
-		#{favour},
-		#{comment}, #{type},
+		#{datetime}, #{pic}, #{type},
 		#{pid}, #{checked}, #{pics}, #{area},
 		#{tradeId},
 		#{content},#{url})

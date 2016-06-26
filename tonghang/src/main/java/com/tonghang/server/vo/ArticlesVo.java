@@ -39,6 +39,15 @@ public class ArticlesVo {
     
     private String url;
     
+    private boolean like;
+
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
 
     public Integer getShare() {
         return share;
