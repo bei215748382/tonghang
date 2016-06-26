@@ -19,4 +19,6 @@ public interface TCommentMapper {
 	List<TCircle> getCommentUnCheck();
 
 	List<TCircle> getCommentChecked();
+
+    Boolean checkComment(Integer id);
 }

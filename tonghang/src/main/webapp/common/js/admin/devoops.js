@@ -1,3 +1,4 @@
+var selected=1;//默认值设置为1
 //
 //    Main script of DevOOPS v1.0 Bootstrap Theme
 //

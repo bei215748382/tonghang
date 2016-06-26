@@ -11,7 +11,8 @@
 		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from t_comment
+		delete from
+		t_comment
 		where id = #{id}
 	</delete>
 	<insert id="insert" parameterType="com.tonghang.server.entity.TComment">
@@ -20,7 +21,8 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_comment (id, circle_id, pid_id,
-		reply_id, content,checked,datetime)
+		reply_id,
+		content,checked,datetime)
 		values (#{id}, #{circleId}, #{pidId},
 		#{replyId}, #{content},#{checked},#{datetime})
 	</insert>
@@ -46,6 +48,12 @@
 				datetime = #{datetime}
 			</if>
 		</set>
+		where id = #{id}
+	</update>
+	<update id="checkComment" parameterType="java.lang.Integer">
+		update t_comment
+		set
+		checked = 1
 		where id = #{id}
 	</update>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"

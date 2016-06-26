@@ -55,6 +55,14 @@ public interface AdminService {
     TAdminUser getAdminUser(Integer id);//获取管理用户
 
     Boolean editAdminUser(TAdminUser user);//编辑管理用户
+
+    List<ServiceVo> getUncheckedServices();//获取未审核的服务
+
+    List<ServiceVo> getCheckedServices();//获取审核通过的服务
+
+    Boolean checkService(Integer id);//对服务审核
+
+    Boolean checkComment(Integer id);//对回复审核
     
     
 

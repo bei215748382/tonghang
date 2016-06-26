@@ -1,14 +1,26 @@
+
 function submitCheck(id){
-	console.log($("#checked option:selected").val()+id);
+	var url = "checkCircle";
+	switch (selected) {
+	case 1:
+		url = "checkCircle";
+		break;
+	case 2:
+		url = "checkService";
+		break;
+	default:
+		url = "checkComment";
+	}
 	if($("#checked").val()==1){//说明是通过
-		var url = "checkCircle";
 		var data = {id:id};
 		$.post(url,data,function(result){
-			console.log(result);
+			console.log("审核通过,url:"+url+",id:"+id);
 			LoadAjaxContent('index_info');
+			CloseModalBox();
 		});
 	} else {
-		
+		console.log("审核不通过");
+		CloseModalBox();
 	}
 	
 }
@@ -17,7 +29,7 @@ function user_info(id){
 		var url = "getUserById";
 		var data = {id:id};
 		$.get(url,data,function(data){
-			var form = '<div class="wid-3"><img src="'+data.pic+'" alt="头像" /></div>'
+			var form = '<div class="wid-3"><img src="'+data.pic+'" alt="头像" style="max-width:100%" /></div>'
 			+'<div class="wid-4">'
 			+'<div>姓名：'+data.name+'</div>'
 			+'<div>手机号码：'+data.phone+'</div>'
@@ -71,9 +83,10 @@ function user_info(id){
 		var buttons = '<div><button type="button" class="btn btn-default" onclick="submitCheck('+id+')">确定</button></div>';
 		OpenModalBox("审核",form,buttons);
 	}
-	var selected;
+
 	function select(data) {
 		selected = data;
+		console.log("目前选的是："+selected);
 		switch (selected) {
 		case 1:
 			LoadAjaxContent('index_info');
@@ -86,7 +99,7 @@ function user_info(id){
 		}
 	}
 	function uncheck() {
-		console.log(selected);
+		console.log("待审核选的是："+selected);
 		switch (selected) {
 		case 1:
 			LoadAjaxContent('index_info');
@@ -99,6 +112,7 @@ function user_info(id){
 		}
 	}
 	function check() {
+		console.log("已审核选的是："+selected);
 		switch (selected) {
 		case 1:
 			LoadAjaxContent('get_circle_checked');

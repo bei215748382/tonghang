@@ -152,4 +152,24 @@ public class AdminServiceImpl implements AdminService {
         return true;
     }
 
+    @Override
+    public List<ServiceVo> getUncheckedServices() {
+        return tServiceMapper.getUncheckedServices();
+    }
+
+    @Override
+    public List<ServiceVo> getCheckedServices() {
+        return tServiceMapper.getCheckedServices();
+    }
+
+    @Override
+    public Boolean checkService(Integer id) {
+        return tServiceMapper.checkService(id);
+    }
+
+    @Override
+    public Boolean checkComment(Integer id) {
+        return tCommentMapper.checkComment(id);
+    }
+
 }

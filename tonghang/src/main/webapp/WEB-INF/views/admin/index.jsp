@@ -200,5 +200,6 @@
 <script src="${ctx}/common/plugins/tinymce/jquery.tinymce.min.js"></script>
 <!-- All functions for this theme + document.ready processing -->
 <script src="${ctx}/common/js/admin/devoops.js"></script>
+<script src="${ctx}/common/js/admin/echarts.min.js"></script>
 </body>
 </html>

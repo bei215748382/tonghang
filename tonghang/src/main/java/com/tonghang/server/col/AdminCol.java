@@ -70,11 +70,18 @@ public class AdminCol {
         return mav;
     }
 
+    @RequestMapping(value = "checkService")
+    @ResponseBody
+    public Boolean checkService(Integer id) {
+        return adminService.checkService(id);
+    }
+
+    
     @RequestMapping(value = "get_service_unchecked")
     public ModelAndView get_service_unchecked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TService> list = adminService.getServiceUnCheck();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_service_info");
+        List<ServiceVo> list = adminService.getUncheckedServices();
         mav.addObject("dataList", list);
         return mav;
     }
@@ -82,10 +89,16 @@ public class AdminCol {
     @RequestMapping(value = "get_service_checked")
     public ModelAndView get_service_checked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TService> list = adminService.getServiceChecked();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_service_info");
+        List<ServiceVo> list = adminService.getCheckedServices();
         mav.addObject("dataList", list);
         return mav;
+    }
+    
+    @RequestMapping(value = "checkComment")
+    @ResponseBody
+    public Boolean checkComment(Integer id) {
+        return adminService.checkComment(id);
     }
 
     @RequestMapping(value = "get_comment_unchecked")

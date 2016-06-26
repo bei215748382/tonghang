@@ -61,12 +61,12 @@
 						<!-- Start: list_row -->
 						<c:forEach items="${dataList}" var="data">
 							<tr>
-								<td>${data.pic}</td>
-								<td>${data.content}</td>
-								<td>${data.phone.name}<br/>
-								<fmt:formatDate value="${data.datetime}"
+								<td>${data.pictures}</td>
+								<td>${data.description}</td>
+								<td>${data.name}<br/>
+								<fmt:formatDate value="${data.timestamp}"
 										pattern="yyyy-MM-dd HH:MM:ss" /><br/>
-										<button type="button" class="btn btn-default" onclick="user_info(${data.phone.id})">查看用户</button><br/>
+										<button type="button" class="btn btn-default" onclick="user_info(${data.uid})">查看用户</button><br/>
 										<button type="button" class="btn btn-default" onclick="checkCircle(${data.id})">审核</button></td>
 							</tr>
 						</c:forEach>
