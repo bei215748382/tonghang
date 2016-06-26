@@ -16,6 +16,8 @@ public class TServiceDTO extends TService implements Serializable {
     public TServiceDTO(TService bean) {
         super(bean.getId(), bean.getTitle(), bean.getDescription(),
                 bean.getPictures(), bean.getPid(), bean.getChecked());
+        this.setImgs(bean.getPictures());
+        this.setPictures(null);
     }
 
     public String[] getImgs() {

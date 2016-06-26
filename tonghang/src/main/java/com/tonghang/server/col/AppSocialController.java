@@ -39,9 +39,8 @@ public class AppSocialController extends AppBaseController {
         String txt = params.get("content");
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService
-                .publishSns(baseRequest.getUserId().intValue(), txt, files);
-        result.put("data", data);
+        result.put("data", socialService
+                .publishSns(baseRequest.getUserId().intValue(), txt, files));
 
         return JSON.toJSONString(result);
     }
@@ -102,9 +101,8 @@ public class AppSocialController extends AppBaseController {
         String userId = params.get("userId");
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService
-                .applyFriend(baseRequest.getUserId().intValue(), userId);
-        result.put("data", data);
+        result.put("data", socialService
+                .applyFriend(baseRequest.getUserId().intValue(), userId));
 
         return JSON.toJSONString(result);
     }
@@ -192,10 +190,9 @@ public class AppSocialController extends AppBaseController {
         String commentId = params.get("commentId");
         result.put("code", 200);
         result.put("msg", "success");
-        Map<String, Object> data = socialService.comment(
+        result.put("data", socialService.comment(
                 baseRequest.getUserId().intValue(), Integer.valueOf(id),
-                comment, commentId);
-        result.put("data", data);
+                comment, commentId));
 
         return JSON.toJSONString(result);
     }

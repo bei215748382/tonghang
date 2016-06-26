@@ -50,8 +50,8 @@ public class SocialServiceImpl {
     @Autowired
     private UserService userService;
 
-    public Map<String, Object> publishSns(int userId, String txt,
-            String pictures) throws ServiceException {
+    public Object publishSns(int userId, String txt, String pictures)
+            throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             throw new ServiceException(ErrorCode.code101.getCode(),
@@ -85,8 +85,26 @@ public class SocialServiceImpl {
         circle.setArea(user.getCity());
         circleMapper.insert(circle);
         List<TCircle> circles = circleMapper.getMyCircles(user.getId());
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("circles", circles);
+        List<TCircleDTO> result = new ArrayList<TCircleDTO>();
+        for (TCircle bean : circles) {
+            TPhone u = userMapper.getUserInfoById(bean.getPid());
+            TTrade trade = tradeMapper.selectByPrimaryKey(bean.getTradeId());
+            List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
+            if (bean.getComment() != 0) {
+                List<TComment> comments = commentMapper
+                        .selectByCircleId(bean.getId());
+                if (CollectionUtils.isNotEmpty(comments)) {
+                    for (TComment comment : comments) {
+                        TPhone userinfo = userMapper
+                                .getUserInfoById(comment.getPidId());
+                        commentdto.add(new TCommentDTO(comment, userinfo));
+                    }
+                }
+            }
+            result.add(TCircleDTO.builder(bean, u, commentdto, trade));
+
+        }
+
         return result;
     }
 
@@ -137,7 +155,7 @@ public class SocialServiceImpl {
         }
         List<TCircleDTO> result = new ArrayList<TCircleDTO>();
         for (TCircle circle : circles) {
-            TPhone u = userMapper.selectByPrimaryKey(circle.getPid());
+            TPhone u = userMapper.getUserInfoById(circle.getPid());
             TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
             List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
             if (circle.getComment() != 0) {
@@ -157,7 +175,7 @@ public class SocialServiceImpl {
         return result;
     }
 
-    public Map<String, Object> applyFriend(int userId, String targetUserId)
+    public Object applyFriend(int userId, String targetUserId)
             throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -193,9 +211,7 @@ public class SocialServiceImpl {
             TPhone userinfo = userMapper.getUserInfoById(bean.getFid());
             friendresult.add(new TFriendDTO(bean, userinfo));
         }
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("apply", friendresult);
-        return result;
+        return friendresult;
     }
 
     public Object friends(int userId) throws ServiceException {
@@ -244,7 +260,7 @@ public class SocialServiceImpl {
 
         List<TCircleDTO> result = new ArrayList<TCircleDTO>();
         for (TCircle circle : circles) {
-            TPhone u = userMapper.selectByPrimaryKey(circle.getPid());
+            TPhone u = userMapper.getUserInfoById(circle.getPid());
             TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
             List<TComment> comments = commentMapper
                     .selectByCircleId(circle.getId());
@@ -281,7 +297,7 @@ public class SocialServiceImpl {
         return result;
     }
 
-    public Map<String, Object> comment(int userId, Integer circleId, String txt,
+    public Object comment(int userId, Integer circleId, String txt,
             String commentId) throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -289,7 +305,6 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        Map<String, Object> result = new HashMap<String, Object>();
         TCircle circle = circleMapper.selectByPrimaryKey(circleId);
         if (circle == null) {
             throw new ServiceException(ErrorCode.code300);
@@ -326,8 +341,14 @@ public class SocialServiceImpl {
                                                    // 建议改成查询comment数量
         circleMapper.updateByPrimaryKey(circle);
         List<TComment> comments = commentMapper.selectByCircleId(circleId);
-        result.put("comments", comments);
-        return result;
+        List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
+        if (CollectionUtils.isNotEmpty(comments)) {
+            for (TComment bean : comments) {
+                TPhone userinfo = userMapper.getUserInfoById(bean.getPidId());
+                commentdto.add(new TCommentDTO(bean, userinfo));
+            }
+        }
+        return commentdto;
     }
 
     public Object like(int userId, Integer circleId) throws ServiceException {
@@ -361,7 +382,8 @@ public class SocialServiceImpl {
         } else {
             throw new ServiceException(ErrorCode.code22);
         }
-        return friend;
+        TPhone userinfo = userMapper.getUserInfoById(friend.getFid());
+        return new TFriendDTO(friend, userinfo);
     }
 
     public Object homepage(String userId, String targetUserId)
@@ -405,9 +427,7 @@ public class SocialServiceImpl {
             TPhone userinfo = userMapper.getUserInfoById(bean.getFid());
             friendresult.add(new TFriendDTO(bean, userinfo));
         }
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("apply", friendresult);
-        return result;
+        return friendresult;
     }
 
 }

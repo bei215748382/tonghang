@@ -184,6 +184,10 @@ public class UserService {
         if (StringUtils.isNoneBlank(cityId)) {
             user.setCityId(Integer.valueOf(cityId));
         }
+        String education = params.get("education");
+        if (StringUtils.isNoneBlank(education)) {
+            user.setEducation(education);
+        }
         String tags = params.get("tags");
         if (StringUtils.isEmpty(tags)) {
             user.setRemark(tags);

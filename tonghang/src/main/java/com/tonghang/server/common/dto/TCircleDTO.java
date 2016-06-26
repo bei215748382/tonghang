@@ -1,14 +1,11 @@
 package com.tonghang.server.common.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.tonghang.server.entity.TCircle;
-import com.tonghang.server.entity.TComment;
-import com.tonghang.server.entity.TFriend;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TTrade;
 
@@ -26,6 +23,14 @@ public class TCircleDTO extends TCircle implements Serializable {
 
     public String[] getImgs() {
         return imgs;
+    }
+
+    public TPhone getUserinfo() {
+        return userinfo;
+    }
+
+    public void setImgs(String[] imgs) {
+        this.imgs = imgs;
     }
 
     public void setImgs(String pics) {
