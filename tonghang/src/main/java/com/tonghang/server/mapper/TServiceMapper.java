@@ -23,4 +23,10 @@ public interface TServiceMapper {
     List<ServiceVo> getServices();
     
     List<TService> getServicesByUserId(int userId);
+
+    List<ServiceVo> getUncheckedServices();
+    
+    List<ServiceVo> getCheckedServices();
+
+    Boolean checkService(Integer id);
 }

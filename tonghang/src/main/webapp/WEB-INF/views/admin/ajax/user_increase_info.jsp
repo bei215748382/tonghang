@@ -57,13 +57,21 @@
 				</div>
 				<div class="no-move"></div>
 			</div>
-			<div class="box-content no-padding">三十日增长曲线</div>
+			<div class="box-content no-padding">
+				<div id="xchart-3" style="height: 200px;"></div>
+			</div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
+//Draw all test xCharts
+function drawLine(){
+	xGraph3();
+}
 	$(document).ready(function() {
 		// Add Drag-n-Drop feature
 		WinMove();
+		//画30日增长曲线
+		drawLine();
 	});
 </script>

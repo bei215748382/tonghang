@@ -222,6 +222,6 @@ DROP TABLE IF EXISTS `t_circle_like`;
  create table  `t_circle_like`  (
  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
  `pid` int(11)  NOT NULL,
- `circle_pid` int(11)  NOT NULL,
+ `circle_id` int(11)  NOT NULL,
  `create_time` timestamp default now())
  ENGINE=InnoDB DEFAULT CHARSET=utf8;

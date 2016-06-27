@@ -21,4 +21,6 @@ public interface TCommentMapper {
 	List<TCircle> getCommentChecked();
 	
 	List<TComment> selectByCircleId(Integer id);
+
+    Boolean checkComment(Integer id);
 }

@@ -1,13 +1,21 @@
 package com.tonghang.server.vo;
 
+import java.util.Date;
+
 
 public class ServiceVo {
+    
+    private Integer id;//服务id
     
     private String title;// 技能名称
     
     private String description;// 技能说明
     
     private String[] pictures;// 图片列表
+    
+    private Date timestamp;//发布修改时候的时间戳
+    
+    private Integer uid;//手机用户的id
     
     private String name;// 姓名
     
@@ -71,6 +79,30 @@ public class ServiceVo {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
 }

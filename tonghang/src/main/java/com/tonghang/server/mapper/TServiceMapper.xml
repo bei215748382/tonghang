@@ -8,19 +8,45 @@
 		<result column="pictures" property="pictures" jdbcType="VARCHAR" />
 		<result column="pid" property="pid" jdbcType="INTEGER" />
 		<result column="checked" property="checked" jdbcType="INTEGER" />
+		<result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<resultMap id="ServiceVoResultMap" type="com.tonghang.server.vo.ServiceVo">
+		<result column="id" property="id" jdbcType="INTEGER" />
 		<result column="title" property="title" jdbcType="VARCHAR" />
 		<result column="description" property="description" jdbcType="VARCHAR" />
 		<result column="pictures" property="pictures"
 			typeHandler="com.tonghang.server.mybatis.handler.StringToListHandler" />
+		<result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+		<result column="uid" property="uid" jdbcType="INTEGER" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="tradeName" property="trade" jdbcType="VARCHAR" />
 		<result column="state" property="state" jdbcType="VARCHAR" />
 	</resultMap>
+	<sql id="serviceVoSql">
+		select
+		s.id,
+		s.title,
+		s.description,
+		s.pictures,
+		s.timestamp,
+		p.id uid,
+		p.name,
+		p.phone,
+		p.state,
+		p.trade_id,
+		t.name tradeName
+		from
+		t_service s
+		left outer join
+		t_phone p on p.id = s.pid
+		left outer join
+		t_trade t on t.id =
+		p.trade_id
+	</sql>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from t_service
+		delete from
+		t_service
 		where id = #{id}
 	</delete>
 	<insert id="insert" parameterType="com.tonghang.server.entity.TService">
@@ -29,10 +55,11 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_service (id, title, description,
-		pictures, pid, checked
+		pictures, pid,
+		checked,timestamp
 		)
 		values (#{id}, #{title}, #{description},
-		#{pictures}, #{pid}, #{checked}
+		#{pictures}, #{pid}, #{checked},#{timestamp}
 		)
 	</insert>
 	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TService">
@@ -53,7 +80,16 @@
 			<if test="checked != null and checked != ''">
 				checked = #{checked},
 			</if>
+			<if test="timestamp != null and timestamp != ''">
+				timestamp = #{timestamp}
+			</if>
 		</set>
+		where id = #{id}
+	</update>
+	<update id="checkService" parameterType="java.lang.Integer">
+		update t_service
+		set
+		checked = 1
 		where id = #{id}
 	</update>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
@@ -77,25 +113,22 @@
 		where checked is not null
 	</select>
 	<select id="getServices" resultMap="ServiceVoResultMap">
-		select
-		s.title,
-		s.description,
-		s.pictures,
-		p.name,
-		p.phone,
-		p.state,
-		p.trade_id,
-		t.name tradeName
-		from t_service s
-		left outer join t_phone p on p.id = s.pid
-		left outer join t_trade t on t.id = p.trade_id
+		<include refid="serviceVoSql"></include>
 	</select>
-	
-	<select id="getServicesByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-		select  id,title,description,pictures 
+	<select id="getServicesByUserId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select id,title,description,pictures
 		from t_service
-		where  pid =#{userId} 
-		and  (checked  !=0 or checked is null) 
+		where
+		pid =#{userId}
+		and checked !=1
 	</select>
-	
+	<select id="getUncheckedServices" resultMap="ServiceVoResultMap">
+		<include refid="serviceVoSql"></include>
+		where s.checked is null
+	</select>
+	<select id="getCheckedServices" resultMap="ServiceVoResultMap">
+		<include refid="serviceVoSql"></include>
+		where s.checked is not null
+	</select>
 </mapper>

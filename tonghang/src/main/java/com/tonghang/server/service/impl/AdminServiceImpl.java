@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
+import com.tonghang.server.mapper.TAdminUserMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
@@ -25,54 +27,57 @@ import com.tonghang.server.vo.UserVo;
 
 @Service
 public class AdminServiceImpl implements AdminService {
-	
-	@Autowired
-	private TCircleMapper tCircleMapper;
-	
-	@Autowired
-	private TServiceMapper tServiceMapper;
-	
-	@Autowired
-	private TCommentMapper tCommentMapper;
-	
-	@Autowired
-	private TPhoneMapper tPhoneMapper;
-	
-	@Autowired
-	private TCityMapper tCityMapper;
-	
-	@Autowired
-	private TTradeMapper tTradeMapper;
-	
-	@Override
-	public List<CircleVo> getCircleUnCheck() {
-		return tCircleMapper.getCircleUnCheck();
-	}
 
-	@Override
-	public List<CircleVo> getCircleChecked() {
-		return  tCircleMapper.getCircleChecked();
-	}
+    @Autowired
+    private TCircleMapper tCircleMapper;
 
-	@Override
-	public List<TService> getServiceUnCheck() {
-		return tServiceMapper.getServiceUnCheck();
-	}
+    @Autowired
+    private TServiceMapper tServiceMapper;
 
-	@Override
-	public List<TService> getServiceChecked() {
-		return tServiceMapper.getServiceChecked();
-	}
+    @Autowired
+    private TCommentMapper tCommentMapper;
 
-	@Override
-	public List<TCircle> getCommentUnCheck() {
-		return tCommentMapper.getCommentUnCheck();
-	}
+    @Autowired
+    private TPhoneMapper tPhoneMapper;
 
-	@Override
-	public List<TCircle> getCommentChecked() {
-		return tCommentMapper.getCommentChecked();
-	}
+    @Autowired
+    private TCityMapper tCityMapper;
+
+    @Autowired
+    private TTradeMapper tTradeMapper;
+
+    @Autowired
+    private TAdminUserMapper tAdminUserMapper;
+
+    @Override
+    public List<CircleVo> getCircleUnCheck() {
+        return tCircleMapper.getCircleUnCheck();
+    }
+
+    @Override
+    public List<CircleVo> getCircleChecked() {
+        return tCircleMapper.getCircleChecked();
+    }
+
+    @Override
+    public List<TService> getServiceUnCheck() {
+        return tServiceMapper.getServiceUnCheck();
+    }
+
+    @Override
+    public List<TService> getServiceChecked() {
+        return tServiceMapper.getServiceChecked();
+    }
+
+    @Override
+    public List<TCircle> getCommentUnCheck() {
+        return tCommentMapper.getCommentUnCheck();
+    }
+
+    @Override
+    public List<TCircle> getCommentChecked() {
+        return tCommentMapper.getCommentChecked();
+    }
 
     @Override
     public List<UserVo> getUsers() {
@@ -122,6 +127,49 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Boolean checkCircle(Integer id) {
         return tCircleMapper.checkCircle(id);
+    }
+
+    @Override
+    public List<TAdminUser> getAdminUsers() {
+        return tAdminUserMapper.selectAll();
+    }
+
+    @Override
+    public Boolean saveAdminUser(TAdminUser user) {
+        int a = tAdminUserMapper.insert(user);
+        System.out.println(a);
+        return true;
+    }
+
+    @Override
+    public TAdminUser getAdminUser(Integer id) {
+        return tAdminUserMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Boolean editAdminUser(TAdminUser user) {
+        tAdminUserMapper.updateByPrimaryKey(user);
+        return true;
+    }
+
+    @Override
+    public List<ServiceVo> getUncheckedServices() {
+        return tServiceMapper.getUncheckedServices();
+    }
+
+    @Override
+    public List<ServiceVo> getCheckedServices() {
+        return tServiceMapper.getCheckedServices();
+    }
+
+    @Override
+    public Boolean checkService(Integer id) {
+        return tServiceMapper.checkService(id);
+    }
+
+    @Override
+    public Boolean checkComment(Integer id) {
+        return tCommentMapper.checkComment(id);
     }
 
 }

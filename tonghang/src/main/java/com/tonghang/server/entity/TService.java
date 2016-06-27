@@ -1,5 +1,7 @@
 package com.tonghang.server.entity;
 
+import java.util.Date;
+
 public class TService {
     private Integer id;
 
@@ -12,6 +14,8 @@ public class TService {
     private Integer pid;
 
     private Integer checked;
+    
+    private Date timestamp;
 
     public Integer getId() {
         return id;
@@ -61,6 +65,15 @@ public class TService {
 		this.checked = checked;
 	}
 
+	
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+    
     public TService(Integer id, String title, String description,
             String pictures, Integer pid, Integer checked) {
         super();
@@ -75,7 +88,5 @@ public class TService {
     public TService() {
         super();
     }
-	
-	
 
 }
