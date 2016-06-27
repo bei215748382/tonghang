@@ -10,6 +10,7 @@ import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -24,9 +25,9 @@ public interface AdminService {
 	
 	List<TService> getServiceChecked();//获取服务待审核的内容和已审核的内容,1或者2表示已审核
 	
-	List<TCircle> getCommentUnCheck();//获取回复待审核的内容和已审核的内容,check等于null表示待审核
+	List<CheckCommentVo> getCommentUnCheck();//获取回复待审核的内容和已审核的内容,check等于null表示待审核
 	
-	List<TCircle> getCommentChecked();//获取回复待审核的内容和已审核的内容,1或者2表示已审核
+	List<CheckCommentVo> getCommentChecked();//获取回复待审核的内容和已审核的内容,1或者2表示已审核
 
 	List<UserVo> getUsers();//获取所有用户信息
 

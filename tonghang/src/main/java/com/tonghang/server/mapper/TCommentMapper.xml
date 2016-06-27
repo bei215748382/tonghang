@@ -1,85 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tonghang.server.mapper.TCommentMapper">
-	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TComment">
-		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="circle_id" property="circleId" jdbcType="INTEGER" />
-		<result column="pid_id" property="pidId" jdbcType="INTEGER" />
-		<result column="reply_id" property="replyId" jdbcType="INTEGER" />
-		<result column="content" property="content" jdbcType="LONGVARCHAR" />
-		<result column="checked" property="checked" jdbcType="INTEGER" />
-		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
-	</resultMap>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from
-		t_comment
-		where id = #{id}
-	</delete>
-	<insert id="insert" parameterType="com.tonghang.server.entity.TComment">
-		<selectKey resultType="java.lang.Integer" keyProperty="id"
-			order="BEFORE">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-		insert into t_comment (id, circle_id, pid_id,
-		reply_id,
-		content,checked,datetime)
-		values (#{id}, #{circleId}, #{pidId},
-		#{replyId}, #{content},#{checked},#{datetime})
-	</insert>
-	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TComment">
-		update t_comment
-		<set>
-			<if test="circleId != null and circleId != ''">
-				circle_id = #{circleId},
-			</if>
-			<if test="pidId != null and pidId != ''">
-				pid_id = #{pidId},
-			</if>
-			<if test="replyId != null and replyId != ''">
-				reply_id = #{replyId},
-			</if>
-			<if test="content != null and content != ''">
-				content = #{content},
-			</if>
-			<if test="circleId != null">
-				checked = #{checked},
-			</if>
-			<if test="datetime != null and datetime != ''">
-				datetime = #{datetime}
-			</if>
-		</set>
-		where id = #{id}
-	</update>
-	<update id="checkComment" parameterType="java.lang.Integer">
-		update t_comment
-		set
-		checked = 1
-		where id = #{id}
-	</update>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
-		select *
-		from t_comment
-		where id = #{id}
-	</select>
-	<select id="selectAll" resultMap="BaseResultMap">
-		select *
-		from t_comment
-	</select>
-	<select id="getCommentUnCheck" resultMap="BaseResultMap">
-		select *
-		from t_comment
-		where checked is null
-	</select>
-	<select id="getCommentChecked" resultMap="BaseResultMap">
-		select *
-		from t_comment
-		where checked is not null
-	</select>
-	<select id="selectByCircleId" resultMap="BaseResultMap">
-		select *
-		from t_comment
-		where circle_id = #{circleId} and checked != 0
-	</select>
-	
+  <resultMap id="BaseResultMap" type="com.tonghang.server.entity.TComment">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="circle_id" property="circleId" jdbcType="INTEGER" />
+    <result column="pid_id" property="pidId" jdbcType="INTEGER" />
+    <result column="reply_id" property="replyId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="checked" property="checked" jdbcType="INTEGER" />
+    <result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap type="com.tonghang.server.vo.CheckCommentVo" id="CheckCommentVoResult"
+    extends="BaseResultMap">
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from
+    t_comment
+    where id = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.tonghang.server.entity.TComment">
+    <selectKey resultType="java.lang.Integer" keyProperty="id"
+      order="BEFORE">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_comment (id, circle_id, pid_id,
+    reply_id,
+    content,checked,datetime)
+    values (#{id}, #{circleId}, #{pidId},
+    #{replyId}, #{content},#{checked},#{datetime})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TComment">
+    update t_comment
+    <set>
+      <if test="circleId != null and circleId != ''">
+        circle_id = #{circleId},
+      </if>
+      <if test="pidId != null and pidId != ''">
+        pid_id = #{pidId},
+      </if>
+      <if test="replyId != null and replyId != ''">
+        reply_id = #{replyId},
+      </if>
+      <if test="content != null and content != ''">
+        content = #{content},
+      </if>
+      <if test="circleId != null">
+        checked = #{checked},
+      </if>
+      <if test="datetime != null and datetime != ''">
+        datetime = #{datetime}
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="checkComment" parameterType="java.lang.Integer">
+    update t_comment
+    set
+    checked = 1
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+    parameterType="java.lang.Integer">
+    select *
+    from t_comment
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from t_comment
+  </select>
+  <select id="getCommentUnCheck" resultMap="CheckCommentVoResult">
+    select c.*,p.id pid,p.name pname
+    from t_comment c
+    left outer join t_phone p on p.id = c.pid_id
+    where checked is null
+  </select>
+  <select id="getCommentChecked" resultMap="CheckCommentVoResult">
+    select c.*,p.id pid,p.name pname
+    from t_comment c
+    left outer join t_phone p on p.id = c.pid_id
+    where checked is not null
+  </select>
+  <select id="selectByCircleId" resultMap="BaseResultMap">
+    select *
+    from t_comment
+    where circle_id = #{circleId} and checked != 0
+  </select>
 </mapper>

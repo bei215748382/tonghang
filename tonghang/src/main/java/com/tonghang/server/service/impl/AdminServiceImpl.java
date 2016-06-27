@@ -21,6 +21,7 @@ import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -70,12 +71,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<TCircle> getCommentUnCheck() {
+    public List<CheckCommentVo> getCommentUnCheck() {
         return tCommentMapper.getCommentUnCheck();
     }
 
     @Override
-    public List<TCircle> getCommentChecked() {
+    public List<CheckCommentVo> getCommentChecked() {
         return tCommentMapper.getCommentChecked();
     }
 

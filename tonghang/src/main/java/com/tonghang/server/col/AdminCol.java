@@ -24,6 +24,7 @@ import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.FileUtil;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -104,8 +105,8 @@ public class AdminCol {
     @RequestMapping(value = "get_comment_unchecked")
     public ModelAndView get_comment_unchecked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getCommentUnCheck();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_comment_info");
+        List<CheckCommentVo> list = adminService.getCommentUnCheck();
         mav.addObject("dataList", list);
         return mav;
     }
@@ -113,8 +114,8 @@ public class AdminCol {
     @RequestMapping(value = "get_comment_checked")
     public ModelAndView get_comment_checked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getCommentUnCheck();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_comment_info");
+        List<CheckCommentVo> list = adminService.getCommentChecked();
         mav.addObject("dataList", list);
         return mav;
     }
