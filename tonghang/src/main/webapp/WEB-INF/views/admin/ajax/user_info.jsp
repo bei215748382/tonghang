@@ -25,6 +25,7 @@
         <div class="no-move"></div>
       </div>
       <div class="box-content">
+        <input type="hidden" value="${user.id}" id="uid"/>
         <div class="wid-3">
           <img src="${user.pic}" alt="头像" style="max-width: 100%" />
         </div>
@@ -147,27 +148,7 @@
       <div class="box-content">
          <table
           class="table table-bordered table-striped table-hover table-heading table-datatable"
-          id="datatable-2">
-          <thead>
-            <tr>
-              <th><label><input type="text"
-                  name="search_rate" value="图片" class="search_init" /></label></th>
-              <th><label><input type="text"
-                  name="search_rate" value="说明" class="search_init" /></label></th>
-              <th><label><input type="text"
-                  name="search_rate" value="操作" class="search_init" /></label></th>
-            </tr>
-          </thead>
-          <tbody  id="hisBehavior">
-     
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>图片</th>
-              <th>说明</th>
-              <th>操作</th>
-            </tr>
-          </tfoot>
+          id="user_behavior_table">
         </table>
       </div>
     </div>
@@ -176,6 +157,7 @@
 <script src="${ctx}/common/js/admin/user_info.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		hisCircle($("#uid").val());
 		// Add tooltip to form-controls
 		$('.form-control').tooltip();
 		// Add drag-n-drop feature to boxes
