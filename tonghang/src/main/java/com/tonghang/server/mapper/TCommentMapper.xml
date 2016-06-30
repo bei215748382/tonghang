@@ -72,20 +72,28 @@
     from t_comment
   </select>
   <select id="getCommentUnCheck" resultMap="CheckCommentVoResult">
-    select c.*,p.id pid,p.name pname
+    select c.*,p.id
+    pid,p.name pname
     from t_comment c
-    left outer join t_phone p on p.id = c.pid_id
+    left outer join t_phone p on p.id =
+    c.pid_id
     where checked is null
   </select>
   <select id="getCommentChecked" resultMap="CheckCommentVoResult">
-    select c.*,p.id pid,p.name pname
+    select c.*,p.id
+    pid,p.name pname
     from t_comment c
-    left outer join t_phone p on p.id = c.pid_id
+    left outer join t_phone p on p.id =
+    c.pid_id
     where checked is not null
   </select>
   <select id="selectByCircleId" resultMap="BaseResultMap">
     select *
     from t_comment
     where circle_id = #{circleId} and checked != 0
+  </select>
+  <select id="getCommentByUserId" parameterType="java.lang.Integer"
+    resultMap="BaseResultMap">
+    select * from t_comment where pid_id = #{id}
   </select>
 </mapper>

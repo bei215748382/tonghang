@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
@@ -171,6 +172,21 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Boolean checkComment(Integer id) {
         return tCommentMapper.checkComment(id);
+    }
+
+    @Override
+    public UserVo getUser(Integer id) {
+        return tPhoneMapper.getUser(id);
+    }
+
+    @Override
+    public List<TCircle> getUserCircle(Integer id) {
+        return tCircleMapper.getCircleByUserId(id);
+    }
+
+    @Override
+    public List<TComment> getUserComment(Integer id) {
+        return tCommentMapper.getCommentByUserId(id);
     }
 
 }

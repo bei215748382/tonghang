@@ -7,6 +7,8 @@ import com.tonghang.server.entity.TTrade;
 
 public class UserVo {
     
+    private Integer id;
+    
     private String phone;
     
     private String name;
@@ -20,6 +22,14 @@ public class UserVo {
     private String state;// 用户状态，1为激活状态，2为冻结状态
     
     private Integer sum;// 活跃度，未定义如何计算
+    
+    public Integer getId(){
+        return id;
+    }
+    
+    public void setId(Integer id){
+        this.id = id;
+    }
 
     public String getPhone() {
         return phone;

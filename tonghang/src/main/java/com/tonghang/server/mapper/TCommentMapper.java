@@ -1,6 +1,5 @@
 package com.tonghang.server.mapper;
 
-import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.vo.CheckCommentVo;
 
@@ -24,4 +23,6 @@ public interface TCommentMapper {
 	List<TComment> selectByCircleId(Integer id);
 
     Boolean checkComment(Integer id);
+
+    List<TComment> getCommentByUserId(Integer id);
 }

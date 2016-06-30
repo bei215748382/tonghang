@@ -1,3 +1,13 @@
+.wid-3{
+	width:30%;
+}
+
+.wid-4{
+	width:40%;
+}
+.wid-4,.wid-3{
+	float:left;
+}
 body {
 	color: #525252;
 	background: #6AA6D6 url(../../img/admin/devoops_pattern_b10.png) 0 0

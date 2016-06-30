@@ -17,6 +17,7 @@
 		<result column="pictures" property="pictures"
 			typeHandler="com.tonghang.server.mybatis.handler.StringToListHandler" />
 		<result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+       <result column="checked" property="checked" jdbcType="INTEGER" />
 		<result column="uid" property="uid" jdbcType="INTEGER" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -30,6 +31,7 @@
 		s.description,
 		s.pictures,
 		s.timestamp,
+        s.checked,
 		p.id uid,
 		p.name,
 		p.phone,

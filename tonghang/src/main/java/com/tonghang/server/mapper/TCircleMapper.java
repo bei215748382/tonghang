@@ -39,4 +39,6 @@ public interface TCircleMapper {
     List<ArticlesVo> getTradeArticles(int tradeId);
 
     List<TCircle> getAllCircleShow(@Param("pageNo")int pageNo,@Param("pageSize") int pageSize);
+
+    List<TCircle> getCircleByUserId(Integer id);
 }
