@@ -5,11 +5,13 @@ import java.util.List;
 import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -24,9 +26,9 @@ public interface AdminService {
 	
 	List<TService> getServiceChecked();//获取服务待审核的内容和已审核的内容,1或者2表示已审核
 	
-	List<TCircle> getCommentUnCheck();//获取回复待审核的内容和已审核的内容,check等于null表示待审核
+	List<CheckCommentVo> getCommentUnCheck();//获取回复待审核的内容和已审核的内容,check等于null表示待审核
 	
-	List<TCircle> getCommentChecked();//获取回复待审核的内容和已审核的内容,1或者2表示已审核
+	List<CheckCommentVo> getCommentChecked();//获取回复待审核的内容和已审核的内容,1或者2表示已审核
 
 	List<UserVo> getUsers();//获取所有用户信息
 
@@ -63,7 +65,11 @@ public interface AdminService {
     Boolean checkService(Integer id);//对服务审核
 
     Boolean checkComment(Integer id);//对回复审核
-    
-    
+
+    UserVo getUser(Integer id);//根据id获取用户信息
+
+    List<TCircle> getUserCircle(Integer id);//根据用户id获取用户发布的朋友圈
+
+    List<TComment> getUserComment(Integer id);//根据用户id获取用户发表的评论
 
 }

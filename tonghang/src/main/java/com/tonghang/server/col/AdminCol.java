@@ -17,13 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
-import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.FileUtil;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
+import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
@@ -104,8 +105,8 @@ public class AdminCol {
     @RequestMapping(value = "get_comment_unchecked")
     public ModelAndView get_comment_unchecked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getCommentUnCheck();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_comment_info");
+        List<CheckCommentVo> list = adminService.getCommentUnCheck();
         mav.addObject("dataList", list);
         return mav;
     }
@@ -113,8 +114,8 @@ public class AdminCol {
     @RequestMapping(value = "get_comment_checked")
     public ModelAndView get_comment_checked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
-        List<TCircle> list = adminService.getCommentUnCheck();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_comment_info");
+        List<CheckCommentVo> list = adminService.getCommentChecked();
         mav.addObject("dataList", list);
         return mav;
     }
@@ -125,6 +126,28 @@ public class AdminCol {
         List<UserVo> list = adminService.getUsers();
         mav.addObject("users", list);
         return mav;
+    }
+    
+    @RequestMapping(value = "user_info")
+    public ModelAndView user_info(Integer id) {
+        ModelAndView mav = new ModelAndView("admin/ajax/user_info");
+        TPhone user = adminService.getUserById(id);
+        mav.addObject("user", user);
+        List<ServiceVo> list = adminService.getServices();
+        mav.addObject("services", list);
+        return mav;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "get_user_circle")
+    public List<TCircle> get_user_circle(Integer id) {
+        return adminService.getUserCircle(id);
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "get_user_comment")
+    public List<TComment> get_user_comment(Integer id) {
+        return adminService.getUserComment(id);
     }
 
     @RequestMapping(value = "services_info")
@@ -226,4 +249,6 @@ public class AdminCol {
     public Boolean edit_admin_user(TAdminUser user) {
         return adminService.editAdminUser(user);
     }
+    
+    
 }

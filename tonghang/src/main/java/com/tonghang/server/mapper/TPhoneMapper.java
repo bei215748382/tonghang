@@ -38,4 +38,6 @@ public interface TPhoneMapper {
             @Param("tradeId") Integer tradeId);
     
     TPhone getUserInfoById(Integer id);
+
+    UserVo getUser(Integer id);
 }

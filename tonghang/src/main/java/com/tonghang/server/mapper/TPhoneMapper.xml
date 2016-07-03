@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tonghang.server.mapper.TPhoneMapper">
+
 	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TPhone">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -22,9 +23,10 @@
 		<result column="state" property="state" jdbcType="INTEGER" />
 		<result column="language" property="language" jdbcType="VARCHAR" />
 		<result column="group_id" property="groupId" jdbcType="INTEGER" />
-		<result column="company" property="company" jdbcType="VARCHAR"/>
+		<result column="company" property="company" jdbcType="VARCHAR" />
 	</resultMap>
 	<resultMap type="com.tonghang.server.vo.UserVo" id="UserVoResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="state" property="state" jdbcType="INTEGER" />
@@ -33,13 +35,14 @@
 			<result column="trade_name" property="name" jdbcType="VARCHAR" />
 		</association>
 		<collection property="services" ofType="com.tonghang.server.entity.TService">
-			<result column="title" property="title" jdbcType="VARCHAR"/>
-			<result column="description" property="description" jdbcType="VARCHAR"/>
-			<result column="pictures" property="pictures" jdbcType="VARCHAR"/>
-			<result column="checked" property="checked" jdbcType="INTEGER"/>
+			<result column="title" property="title" jdbcType="VARCHAR" />
+			<result column="description" property="description" jdbcType="VARCHAR" />
+			<result column="pictures" property="pictures" jdbcType="VARCHAR" />
+			<result column="checked" property="checked" jdbcType="INTEGER" />
 		</collection>
 	</resultMap>
-	<resultMap id="UserInfoResultMap" type="com.tonghang.server.entity.TPhone" extends="BaseResultMap">
+	<resultMap id="UserInfoResultMap" type="com.tonghang.server.entity.TPhone"
+		extends="BaseResultMap">
 		<result column="trade_name" property="trade" jdbcType="VARCHAR" />
 		<result column="city_name" property="city" jdbcType="VARCHAR" />
 	</resultMap>
@@ -148,7 +151,8 @@
 		from t_phone
 	</select>
 	<select id="getUsers" resultMap="UserVoResultMap">
-		select 
+		select
+		p.id,
 		p.phone,
 		p.name,
 		p.group_id,
@@ -159,61 +163,88 @@
 		s.pictures,
 		s.checked
 		from t_phone p
-		left outer join t_service s on s.pid = p.id 
+		left outer join t_service s on s.pid = p.id
 		left outer join t_trade t on t.id = p.trade_id
 	</select>
-	
+
 	<select id="selectByPhone" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
 		select *
 		from t_phone
 		where phone = #{phone}
 	</select>
-	
+
 	<select id="selectByName" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
 		select *
 		from t_phone
 		where name = #{name}
 	</select>
-	
-	<select  id="selectByIds" resultMap="BaseResultMap"  parameterType="list">
-		select id,name ,pic,sex,phone ,remark,position,college,education,company ,city_id,province_id 
-		from t_phone 
-		where 1=1 
+
+	<select id="selectByIds" resultMap="BaseResultMap"
+		parameterType="list">
+		select id,name ,pic,sex,phone
+		,remark,position,college,education,company ,city_id,province_id
+		from t_phone
+		where 1=1
 		<if test="list!=null">
-		and id in (0
-		<foreach collection="list"  item="item"  index="index"  >
-		 , #{item}
-		</foreach>
-		)
-		</if> 
+			and id in (0
+			<foreach collection="list" item="item" index="index">
+				, #{item}
+			</foreach>
+			)
+		</if>
 	</select>
-	<select id="getUserById" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
+	<select id="getUserById" parameterType="java.lang.Integer"
+		resultMap="UserInfoResultMap">
 		select p.*,city.name city_name,trade.name trade_name
 		from t_phone p
-		left outer join  t_city city on city.id = p.city_id
+		left outer join t_city city on city.id = p.city_id
 		left outer join t_trade trade on trade.id = p.trade_id
 		where p.id = #{id}
 	</select>
-	
-	<select id="getUserIdByCityAndTrade" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
+
+	<select id="getUserIdByCityAndTrade" parameterType="java.lang.Integer"
+		resultMap="UserInfoResultMap">
 		select p.*,city.name city_name,trade.name trade_name
 		from t_phone p
-		left outer join  t_city city on city.id = p.city_id
+		left outer join t_city city on city.id = p.city_id
 		left outer join t_trade trade on trade.id = p.trade_id
-		where 
+		where
 		p.city_id =#{cityId}
 		and p.trade_id =#{tradeId}
-		 
+
 	</select>
-	
-	<select id="getUserInfoById" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
-		select p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark,city.name city_name,trade.name trade_name
+
+	<select id="getUserInfoById" parameterType="java.lang.Integer"
+		resultMap="UserInfoResultMap">
+		select
+		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark,city.name
+		city_name,trade.name trade_name
 		from t_phone p
-		left outer join  t_city city on city.id = p.city_id
-		left outer join t_trade trade on trade.id = p.trade_id
+		left outer join t_city
+		city on city.id = p.city_id
+		left outer join t_trade trade on trade.id =
+		p.trade_id
 		where p.id = #{id}
 	</select>
-	
+	<select id="getUser" parameterType="java.lang.Integer"
+		resultMap="UserVoResultMap">
+		select
+		p.phone,
+		p.name,
+		p.group_id,
+		p.state,
+		t.name trade_name,
+		s.title,
+		s.description,
+		s.pictures,
+		s.checked
+		from t_phone p
+		left outer join t_service s on
+		s.pid = p.id
+		left outer join t_trade t on t.id = p.trade_id
+		where p.id = #{id}
+	</select>
+
 </mapper>

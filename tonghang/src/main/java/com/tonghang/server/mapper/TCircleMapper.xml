@@ -1,438 +1,449 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tonghang.server.mapper.TCircleMapper">
-	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TCircle">
-		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="title" property="title" jdbcType="VARCHAR" />
-		<result column="hot" property="hot" jdbcType="INTEGER" />
-		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
-		<result column="pic" property="pic" jdbcType="VARCHAR" />
-		<result column="page_view" property="pageView" jdbcType="INTEGER" />
-		<result column="favour" property="favour" jdbcType="INTEGER" />
-		<result column="comment" property="comment" jdbcType="INTEGER" />
-		<result column="share" property="share" jdbcType="INTEGER" />
-		<result column="type" property="type" jdbcType="INTEGER" />
-		<result column="pid" property="pid" jdbcType="INTEGER" />
-		<result column="checked" property="checked" jdbcType="INTEGER" />
-		<result column="pics" property="pics" jdbcType="VARCHAR" />
-		<result column="area" property="area" jdbcType="VARCHAR" />
-		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
-		<result column="content" property="content" jdbcType="LONGVARCHAR" />
-		<result column="url" property="url" jdbcType="VARCHAR" />
-	</resultMap>
-	<resultMap id="ArticlesVoResultMap" type="com.tonghang.server.vo.ArticlesVo">
-		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="title" property="title" jdbcType="VARCHAR" />
-		<result column="hot" property="hot" jdbcType="INTEGER" />
-		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
-		<result column="pic" property="pic" jdbcType="VARCHAR" />
-		<result column="page_view" property="pageView" jdbcType="INTEGER" />
-		<result column="favour" property="favour" jdbcType="INTEGER" />
-		<result column="comment" property="comment" jdbcType="INTEGER" />
-		<result column="share" property="share" jdbcType="INTEGER" />
-		<result column="type" property="type" jdbcType="INTEGER" />
-		<result column="pid" property="pid" jdbcType="INTEGER" />
-		<result column="checked" property="checked" jdbcType="INTEGER" />
-		<result column="pics" property="pics" jdbcType="VARCHAR" />
-		<result column="area" property="area" jdbcType="VARCHAR" />
-		<result column="content" property="content" jdbcType="LONGVARCHAR" />
-		<result column="url" property="url" jdbcType="VARCHAR" />
-		<association property="trade" javaType="com.tonghang.server.entity.TTrade">
-			<result column="trade_id" property="id" jdbcType="INTEGER" />
-			<result column="trade_name" property="name" jdbcType="INTEGER" />
-			<result column="trade_pid" property="parentId" jdbcType="INTEGER" />
-			<result column="trade_enName" property="enName" jdbcType="INTEGER" />
-		</association>
-	</resultMap>
-	<resultMap id="AritcleInfoResultMap" type="com.tonghang.server.vo.ArticleInfo">
-		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="title" property="title" jdbcType="VARCHAR" />
-		<result column="hot" property="hot" jdbcType="INTEGER" />
-		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
-		<result column="pic" property="pic" jdbcType="VARCHAR" />
-		<result column="page_view" property="pageView" jdbcType="INTEGER" />
-		<result column="favour" property="favour" jdbcType="INTEGER" />
-		<result column="comment" property="comment" jdbcType="INTEGER" />
-		<result column="share" property="share" jdbcType="INTEGER" />
-		<result column="type" property="type" jdbcType="INTEGER" />
-		<result column="pid" property="pid" jdbcType="INTEGER" />
-		<result column="checked" property="checked" jdbcType="INTEGER" />
-		<result column="pics" property="pics" jdbcType="VARCHAR" />
-		<result column="area" property="area" jdbcType="VARCHAR" />
-		<result column="content" property="content" jdbcType="LONGVARCHAR" />
-		<result column="url" property="url" jdbcType="VARCHAR" />
-		<association property="trade" javaType="com.tonghang.server.entity.TTrade">
-			<result column="trade_id" property="id" jdbcType="INTEGER" />
-			<result column="trade_name" property="name" jdbcType="INTEGER" />
-			<result column="trade_pid" property="parentId" jdbcType="INTEGER" />
-			<result column="trade_enName" property="enName" jdbcType="INTEGER" />
-		</association>
-		<collection property="comments" ofType="com.tonghang.server.vo.CommentVo">
-			<result column="comment_id" property="id" jdbcType="INTEGER" />
-			<result column="comment_content" property="content" jdbcType="LONGVARCHAR" />
-			<result column="comment_pid" property="pidId" jdbcType="INTEGER" />
-			<result column="comment_reply" property="replyId" jdbcType="INTEGER" />
-			<result column="comment_checked" property="checked" jdbcType="INTEGER" />
-			<result column="commnet_datetime" property="datetime"
-				jdbcType="TIMESTAMP" />
-			<result column="p_pic" property="ppic" jdbcType="VARCHAR" />
-			<result column="p_name" property="pname" jdbcType="VARCHAR" />
-		</collection>
-	</resultMap>
-	<resultMap id="CircleVoResultMap" type="com.tonghang.server.vo.CircleVo">
-		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="title" property="title" jdbcType="VARCHAR" />
-		<result column="hot" property="hot" jdbcType="INTEGER" />
-		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
-		<result column="pic" property="pic" jdbcType="VARCHAR" />
-		<result column="page_view" property="pageView" jdbcType="INTEGER" />
-		<result column="favour" property="favour" jdbcType="INTEGER" />
-		<result column="comment" property="comment" jdbcType="INTEGER" />
-		<result column="share" property="share" jdbcType="INTEGER" />
-		<result column="type" property="type" jdbcType="INTEGER" />
-		<result column="pid" property="pid" jdbcType="INTEGER" />
-		<result column="checked" property="checked" jdbcType="INTEGER" />
-		<result column="pics" property="pics" jdbcType="VARCHAR" />
-		<result column="area" property="area" jdbcType="VARCHAR" />
-		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
-		<result column="content" property="content" jdbcType="LONGVARCHAR" />
-		<result column="url" property="url" jdbcType="VARCHAR" />
-		<association property="phone" javaType="com.tonghang.server.entity.TPhone">
-			<id column="p_id" property="id" jdbcType="INTEGER" />
-			<result column="p_phone" property="phone" jdbcType="VARCHAR" />
-			<result column="p_password" property="password" jdbcType="VARCHAR" />
-			<result column="p_timestamp" property="timestamp" jdbcType="TIMESTAMP" />
-			<result column="p_name" property="name" jdbcType="VARCHAR" />
-			<result column="p_pic" property="pic" jdbcType="VARCHAR" />
-			<result column="p_sex" property="sex" jdbcType="VARCHAR" />
-			<result column="p_position" property="position" jdbcType="VARCHAR" />
-			<result column="p_college" property="college" jdbcType="VARCHAR" />
-			<result column="p_trade_id" property="tradeId" jdbcType="INTEGER" />
-			<result column="p_province_id" property="provinceId" jdbcType="INTEGER" />
-			<result column="p_city_id" property="cityId" jdbcType="INTEGER" />
-			<result column="p_remark" property="remark" jdbcType="VARCHAR" />
-			<result column="p_device" property="device" jdbcType="VARCHAR" />
-			<result column="p_longitude" property="longitude" jdbcType="DOUBLE" />
-			<result column="p_latitude" property="latitude" jdbcType="DOUBLE" />
-			<result column="p_state" property="state" jdbcType="INTEGER" />
-			<result column="p_language" property="language" jdbcType="VARCHAR" />
-			<result column="p_group_id" property="groupId" jdbcType="INTEGER" />
-		</association>
-	</resultMap>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from
-		t_circle
-		where id = #{id}
-	</delete>
-	<insert id="insert" parameterType="com.tonghang.server.entity.TCircle">
-		<selectKey resultType="java.lang.Integer" keyProperty="id"
-			order="BEFORE">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-		insert into t_circle (id, title, hot,
-		datetime, pic, 
-		type,
-		pid, checked, pics, area,
-		trade_id, content,url)
-		values
-		(#{id}, #{title}, #{hot},
-		#{datetime}, #{pic}, #{type},
-		#{pid}, #{checked}, #{pics}, #{area},
-		#{tradeId},
-		#{content},#{url})
-	</insert>
-	<update id="checkCircle" parameterType="java.lang.Integer">
-		update t_circle
-		set
-		checked = 1
-		where id = #{id}
-	</update>
-	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TCircle">
-		update t_circle
-		<set>
-			<if test="title != null and title != ''">
-				title = #{title},
-			</if>
-			<if test="hot != null and hot != ''">
-				hot = #{hot},
-			</if>
-			<if test="datetime != null and datetime != ''">
-				datetime = #{datetime},
-			</if>
-			<if test="pic != null and pic != ''">
-				pic = #{pic},
-			</if>
-			<if test="pageView != null and pageView != ''">
-				page_view = #{pageView},
-			</if>
-			<if test="favour != null and favour != ''">
-				favour = #{favour},
-			</if>
-			<if test="comment != null and comment != ''">
-				comment = #{comment},
-			</if>
-			<if test="share != null and share != ''">
-				share = #{share},
-			</if>
-			<if test="type != null and type != ''">
-				type = #{type},
-			</if>
-			<if test="pid != null and pid != ''">
-				pid = #{pid},
-			</if>
-			<if test="checked != null and checked != ''">
-				checked = #{checked},
-			</if>
-			<if test="pics != null and pics != ''">
-				pics = #{pics},
-			</if>
-			<if test="area != null and area != ''">
-				area = #{area},
-			</if>
-			<if test="tradeId != null and tradeId != ''">
-				trade_id = #{tradeId},
-			</if>
-			<if test="content != null and content != ''">
-				content = #{content}
-			</if>
-		</set>
-		where id = #{id}
-	</update>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
-		select *
-		from t_circle
-		where id = #{id}
-	</select>
-	<select id="selectAll" resultMap="BaseResultMap">
-		select *
-		from t_circle
-	</select>
-	<select id="getCircleUnCheck" resultMap="CircleVoResultMap">
-		select
-		c.*,
-		p.id p_id,
-		p.phone p_phone,
-		p.password p_password,
-		p.timestamp p_timestamp,
-		p.name
-		p_name,
-		p.pic p_pic,
-		p.sex p_sex,
-		p.position p_position,
-		p.college
-		p_college,
-		p.trade_id p_trade_id,
-		p.province_id p_province_id,
-		p.city_id
-		p_city_id,
-		p.remark p_remark,
-		p.device p_device,
-		p.longitude p_longitude,
-		p.latitude p_latitude,
-		p.state p_state,
-		p.language p_language,
-		p.group_id p_group_id
-		from t_circle c
-		left outer join t_phone p on p.id
-		= c.pid
-		where checked is null
-	</select>
-	<select id="getCircleChecked" resultMap="CircleVoResultMap">
-		select
-		c.*,
-		p.id p_id,
-		p.phone p_phone,
-		p.password p_password,
-		p.timestamp p_timestamp,
-		p.name
-		p_name,
-		p.pic p_pic,
-		p.sex p_sex,
-		p.position p_position,
-		p.college
-		p_college,
-		p.trade_id p_trade_id,
-		p.province_id p_province_id,
-		p.city_id
-		p_city_id,
-		p.remark p_remark,
-		p.device p_device,
-		p.longitude p_longitude,
-		p.latitude p_latitude,
-		p.state p_state,
-		p.language p_language,
-		p.group_id p_group_id
-		from t_circle c
-		left outer join t_phone p on p.id
-		= c.pid
-		where checked is not null
-	</select>
-	<select id="getMyCircles" resultMap="BaseResultMap">
-		SELECT *
-		FROM
-		t_circle
-		WHERE
-		pid = #{userId}
-		AND
-		(checked !=0 or checked is null)  
-		AND type = 1  
-		ORDER BY
-		datetime desc
-	</select>
+  <resultMap id="BaseResultMap" type="com.tonghang.server.entity.TCircle">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="hot" property="hot" jdbcType="INTEGER" />
+    <result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="page_view" property="pageView" jdbcType="INTEGER" />
+    <result column="favour" property="favour" jdbcType="INTEGER" />
+    <result column="comment" property="comment" jdbcType="INTEGER" />
+    <result column="share" property="share" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="checked" property="checked" jdbcType="INTEGER" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="trade_id" property="tradeId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ArticlesVoResultMap" type="com.tonghang.server.vo.ArticlesVo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="hot" property="hot" jdbcType="INTEGER" />
+    <result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="page_view" property="pageView" jdbcType="INTEGER" />
+    <result column="favour" property="favour" jdbcType="INTEGER" />
+    <result column="comment" property="comment" jdbcType="INTEGER" />
+    <result column="share" property="share" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="checked" property="checked" jdbcType="INTEGER" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <association property="trade"
+      javaType="com.tonghang.server.entity.TTrade">
+      <result column="trade_id" property="id" jdbcType="INTEGER" />
+      <result column="trade_name" property="name" jdbcType="INTEGER" />
+      <result column="trade_pid" property="parentId" jdbcType="INTEGER" />
+      <result column="trade_enName" property="enName" jdbcType="INTEGER" />
+    </association>
+  </resultMap>
+  <resultMap id="AritcleInfoResultMap" type="com.tonghang.server.vo.ArticleInfo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="hot" property="hot" jdbcType="INTEGER" />
+    <result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="page_view" property="pageView" jdbcType="INTEGER" />
+    <result column="favour" property="favour" jdbcType="INTEGER" />
+    <result column="comment" property="comment" jdbcType="INTEGER" />
+    <result column="share" property="share" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="checked" property="checked" jdbcType="INTEGER" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <association property="trade"
+      javaType="com.tonghang.server.entity.TTrade">
+      <result column="trade_id" property="id" jdbcType="INTEGER" />
+      <result column="trade_name" property="name" jdbcType="INTEGER" />
+      <result column="trade_pid" property="parentId" jdbcType="INTEGER" />
+      <result column="trade_enName" property="enName" jdbcType="INTEGER" />
+    </association>
+    <collection property="comments" ofType="com.tonghang.server.vo.CommentVo">
+      <result column="comment_id" property="id" jdbcType="INTEGER" />
+      <result column="comment_content" property="content"
+        jdbcType="LONGVARCHAR" />
+      <result column="comment_pid" property="pidId" jdbcType="INTEGER" />
+      <result column="comment_reply" property="replyId" jdbcType="INTEGER" />
+      <result column="comment_checked" property="checked"
+        jdbcType="INTEGER" />
+      <result column="commnet_datetime" property="datetime"
+        jdbcType="TIMESTAMP" />
+      <result column="p_pic" property="ppic" jdbcType="VARCHAR" />
+      <result column="p_name" property="pname" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  <resultMap id="CircleVoResultMap" type="com.tonghang.server.vo.CircleVo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="hot" property="hot" jdbcType="INTEGER" />
+    <result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="page_view" property="pageView" jdbcType="INTEGER" />
+    <result column="favour" property="favour" jdbcType="INTEGER" />
+    <result column="comment" property="comment" jdbcType="INTEGER" />
+    <result column="share" property="share" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="checked" property="checked" jdbcType="INTEGER" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="trade_id" property="tradeId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <association property="phone"
+      javaType="com.tonghang.server.entity.TPhone">
+      <id column="p_id" property="id" jdbcType="INTEGER" />
+      <result column="p_phone" property="phone" jdbcType="VARCHAR" />
+      <result column="p_password" property="password" jdbcType="VARCHAR" />
+      <result column="p_timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+      <result column="p_name" property="name" jdbcType="VARCHAR" />
+      <result column="p_pic" property="pic" jdbcType="VARCHAR" />
+      <result column="p_sex" property="sex" jdbcType="VARCHAR" />
+      <result column="p_position" property="position" jdbcType="VARCHAR" />
+      <result column="p_college" property="college" jdbcType="VARCHAR" />
+      <result column="p_trade_id" property="tradeId" jdbcType="INTEGER" />
+      <result column="p_province_id" property="provinceId"
+        jdbcType="INTEGER" />
+      <result column="p_city_id" property="cityId" jdbcType="INTEGER" />
+      <result column="p_remark" property="remark" jdbcType="VARCHAR" />
+      <result column="p_device" property="device" jdbcType="VARCHAR" />
+      <result column="p_longitude" property="longitude" jdbcType="DOUBLE" />
+      <result column="p_latitude" property="latitude" jdbcType="DOUBLE" />
+      <result column="p_state" property="state" jdbcType="INTEGER" />
+      <result column="p_language" property="language" jdbcType="VARCHAR" />
+      <result column="p_group_id" property="groupId" jdbcType="INTEGER" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from
+    t_circle
+    where id = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.tonghang.server.entity.TCircle">
+    <selectKey resultType="java.lang.Integer" keyProperty="id"
+      order="BEFORE">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_circle (id, title, hot,
+    datetime, pic,
+    type,
+    pid, checked, pics, area,
+    trade_id, content,url)
+    values
+    (#{id}, #{title}, #{hot},
+    #{datetime}, #{pic}, #{type},
+    #{pid}, #{checked}, #{pics}, #{area},
+    #{tradeId},
+    #{content},#{url})
+  </insert>
+  <update id="checkCircle" parameterType="java.lang.Integer">
+    update t_circle
+    set
+    checked = 1
+    where id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TCircle">
+    update t_circle
+    <set>
+      <if test="title != null and title != ''">
+        title = #{title},
+      </if>
+      <if test="hot != null and hot != ''">
+        hot = #{hot},
+      </if>
+      <if test="datetime != null and datetime != ''">
+        datetime = #{datetime},
+      </if>
+      <if test="pic != null and pic != ''">
+        pic = #{pic},
+      </if>
+      <if test="pageView != null and pageView != ''">
+        page_view = #{pageView},
+      </if>
+      <if test="favour != null and favour != ''">
+        favour = #{favour},
+      </if>
+      <if test="comment != null and comment != ''">
+        comment = #{comment},
+      </if>
+      <if test="share != null and share != ''">
+        share = #{share},
+      </if>
+      <if test="type != null and type != ''">
+        type = #{type},
+      </if>
+      <if test="pid != null and pid != ''">
+        pid = #{pid},
+      </if>
+      <if test="checked != null and checked != ''">
+        checked = #{checked},
+      </if>
+      <if test="pics != null and pics != ''">
+        pics = #{pics},
+      </if>
+      <if test="area != null and area != ''">
+        area = #{area},
+      </if>
+      <if test="tradeId != null and tradeId != ''">
+        trade_id = #{tradeId},
+      </if>
+      <if test="content != null and content != ''">
+        content = #{content}
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+    parameterType="java.lang.Integer">
+    select *
+    from t_circle
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from t_circle
+  </select>
+  <select id="getCircleUnCheck" resultMap="CircleVoResultMap">
+    select
+    c.*,
+    p.id p_id,
+    p.phone p_phone,
+    p.password p_password,
+    p.timestamp p_timestamp,
+    p.name
+    p_name,
+    p.pic p_pic,
+    p.sex p_sex,
+    p.position p_position,
+    p.college
+    p_college,
+    p.trade_id p_trade_id,
+    p.province_id p_province_id,
+    p.city_id
+    p_city_id,
+    p.remark p_remark,
+    p.device p_device,
+    p.longitude p_longitude,
+    p.latitude p_latitude,
+    p.state p_state,
+    p.language p_language,
+    p.group_id p_group_id
+    from t_circle c
+    left outer join t_phone p on p.id
+    = c.pid
+    where checked is null
+  </select>
+  <select id="getCircleChecked" resultMap="CircleVoResultMap">
+    select
+    c.*,
+    p.id p_id,
+    p.phone p_phone,
+    p.password p_password,
+    p.timestamp p_timestamp,
+    p.name
+    p_name,
+    p.pic p_pic,
+    p.sex p_sex,
+    p.position p_position,
+    p.college
+    p_college,
+    p.trade_id p_trade_id,
+    p.province_id p_province_id,
+    p.city_id
+    p_city_id,
+    p.remark p_remark,
+    p.device p_device,
+    p.longitude p_longitude,
+    p.latitude p_latitude,
+    p.state p_state,
+    p.language p_language,
+    p.group_id p_group_id
+    from t_circle c
+    left outer join t_phone p on p.id
+    = c.pid
+    where checked is not null
+  </select>
+  <select id="getMyCircles" resultMap="BaseResultMap">
+    SELECT *
+    FROM
+    t_circle
+    WHERE
+    pid = #{userId}
+    AND
+    (checked !=0 or checked is null)
+    AND type = 1
+    ORDER BY
+    datetime desc
+  </select>
 
-	<select id="getAllCircleShow" parameterType="list" resultMap="BaseResultMap">
-		SELECT *
-		FROM t_circle
-		WHERE (checked !=0 or checked is null)
-		AND type = 1  
-		<if test="pageNo!=0">
-		AND id &lt; #{pageNo}
-		</if>
-		ORDER BY
-		datetime desc
-		limit #{pageSize} 
-		
+  <select id="getAllCircleShow" parameterType="list" resultMap="BaseResultMap">
+    SELECT *
+    FROM t_circle
+    WHERE (checked !=0 or checked is null)
+    AND type = 1
+    <if test="pageNo!=0">
+      AND id &lt; #{pageNo}
+    </if>
+    ORDER BY
+    datetime desc
+    limit #{pageSize}
 
-	</select>
 
-	<select id="getArticles" resultMap="ArticlesVoResultMap">
-		select
-		t.id,
-		t.title,
-		t.hot,
-		t.datetime,
-		t.pic,
-		t.page_view,
-		t.favour,
-		t.comment,
-		t.share,
-		t.type,
-		t.pid,
-		t.checked,
-		t.pics,
-		t.area,
-		t.trade_id,
-		t.content,
-		t.url,
-		trade.name trade_name,
-		trade.parent_id trade_pid,
-		trade.en_name
-		trade_enName
-		from t_circle t
-		left outer join t_trade trade on trade.id =
-		t.trade_id
-		where  type = 2
-	</select>
-	<select id="getArticle" parameterType="java.lang.Integer"
-		resultMap="ArticlesVoResultMap">
-		select
-		t.id,
-		t.title,
-		t.hot,
-		t.datetime,
-		t.pic,
-		t.page_view,
-		t.favour,
-		t.comment,
-		t.share,
-		t.type,
-		t.pid,
-		t.checked,
-		t.pics,
-		t.area,
-		t.trade_id,
-		t.content,
-		t.url,
-		trade.name trade_name,
-		trade.parent_id trade_pid,
-		trade.en_name
-		trade_enName
-		from t_circle t
-		left outer join t_trade trade
-		on trade.id =
-		t.trade_id
-		where t.id = #{id}
-	</select>
-	<select id="getArticleInfo" parameterType="java.lang.Integer"
-		resultMap="AritcleInfoResultMap">
-		select
-		t.id,
-		t.title,
-		t.hot,
-		t.datetime,
-		t.pic,
-		t.page_view,
-		t.favour,
-		t.comment,
-		t.share,
-		t.type,
-		t.pid,
-		t.checked,
-		t.pics,
-		t.area,
-		t.trade_id,
-		t.content,
-		t.url,
-		trade.name trade_name,
-		trade.parent_id trade_pid,
-		trade.en_name
-		trade_enName,
-		comment.id comment_id,
-		comment.content
-		comment_content,
-		comment.pid_id comment_pid,
-		comment.reply_id
-		comment_reply,
-		comment.checked comment_checked,
-		comment.datetime
-		commnet_datetime,
-		p.pic p_pic,
-		p.name p_name
-		from t_circle t
-		left outer
-		join t_trade trade on trade.id =
-		t.trade_id
-		left
-		outer join t_comment
-		comment on comment.circle_id = t.id
-		left outer
-		join t_phone p on p.id =
-		comment.pid_id
-		where t.id = #{id} and
-		comment.checked = 1
-	</select>
-	
-	<select id="getTradeArticles" resultMap="ArticlesVoResultMap"  parameterType="integer">
-		select
-		t.id,
-		t.title,
-		t.hot,
-		t.datetime,
-		t.pic,
-		t.page_view,
-		t.favour,
-		t.comment,
-		t.share,
-		t.type,
-		t.pid,
-		t.checked,
-		t.pics,
-		t.area,
-		t.trade_id,
-		t.content,
-		t.url,
-		trade.name trade_name,
-		trade.parent_id trade_pid,
-		trade.en_name
-		trade_enName
-		from t_circle t
-		left outer join t_trade trade on trade.id =
-		t.trade_id
-		where  t.trade_id =#{tradeId} and type = 2
-	</select>
-	
-	<select id="getHotArticles" resultMap="ArticlesVoResultMap"  >
+  </select>
+
+
+  <select id="getArticles" resultMap="ArticlesVoResultMap">
+    select
+    t.id,
+    t.title,
+    t.hot,
+    t.datetime,
+    t.pic,
+    t.page_view,
+    t.favour,
+    t.comment,
+    t.share,
+    t.type,
+    t.pid,
+    t.checked,
+    t.pics,
+    t.area,
+    t.trade_id,
+    t.content,
+    t.url,
+    trade.name trade_name,
+    trade.parent_id trade_pid,
+    trade.en_name
+    trade_enName
+    from t_circle t
+    left outer join t_trade trade on trade.id =
+    t.trade_id
+    where type = 2
+  </select>
+  <select id="getArticle" parameterType="java.lang.Integer"
+    resultMap="ArticlesVoResultMap">
+    select
+    t.id,
+    t.title,
+    t.hot,
+    t.datetime,
+    t.pic,
+    t.page_view,
+    t.favour,
+    t.comment,
+    t.share,
+    t.type,
+    t.pid,
+    t.checked,
+    t.pics,
+    t.area,
+    t.trade_id,
+    t.content,
+    t.url,
+    trade.name trade_name,
+    trade.parent_id trade_pid,
+    trade.en_name
+    trade_enName
+    from t_circle t
+    left outer join t_trade trade
+    on trade.id =
+    t.trade_id
+    where t.id = #{id}
+  </select>
+  <select id="getArticleInfo" parameterType="java.lang.Integer"
+    resultMap="AritcleInfoResultMap">
+    select
+    t.id,
+    t.title,
+    t.hot,
+    t.datetime,
+    t.pic,
+    t.page_view,
+    t.favour,
+    t.comment,
+    t.share,
+    t.type,
+    t.pid,
+    t.checked,
+    t.pics,
+    t.area,
+    t.trade_id,
+    t.content,
+    t.url,
+    trade.name trade_name,
+    trade.parent_id trade_pid,
+    trade.en_name
+    trade_enName,
+    comment.id comment_id,
+    comment.content
+    comment_content,
+    comment.pid_id comment_pid,
+    comment.reply_id
+    comment_reply,
+    comment.checked comment_checked,
+    comment.datetime
+    commnet_datetime,
+    p.pic p_pic,
+    p.name p_name
+    from t_circle t
+    left outer
+    join t_trade trade on trade.id =
+    t.trade_id
+    left
+    outer join t_comment
+    comment on comment.circle_id = t.id
+    left outer
+    join t_phone p on p.id =
+    comment.pid_id
+    where t.id = #{id} and
+    comment.checked = 1
+  </select>
+
+  <select id="getTradeArticles" resultMap="ArticlesVoResultMap"
+    parameterType="integer">
+    select
+    t.id,
+    t.title,
+    t.hot,
+    t.datetime,
+    t.pic,
+    t.page_view,
+    t.favour,
+    t.comment,
+    t.share,
+    t.type,
+    t.pid,
+    t.checked,
+    t.pics,
+    t.area,
+    t.trade_id,
+    t.content,
+    t.url,
+    trade.name trade_name,
+    trade.parent_id trade_pid,
+    trade.en_name
+    trade_enName
+    from t_circle t
+    left outer join t_trade trade on trade.id =
+    t.trade_id
+    where t.trade_id =#{tradeId} and type = 2
+  </select>
+  <select id="getCircleByUserId" parameterType="java.lang.Integer"
+    resultMap="BaseResultMap">
+    select * from t_circle where pid = #{id}
+  </select>
+  <select id="getHotArticles" resultMap="ArticlesVoResultMap"  >
 		select
 		t.id,
 		t.title,

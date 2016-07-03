@@ -15,6 +15,8 @@ public class ServiceVo {
     
     private Date timestamp;//发布修改时候的时间戳
     
+    private Integer checked;//审核是否通过 1表示通过
+    
     private Integer uid;//手机用户的id
     
     private String name;// 姓名
@@ -103,6 +105,14 @@ public class ServiceVo {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Integer getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Integer checked) {
+        this.checked = checked;
     }
 
 }

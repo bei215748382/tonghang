@@ -53,7 +53,7 @@
 								<td><c:if test="${data.groupId == 0}">普通</c:if><c:if test="${data.groupId == 1}">重要</c:if></td>
 								<td><c:if test="${data.state == 1}">激活</c:if><c:if test="${data.state == 2}">冻结</c:if></td>
 								<td></td>
-								<td>查看用户</td>
+								<td><button type="buttion"  class="btn btn-default"  onclick="javaScript:LoadAjaxContent('user_info?id=${data.id}')">查看用户</button></td>
 							</tr>
 						</c:forEach>
 						<!-- End: list_row -->

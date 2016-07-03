@@ -50,8 +50,6 @@
 					<thead>
 						<tr>
 							<th><label><input type="text" name="search_rate"
-									value="图片" class="search_init" /></label></th>
-							<th><label><input type="text" name="search_rate"
 									value="内容" class="search_init" /></label></th>
 							<th><label><input type="text" name="search_rate"
 									value="作者状态" class="search_init" /></label></th>
@@ -61,12 +59,11 @@
 						<!-- Start: list_row -->
 						<c:forEach items="${dataList}" var="data">
 							<tr>
-								<td>${data.pictures}</td>
-								<td>${data.description}</td>
-								<td>${data.name}<br/>
-								<fmt:formatDate value="${data.timestamp}"
+								<td>${data.content}</td>
+								<td>${data.pname}<br/>
+								<fmt:formatDate value="${data.datetime}"
 										pattern="yyyy-MM-dd HH:MM:ss" /><br/>
-										<button type="button" class="btn btn-default" onclick="user_info(${data.uid})">查看用户</button><br/>
+										<button type="button" class="btn btn-default" onclick="user_info(${data.pid})">查看用户</button><br/>
 										<button type="button" class="btn btn-default" onclick="checkCircle(${data.id})">审核</button></td>
 							</tr>
 						</c:forEach>
@@ -74,7 +71,6 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<th>图片</th>
 							<th>内容</th>
 							<th>作者状态</th>
 						</tr>
