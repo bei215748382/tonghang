@@ -11,15 +11,15 @@ public class TFavoriteDTO extends TFavorite implements Serializable {
      */
     private static final long serialVersionUID = -1249108808675491374L;
 
-    private TServiceDTO service;
+    private TCircleDTO service;
 
     private TCircleDTO circle;
 
-    public TServiceDTO getService() {
+    public TCircleDTO getService() {
         return service;
     }
 
-    public void setService(TServiceDTO service) {
+    public void setService(TCircleDTO service) {
         this.service = service;
     }
 
@@ -31,7 +31,7 @@ public class TFavoriteDTO extends TFavorite implements Serializable {
         this.circle = circle;
     }
 
-    public TFavoriteDTO(TFavorite favorite, TServiceDTO service,
+    public TFavoriteDTO(TFavorite favorite, TCircleDTO service,
             TCircleDTO cirle) {
         super(favorite);
         this.service = service;

@@ -61,4 +61,9 @@
   	select id,pid,fid, confirm 
   	from  t_friend  where  (fid =#{userId}   and  confirm = 0 )  
   </select>
+   <select  id="isApplyFriends"  resultMap="BaseResultMap"   parameterType="integer" >
+  	select id,pid,fid, confirm 
+  	from  t_friend  where  (pid =#{userId}  and fid =#{targetUserId} ) 
+  	 or (fid =#{userId}  and pid =#{targetUserId})  limit 1
+  </select>
 </mapper>

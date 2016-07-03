@@ -27,7 +27,7 @@ public interface TPhoneMapper {
      * @return
      */
     TPhone selectByPhone(String phone);
-    
+
     List<TPhone> selectByName(String name);
 
     List<TPhone> selectByIds(List<Integer> friendsId);
@@ -36,8 +36,20 @@ public interface TPhoneMapper {
 
     List<Integer> getUserIdByCityAndTrade(@Param("cityId") Integer cityId,
             @Param("tradeId") Integer tradeId);
-    
+
     TPhone getUserInfoById(Integer id);
 
     UserVo getUser(Integer id);
+
+    List<TPhone> selectNewUsersId(@Param("tradeId") Integer tradeId);
+
+    /**
+     * 因为涉及排序  分页无法做到按照id进行获取下一页内容  
+     * @param pageNo  页码
+     * @param pageSize 页容量
+     * @param tradeId TODO
+     * @return 
+     */
+    List<TPhone> selectActiveUsersId(@Param("pageNo") Integer pageNo,
+            @Param("pageSize") Integer pageSize,@Param("tradeId") Integer tradeId);
 }

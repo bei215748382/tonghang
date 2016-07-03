@@ -66,9 +66,9 @@ public class AppSocialController extends AppBaseController {
         return JSON.toJSONString(result);
     }
 
-    @RequestMapping(value = "/guesslike", method = { RequestMethod.POST,
+    @RequestMapping(value = "/recommend", method = { RequestMethod.POST,
             RequestMethod.GET })
-    public @ResponseBody Object guessLike(HttpServletRequest request,
+    public @ResponseBody Object recommend(HttpServletRequest request,
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
@@ -79,10 +79,11 @@ public class AppSocialController extends AppBaseController {
         checkParams(params);
         String pageSize = params.get("pageSize");
         String pageNo = params.get("pageNo");
+        String tradeId = params.get("tradeId");
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", socialService.guessLike(
-                baseRequest.getUserId().intValue(), pageNo, pageSize));
+        result.put("data", socialService.recommend(
+                baseRequest.getUserId().intValue(), pageNo, pageSize, tradeId));
 
         return JSON.toJSONString(result);
     }

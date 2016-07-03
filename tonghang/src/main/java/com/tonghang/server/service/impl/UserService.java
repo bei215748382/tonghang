@@ -7,14 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tonghang.server.common.dto.TCircleDTO;
+import com.tonghang.server.common.dto.TCommentDTO;
 import com.tonghang.server.common.dto.TServiceDTO;
 import com.tonghang.server.common.dto.TTrackDTO;
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TCircleLike;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
 import com.tonghang.server.entity.TService;
@@ -22,8 +27,10 @@ import com.tonghang.server.entity.TTrack;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
+import com.tonghang.server.mapper.TCircleLikeMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
+import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TServiceMapper;
@@ -61,6 +68,11 @@ public class UserService {
 
     @Autowired
     private HuanXinServiceImpl huanXinService;
+
+    @Autowired
+    private TCommentMapper commentMapper;
+    @Autowired
+    private TCircleLikeMapper likeMapper;
 
     public Map<String, Object> registUser(String mobile, String password,
             String longitude, String latitude, String device)
@@ -283,21 +295,32 @@ public class UserService {
         serviceMap.insert(service);
 
         TCircle circle = new TCircle();
-        circle.setContent("我发布了新服务 \"" + name + "\"");
+        circle.setTitle(name);
+        circle.setContent(describe);
         circle.setPid(userId);
-        circle.setType(1);
+        circle.setType(3);
         circle.setDatetime(new Date());
         circle.setTradeId(user.getTradeId());
         circle.setPics(pictures);
-        circle.setArea("");// TODO 地区需修改成省市id
+        if (user.getCityId() != null) {
+            TCity city = cityMapper.selectByPrimaryKey(user.getCityId());
+            if ("en_US".equals(user.getLanguage())) {
+                circle.setArea(city.getEnName());
+            } else {
+                circle.setArea(city.getName());
+            }
+        }
         circle.setComment(0);
+        circleMapper.insert(circle);
+        circle.setType(1);
+        circle.setContent("我发布了新服务["+name+"]");
         circleMapper.insert(circle);
         TServiceDTO result = new TServiceDTO(service);
         return result;
 
     }
 
-    public Object getService(int userId, String targetUserId)
+    public Object getServices(int userId, String targetUserId)
             throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -317,11 +340,10 @@ public class UserService {
             track.setTargetPid(targetUser.getId());
             trackMapper.insert(track);
         }
-        List<TServiceDTO> result = new ArrayList<TServiceDTO>();
-        List<TService> services = serviceMap
-                .getServicesByUserId(targetUser.getId());
-        for (TService bean : services) {
-            TServiceDTO service = new TServiceDTO(bean);
+        List<TCircleDTO> result = new ArrayList<TCircleDTO>();
+        List<TCircle> services = circleMapper.getServicesByUserId(user.getId());
+        for (TCircle bean : services) {
+            TCircleDTO service = new TCircleDTO(bean);
             result.add(service);
         }
         return result;
@@ -411,18 +433,66 @@ public class UserService {
         service.setTimestamp(new Date());
         serviceMap.updateByPrimaryKey(service);
 
-        TCircle circle = new TCircle();
-        circle.setContent("我发布了新服务 \"" + name + "\"");
+        TCircle circle = circleMapper.selectByPrimaryKey(Integer.valueOf(id));
+        if (circle == null) {
+            throw new ServiceException(ErrorCode.code200);
+        }
+        circle.setContent(describe);
+        circle.setTitle(name);
         circle.setPid(userId);
-        circle.setType(1);
-        circle.setDatetime(new Date());
-        circle.setTradeId(user.getTradeId());
         circle.setPics(pictures);
-        circle.setArea("");// TODO 地区需修改成省市id
-        circleMapper.insert(circle);
-        TServiceDTO result = new TServiceDTO(service);
+        circle.setDatetime(new Date());
+        circleMapper.updateByPrimaryKey(circle);
+        TCircleDTO result = new TCircleDTO(circle);
         return result;
 
+    }
+
+    public Object getService(int userId, String id) throws ServiceException {
+        TPhone user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            throw new ServiceException(ErrorCode.code101.getCode(),
+                    ErrorCode.code101.getHttpCode(),
+                    ErrorCode.code101.getDesc());
+        }
+        TCircle service = circleMapper.getServiceById(Integer.valueOf(id));
+        if (service == null) {
+            throw new ServiceException(ErrorCode.code200);
+        }
+        if (user.getId() != service.getPid()) {
+            TTrack track = new TTrack();
+            track.setPid(userId);
+            track.setTargetPid(service.getPid());
+            trackMapper.insert(track);
+        }
+        TPhone u = userMapper.getUserInfoById(service.getPid());
+        TTrade trade = tradeMapper.selectByPrimaryKey(service.getTradeId());
+        List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
+        if (service.getComment() != 0) {
+            List<TComment> comments = commentMapper
+                    .selectByCircleId(service.getId());
+            if (CollectionUtils.isNotEmpty(comments)) {
+                for (TComment bean : comments) {
+                    TPhone userinfo = userMapper
+                            .getUserInfoById(bean.getPidId());
+                    commentdto.add(new TCommentDTO(bean, userinfo));
+                }
+            }
+        }
+        List<Integer> userids = likeMapper
+                .selectAllLikePidByCircleId(service.getId());
+        List<TPhone> userinfos = userMapper.selectByIds(userids);
+        TCircleDTO dto = TCircleDTO.builder(service, u, commentdto, trade,
+                userinfos);
+        TCircleLike like = likeMapper.selectByCircleIdAndPid(service.getId(),
+                user.getId());
+        if (like == null) {
+            dto.setLike(false);
+        } else {
+            dto.setLike(true);
+        }
+
+        return dto;
     }
 
 }

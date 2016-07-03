@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.tonghang.server.common.dto.TNotificationDTO;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TNotification;
@@ -143,16 +142,16 @@ public class SupportServiceImpl {
     }
 
     public Object getMessage(Integer userId) throws ServiceException {
-        TPhone user = userDao.selectByPrimaryKey(userId.intValue());
+        TPhone user = userDao.selectByPrimaryKey(userId);
         List<TNotification> notifications = new ArrayList<TNotification>();
         List<TNotificationDTO> result = new ArrayList<TNotificationDTO>();
         if (user != null) {
             notifications = notificationMapper.selectByPid(userId);
             for (TNotification bean : notifications) {
                 if (NotificationTypeEnum.Circle.getCode()
+                        .equals(bean.getType())||NotificationTypeEnum.Article.getCode()
                         .equals(bean.getType())) {
                     TPhone userinfo = userDao.getUserInfoById(bean.getProId());
-                    log.info("userinfo {}",userinfo);
                     result.add(new TNotificationDTO(bean, userinfo));
                 } else {
                     result.add(new TNotificationDTO(bean));
@@ -165,6 +164,19 @@ public class SupportServiceImpl {
                     ErrorCode.code102.getDesc());
         }
         return result;
+    }
+
+    public Object readMessage(Integer userId, String id)
+            throws ServiceException {
+        TPhone user = userDao.selectByPrimaryKey(userId);
+        if (user != null) {
+            notificationMapper.deleteByPrimaryKey(Integer.valueOf(id));
+        } else {
+            throw new ServiceException(ErrorCode.code102.getCode(),
+                    ErrorCode.code102.getHttpCode(),
+                    ErrorCode.code102.getDesc());
+        }
+        return "success";
     }
 
 }

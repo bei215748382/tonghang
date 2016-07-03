@@ -61,18 +61,23 @@
 		sex,
 		position, college,education,
 		trade_id, province_id, city_id,
-		remark, device,
+		remark,
+		device,
 		longitude,
 		latitude, state,language,group_id)
-		values (#{id}, #{phone},
+		values (#{id},
+		#{phone},
 		#{password},
 		#{timestamp}, #{name}, #{pic},
-		#{sex}, #{position},
+		#{sex},
+		#{position},
 		#{college},#{education},
-		#{tradeId}, #{provinceId}, #{cityId},
+		#{tradeId}, #{provinceId},
+		#{cityId},
 		#{remark}, #{device},
 		#{longitude},
-		#{latitude}, #{state},#{language},#{groupId})
+		#{latitude},
+		#{state},#{language},#{groupId})
 	</insert>
 	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TPhone">
 		update t_phone
@@ -163,7 +168,8 @@
 		s.pictures,
 		s.checked
 		from t_phone p
-		left outer join t_service s on s.pid = p.id
+		left outer join t_service s on s.pid
+		= p.id
 		left outer join t_trade t on t.id = p.trade_id
 	</select>
 
@@ -185,7 +191,8 @@
 		parameterType="list">
 		select id,name ,pic,sex,phone
 		,remark,position,college,education,company ,city_id,province_id
-		from t_phone
+		from
+		t_phone
 		where 1=1
 		<if test="list!=null">
 			and id in (0
@@ -198,18 +205,22 @@
 	<select id="getUserById" parameterType="java.lang.Integer"
 		resultMap="UserInfoResultMap">
 		select p.*,city.name city_name,trade.name trade_name
-		from t_phone p
+		from
+		t_phone p
 		left outer join t_city city on city.id = p.city_id
-		left outer join t_trade trade on trade.id = p.trade_id
+		left outer
+		join t_trade trade on trade.id = p.trade_id
 		where p.id = #{id}
 	</select>
 
 	<select id="getUserIdByCityAndTrade" parameterType="java.lang.Integer"
 		resultMap="UserInfoResultMap">
 		select p.*,city.name city_name,trade.name trade_name
-		from t_phone p
+		from
+		t_phone p
 		left outer join t_city city on city.id = p.city_id
-		left outer join t_trade trade on trade.id = p.trade_id
+		left outer
+		join t_trade trade on trade.id = p.trade_id
 		where
 		p.city_id =#{cityId}
 		and p.trade_id =#{tradeId}
@@ -241,10 +252,40 @@
 		s.pictures,
 		s.checked
 		from t_phone p
-		left outer join t_service s on
+		left outer
+		join t_service s on
 		s.pid = p.id
-		left outer join t_trade t on t.id = p.trade_id
+		left outer join t_trade t on t.id =
+		p.trade_id
 		where p.id = #{id}
+	</select>
+
+	<select id="selectNewUsersId"  resultMap="UserInfoResultMap" parameterType="integer">
+		select
+		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark 
+		from t_phone p
+		where 1 =1 
+		<if test="tradeId!=null">
+		and p.trade_id = #{tradeId} </if>
+		order by p.timestamp desc limit 5
+	</select>
+
+	<select id="selectActiveUsersId" parameterType="integer" resultMap="UserInfoResultMap">
+		SELECT
+		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark 
+		FROM
+		t_phone p
+		left JOIN
+		(SELECT pid 
+		from t_friend 
+		group by pid 
+		ORDER BY COUNT(pid) DESC 
+		) a
+		on p.id = a.pid
+		where 1=1 
+		<if test="tradeId!=null">
+		and p.trade_id = #{tradeId}</if>
+		LIMIT #{pageNo} ,#{pageSize} 
 	</select>
 
 </mapper>

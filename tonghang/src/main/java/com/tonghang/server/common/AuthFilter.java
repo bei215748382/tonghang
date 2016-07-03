@@ -43,9 +43,9 @@ public class AuthFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
         // 类路径+方法名
         long startTime = System.currentTimeMillis();
-        log.info("======begin======");
         HttpServletRequest httpRequest = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+        log.info("======begin======URI {}  ", httpRequest.getRequestURI());
         String content = null;
         String sign = null;
         String time = null;

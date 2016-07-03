@@ -16,25 +16,28 @@ import com.tonghang.server.common.dto.TCircleDTO;
 import com.tonghang.server.common.dto.TCommentDTO;
 import com.tonghang.server.common.dto.TFavoriteDTO;
 import com.tonghang.server.common.dto.TFriendDTO;
-import com.tonghang.server.common.dto.TServiceDTO;
+import com.tonghang.server.common.dto.TUserDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCircleLike;
+import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TFavorite;
 import com.tonghang.server.entity.TFriend;
 import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
-import com.tonghang.server.entity.TService;
+import com.tonghang.server.entity.TProvince;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.mapper.TCircleLikeMapper;
 import com.tonghang.server.mapper.TCircleMapper;
+import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TFavoriteMapper;
 import com.tonghang.server.mapper.TFriendMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
+import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
@@ -65,6 +68,10 @@ public class SocialServiceImpl {
     private TFavoriteMapper favoriteMapper;
     @Autowired
     private TServiceMapper serviceMapper;
+    @Autowired
+    private TProvinceMapper provinceMapper;
+    @Autowired
+    private TCityMapper cityMapper;
 
     public Object publishSns(int userId, String txt, String pictures)
             throws ServiceException {
@@ -203,6 +210,34 @@ public class SocialServiceImpl {
         return result;
     }
 
+    public TCircleDTO getCircleInfoById(int id) throws ServiceException {
+        TCircle circle = circleMapper.selectByPrimaryKey(id);
+        if (circle == null) {
+            throw new ServiceException(ErrorCode.code200);
+        }
+        TPhone u = userMapper.getUserInfoById(circle.getPid());
+        TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
+        List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
+        if (circle.getComment() != 0) {
+            List<TComment> comments = commentMapper
+                    .selectByCircleId(circle.getId());
+            if (CollectionUtils.isNotEmpty(comments)) {
+                for (TComment bean : comments) {
+                    TPhone userinfo = userMapper
+                            .getUserInfoById(bean.getPidId());
+                    commentdto.add(new TCommentDTO(bean, userinfo));
+                }
+            }
+        }
+        List<Integer> userids = likeMapper
+                .selectAllLikePidByCircleId(circle.getId());
+        List<TPhone> userinfos = userMapper.selectByIds(userids);
+        TCircleDTO dto = TCircleDTO.builder(circle, u, commentdto, trade,
+                userinfos);
+
+        return dto;
+    }
+
     public Object applyFriend(int userId, String targetUserId)
             throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
@@ -220,12 +255,16 @@ public class SocialServiceImpl {
                         ErrorCode.code101.getHttpCode(),
                         "user  been  look up  not   exist");
             }
-            if (targetUser.getId() != user.getId()) {
-                TFriend friend = new TFriend();
-                friend.setPid(user.getId());
-                friend.setFid(targetUser.getId());
-                friend.setConfirm(0);
-                friendMapper.insert(friend);
+            TFriend friend = friendMapper.isFriends(userId,
+                    Integer.valueOf(targetUserId));
+            if (friend == null) {
+                if (targetUser.getId() != user.getId()) {
+                    friend = new TFriend();
+                    friend.setPid(user.getId());
+                    friend.setFid(targetUser.getId());
+                    friend.setConfirm(0);
+                    friendMapper.insert(friend);
+                }
             }
         }
         List<TFriend> friends = friendMapper.selectApplyNotConfirm(userId);
@@ -252,56 +291,69 @@ public class SocialServiceImpl {
         return friends;
     }
 
-    public Object guessLike(int userId, String pageNo, String pageSize)
-            throws ServiceException {
+    public Object recommend(int userId, String pageNo, String pageSize,
+            String tradeId) throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             throw new ServiceException(ErrorCode.code101.getCode(),
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        if (StringUtils.isBlank(pageSize) || StringUtils.isNumeric(pageSize)
+        if (StringUtils.isBlank(pageSize) || !StringUtils.isNumeric(pageSize)
                 || Integer.valueOf(pageSize) <= 0) {
             pageSize = "10";
         }
-        if (StringUtils.isBlank(pageNo) || StringUtils.isNumeric(pageNo)
+        if (StringUtils.isBlank(pageNo) || !StringUtils.isNumeric(pageNo)
                 || Integer.valueOf(pageNo) <= 0) {
             pageNo = "0";
         }
-        if ((user.getCityId() == null || user.getCityId() == 0)
-                && (user.getTradeId() == null || user.getTradeId() == 0)) {
-            throw new ServiceException(ErrorCode.code119.getCode(),
-                    ErrorCode.code119.getHttpCode(),
-                    ErrorCode.code119.getDesc());
+        Integer id = null;
+        if (StringUtils.isNotBlank(tradeId) && StringUtils.isNumeric(tradeId)) {
+            id = Integer.valueOf(tradeId);
         }
-        List<Integer> usersId = userMapper
-                .getUserIdByCityAndTrade(user.getCityId(), user.getTradeId());
-        if (usersId == null) {
-            usersId = new ArrayList<Integer>();
-        }
-        List<TCircle> circles = circleMapper.getFriendCircles(usersId);
-
-        List<TCircleDTO> result = new ArrayList<TCircleDTO>();
-        for (TCircle circle : circles) {
-            TPhone u = userMapper.getUserInfoById(circle.getPid());
-            TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
-            List<TComment> comments = commentMapper
-                    .selectByCircleId(circle.getId());
-            List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
-            if (CollectionUtils.isNotEmpty(comments)) {
-                for (TComment bean : comments) {
-                    TPhone userinfo = userMapper
-                            .getUserInfoById(bean.getPidId());
-                    commentdto.add(new TCommentDTO(bean, userinfo));
-                }
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<TPhone> users = userMapper.selectNewUsersId(id);
+        List<TUserDTO> newUsers = new ArrayList<TUserDTO>();
+        if (CollectionUtils.isNotEmpty(users)) {
+            for (TPhone bean : users) {
+                TTrade trade = tradeMapper
+                        .selectByPrimaryKey(bean.getTradeId());
+                List<TCircle> service = circleMapper
+                        .getServicesByUserId(bean.getId());
+                TProvince province = provinceMapper
+                        .selectByPrimaryKey(bean.getProvinceId());
+                TCity city = cityMapper.selectByPrimaryKey(bean.getCityId());
+                newUsers.add(
+                        new TUserDTO(user,
+                                CollectionUtils.isEmpty(service) ? null
+                                        : service.get(0),
+                                null, trade, province, city));
             }
-            List<Integer> userids = likeMapper
-                    .selectAllLikePidByCircleId(circle.getId());
-            List<TPhone> userinfos = userMapper.selectByIds(userids);
-            result.add(TCircleDTO.builder(circle, u, commentdto, trade,
-                    userinfos));
-
         }
+        result.put("new", newUsers);
+        users.clear();
+        users = userMapper.selectActiveUsersId(Integer.valueOf(pageNo),
+                Integer.valueOf(pageSize), id);
+        List<TUserDTO> activeUsers = new ArrayList<TUserDTO>();
+        if (CollectionUtils.isNotEmpty(users)) {
+            for (TPhone bean : users) {
+                TTrade trade = tradeMapper
+                        .selectByPrimaryKey(bean.getTradeId());
+                List<TCircle> service = circleMapper
+                        .getServicesByUserId(bean.getId());
+                TProvince province = provinceMapper
+                        .selectByPrimaryKey(bean.getProvinceId());
+                TCity city = cityMapper.selectByPrimaryKey(bean.getCityId());
+                activeUsers
+                        .add(new TUserDTO(user,
+                                CollectionUtils.isEmpty(service) ? null
+                                        : service.get(0),
+                                null, trade, province, city));
+            }
+        }
+        result.put("active", activeUsers);
+        result.put("pageNo", pageNo);
+        result.put("pageSize", pageSize);
         return result;
 
     }
@@ -455,12 +507,15 @@ public class SocialServiceImpl {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("user", userService.getInfo(userId));
         result.put("service",
-                userService.getService(Integer.valueOf(userId), targetUserId));
+                userService.getServices(Integer.valueOf(userId), targetUserId));
         List<TCircle> circles = circleMapper
                 .getMyCircles(Integer.valueOf(targetUserId));
         if (circles != null && circles.size() > 0) {
             result.put("circle", new TCircleDTO(circles.get(0)));
         }
+        TFriend friend = friendMapper.isApplyFriends(Integer.valueOf(userId),
+                Integer.valueOf(targetUserId));
+        result.put("friend", friend);
         return result;
     }
 
@@ -511,10 +566,11 @@ public class SocialServiceImpl {
         List<TFavoriteDTO> result = new ArrayList<TFavoriteDTO>();
         for (TFavorite f : favorites) {
             if ("1".equals(f.getType())) {
-                TService service = serviceMapper
+                TCircle service = circleMapper
                         .selectByPrimaryKey(f.getFavoriteId());
                 TPhone userinfo = userMapper.getUserInfoById(service.getPid());
-                TServiceDTO dto = TServiceDTO.builder(service, userinfo);
+                TCircleDTO dto = TCircleDTO.builder(service, userinfo, null,
+                        null, null);
                 result.add(new TFavoriteDTO(f, dto, null));
             } else if ("2".equals(f.getType())) {
                 TCircle cirle = circleMapper
@@ -541,10 +597,11 @@ public class SocialServiceImpl {
         List<TFavoriteDTO> result = new ArrayList<TFavoriteDTO>();
         for (TFavorite f : favorites) {
             if ("1".equals(f.getType())) {
-                TService service = serviceMapper
+                TCircle service = circleMapper
                         .selectByPrimaryKey(f.getFavoriteId());
                 TPhone userinfo = userMapper.getUserInfoById(service.getPid());
-                TServiceDTO dto = TServiceDTO.builder(service, userinfo);
+                TCircleDTO dto = TCircleDTO.builder(service, userinfo, null,
+                        null, null);
                 result.add(new TFavoriteDTO(f, dto, null));
             } else if ("2".equals(f.getType())) {
                 TCircle cirle = circleMapper

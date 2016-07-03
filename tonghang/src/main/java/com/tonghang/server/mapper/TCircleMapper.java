@@ -43,4 +43,7 @@ public interface TCircleMapper {
     List<TCircle> getAllCircleShow(@Param("pageNo")int pageNo,@Param("pageSize") int pageSize);
 
     List<TCircle> getCircleByUserId(Integer id);
+    
+    List<TCircle> getServicesByUserId(Integer userId);
+    TCircle getServiceById(Integer id);
 }

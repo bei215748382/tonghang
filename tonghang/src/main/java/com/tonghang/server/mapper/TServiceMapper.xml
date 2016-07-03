@@ -124,6 +124,7 @@
 		where
 		pid =#{userId}
 		and (checked !=1 or checked is null)
+		order by timestamp desc
 	</select>
 	<select id="getUncheckedServices" resultMap="ServiceVoResultMap">
 		<include refid="serviceVoSql"></include>

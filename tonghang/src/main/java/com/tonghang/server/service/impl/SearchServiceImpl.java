@@ -50,10 +50,10 @@ public class SearchServiceImpl {
                 user = complateUserInfo(user);
                 if (user != null) {
                     TUserDTO bean = new TUserDTO(user, null, null);
-                    List<TService> services = serviceMapper
+                    List<TCircle> services = circleMapper
                             .getServicesByUserId(user.getId());
                     if (CollectionUtils.isNotEmpty(services)) {
-                        bean.setService(new TServiceDTO(services.get(0)));
+                        bean.setService(new TCircleDTO(services.get(0)));
                     }
                     List<TCircle> ciecles = circleMapper
                             .getMyCircles(user.getId());
@@ -69,10 +69,10 @@ public class SearchServiceImpl {
                 for (TPhone user : users) {
                     user = complateUserInfo(user);
                     TUserDTO bean = new TUserDTO(user, null, null);
-                    List<TService> services = serviceMapper
+                    List<TCircle> services = circleMapper
                             .getServicesByUserId(user.getId());
                     if (CollectionUtils.isNotEmpty(services)) {
-                        bean.setService(new TServiceDTO(services.get(0)));
+                        bean.setService(new TCircleDTO(services.get(0)));
                     }
                     List<TCircle> ciecles = circleMapper
                             .getMyCircles(user.getId());

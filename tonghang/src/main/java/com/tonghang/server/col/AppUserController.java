@@ -181,9 +181,9 @@ public class AppUserController extends AppBaseController {
     }
     
 
-    @RequestMapping(value = "/getservice", method = { RequestMethod.POST,
+    @RequestMapping(value = "/getservices", method = { RequestMethod.POST,
             RequestMethod.GET })
-    public @ResponseBody Object getService(HttpServletRequest request,
+    public @ResponseBody Object getServices(HttpServletRequest request,
             HttpServletResponse response) throws ServiceException {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
@@ -196,7 +196,27 @@ public class AppUserController extends AppBaseController {
         result.put("code", 200);
         result.put("msg", "success");
         result.put("data", userService
-                .getService(baseRequest.getUserId().intValue(), targetUserId));
+                .getServices(baseRequest.getUserId().intValue(), targetUserId));
+
+        return JSON.toJSONString(result);
+    }
+    
+    @RequestMapping(value = "/getservice", method = { RequestMethod.POST,
+            RequestMethod.GET })
+    public @ResponseBody Object getService(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String id = params.get("id");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", userService
+                .getService(baseRequest.getUserId().intValue(), id));
 
         return JSON.toJSONString(result);
     }

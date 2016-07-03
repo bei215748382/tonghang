@@ -151,5 +151,21 @@ public class AppSupportController extends AppBaseController {
         result.put("data", supportService.getMessage(baseRequest.getUserId().intValue()));
         return JSON.toJSONString(result);
     }
+    @RequestMapping(value = "/readmessage", method = { RequestMethod.POST,
+            RequestMethod.DELETE })
+    public @ResponseBody Object readMessage(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        Map<String, String> params = (Map<String, String>) JSON.parse(baseRequest.getContent());
+        checkParams(params);
+        String id = params.get("id");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", supportService.readMessage(baseRequest.getUserId().intValue(),id));
+        return JSON.toJSONString(result);
+    }
 
 }

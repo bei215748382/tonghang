@@ -97,8 +97,10 @@ public enum ErrorCode {
     code150(500, 150, "follow  exist"),
     /** 用户昵称被保留 **/
     code160(500, 160, "not find solarise user"),
-    //
-    /** 手机imei和mac地址已变化，请重新注册 */
+
+    /**
+     * 服务不存在
+     */
     code200(500, 200, "service not exist"),
     /** 无权删除评论 **/
     code300(500, 300, "circle or article not exist"),
