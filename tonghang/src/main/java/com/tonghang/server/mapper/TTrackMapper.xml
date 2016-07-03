@@ -4,8 +4,8 @@
 	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TTrack">
 		<id column="id" property="id"  jdbcType="INTEGER" />
 		<result column="pid" property="pid"  jdbcType="INTEGER" />
-		<result column="targetPid" property="target_pid"  jdbcType="INTEGER" />
-		<result column="createTime" property="create_time" jdbcType="TIMESTAMP" />
+		<result column="target_pid" property="targetPid"  jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<insert id="insert" parameterType="com.tonghang.server.entity.TTrack">
 		insert into t_track ( pid, target_pid , create_time  )
@@ -17,7 +17,7 @@
 	<select id="findOneBeenTrack" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select id, pid, create_time 
-		from t_track
+		from t_track 
 		where target_pid  = #{id,jdbcType=INTEGER}
 	</select>
 </mapper>

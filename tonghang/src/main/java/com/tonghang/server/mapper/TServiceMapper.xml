@@ -121,7 +121,7 @@
 		from t_service
 		where
 		pid =#{userId}
-		and checked !=1
+		and (checked !=1 or checked is null)
 	</select>
 	<select id="getUncheckedServices" resultMap="ServiceVoResultMap">
 		<include refid="serviceVoSql"></include>

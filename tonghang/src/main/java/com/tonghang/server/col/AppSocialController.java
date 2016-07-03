@@ -172,6 +172,27 @@ public class AppSocialController extends AppBaseController {
 
         return JSON.toJSONString(result);
     }
+    
+    @RequestMapping(value = "/hotarticle", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object hotArticle(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String pageSize = params.get("pageSize");
+        String pageNo = params.get("pageNo");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService.hotArticle(
+                baseRequest.getUserId().intValue(), pageSize, pageNo));
+
+        return JSON.toJSONString(result);
+    }
 
     @RequestMapping(value = "/comment", method = { RequestMethod.POST,
             RequestMethod.PUT })
@@ -189,9 +210,9 @@ public class AppSocialController extends AppBaseController {
         String commentId = params.get("commentId");
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", socialService.comment(
-                baseRequest.getUserId().intValue(), Integer.valueOf(id),
-                comment, commentId));
+        result.put("data",
+                socialService.comment(baseRequest.getUserId().intValue(),
+                        Integer.valueOf(id), comment, commentId));
 
         return JSON.toJSONString(result);
     }
@@ -230,11 +251,12 @@ public class AppSocialController extends AppBaseController {
         String id = params.get("userId");
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", socialService.homepage(baseRequest.getUserId().toString(), id));
+        result.put("data",
+                socialService.homepage(baseRequest.getUserId().toString(), id));
 
         return JSON.toJSONString(result);
     }
-    
+
     @RequestMapping(value = "/friendapply", method = { RequestMethod.POST,
             RequestMethod.PUT })
     public @ResponseBody Object friendApply(HttpServletRequest request,
@@ -242,12 +264,48 @@ public class AppSocialController extends AppBaseController {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         checkUserLogin(baseRequest);
-        String content = baseRequest.getContent();
         Map<String, Object> result = new HashMap<String, Object>();
-        Map<String, String> params = (Map<String, String>) JSON.parse(content);
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", socialService.friendApply(baseRequest.getUserId().toString()));
+        result.put("data",
+                socialService.friendApply(baseRequest.getUserId().toString()));
+
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping(value = "/favorite", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object favorite(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String type = params.get("type");
+        String id = params.get("id");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService
+                .favorite(baseRequest.getUserId().intValue(), type, id));
+
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping(value = "/favorites", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object favorites(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data",
+                socialService.favoritelist(baseRequest.getUserId().intValue()));
 
         return JSON.toJSONString(result);
     }

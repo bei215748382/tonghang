@@ -14,7 +14,7 @@ public class TTrack {
 
     private int pid;
 
-    private int targetPid;//被浏览者id
+    private Integer targetPid;//被浏览者id
 
     private Timestamp createTime;
 
@@ -44,11 +44,11 @@ public class TTrack {
         this.pid = pid;
     }
 
-    public int getTargetPid() {
+    public Integer getTargetPid() {
         return targetPid;
     }
 
-    public void setTargetPid(int targetPid) {
+    public void setTargetPid(Integer targetPid) {
         this.targetPid = targetPid;
     }
 

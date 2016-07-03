@@ -49,16 +49,16 @@
   
   <select  id="friendNotConfirm"  resultMap="BaseResultMap"   parameterType="integer" >
   	select id,pid,fid, confirm 
-  	from  t_friend  where  (fid =#{userId}  and pid =#{targetUserId} and confirm is null )  limit 1
+  	from  t_friend  where  (fid =#{userId}  and pid =#{targetUserId} and confirm = 0 )  limit 1
   </select>
   
   <select  id="selectApplyNotConfirm"  resultMap="BaseResultMap"   parameterType="integer" >
   	select id,pid,fid, confirm 
-  	from  t_friend  where  (pid =#{userId}   and confirm is null )  
+  	from  t_friend  where  (pid =#{userId}   and  confirm = 0 )  
   </select>
   
   <select  id="selectBeenApplyNotConfirm"  resultMap="BaseResultMap"   parameterType="integer" >
   	select id,pid,fid, confirm 
-  	from  t_friend  where  (fid =#{userId}   and confirm is null )  
+  	from  t_friend  where  (fid =#{userId}   and  confirm = 0 )  
   </select>
 </mapper>

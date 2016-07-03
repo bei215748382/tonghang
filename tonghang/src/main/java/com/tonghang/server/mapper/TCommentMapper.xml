@@ -79,7 +79,7 @@
 	<select id="selectByCircleId" resultMap="BaseResultMap">
 		select *
 		from t_comment
-		where circle_id = #{circleId} and checked != 0
+		where circle_id = #{circleId} and (checked != 0 or checked is null)
 	</select>
 	
 </mapper>

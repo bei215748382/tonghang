@@ -9,6 +9,9 @@ public class TNotification {
 
     private String title;
 
+    /**
+     * 接收消息方
+     */
     private Integer pid;
 
     private String content;
@@ -18,6 +21,35 @@ public class TNotification {
     private Date datetime;
 
     private String url;
+
+    /**
+     * 产生消息方 ，比如评论者id
+     */
+    private Integer proId;
+
+    public TNotification() {
+
+    }
+
+    public TNotification(TNotification bean) {
+        this.id = bean.getId();
+        this.type = bean.getType();
+        this.title = bean.getTitle();
+        this.pid = bean.getPid();
+        this.content = bean.getContent();
+        this.contentId = bean.getContentId();
+        this.datetime = bean.getDatetime();
+        this.url = bean.getUrl();
+        this.proId = bean.getProId();
+    }
+
+    public Integer getProId() {
+        return proId;
+    }
+
+    public void setProId(Integer proId) {
+        this.proId = proId;
+    }
 
     public Integer getId() {
         return id;

@@ -111,6 +111,7 @@ CREATE TABLE `t_notification` (
   `content_id` int(11) DEFAULT NULL,
   `datetime` datetime DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
+  `pro_id` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -225,3 +226,13 @@ DROP TABLE IF EXISTS `t_circle_like`;
  `circle_id` int(11)  NOT NULL,
  `create_time` timestamp default now())
  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ DROP TABLE IF EXISTS `t_favorite`;
+CREATE TABLE `t_favorite` (
+  `id` int(11) NOT NULL,
+  `fav_id` int(11) DEFAULT NULL COMMENT '收藏的同行圈或者服务id',
+  `type` enum('1','2') DEFAULT NULL COMMENT '1同行圈2服务',
+  `pid` int(11) DEFAULT NULL COMMENT '用户id',
+  `create_time` datetime DEFAULT NULL COMMENT '收藏时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

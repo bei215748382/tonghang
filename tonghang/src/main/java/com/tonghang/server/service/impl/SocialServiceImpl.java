@@ -14,22 +14,28 @@ import org.springframework.stereotype.Service;
 
 import com.tonghang.server.common.dto.TCircleDTO;
 import com.tonghang.server.common.dto.TCommentDTO;
+import com.tonghang.server.common.dto.TFavoriteDTO;
 import com.tonghang.server.common.dto.TFriendDTO;
+import com.tonghang.server.common.dto.TServiceDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCircleLike;
 import com.tonghang.server.entity.TComment;
+import com.tonghang.server.entity.TFavorite;
 import com.tonghang.server.entity.TFriend;
 import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
+import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.mapper.TCircleLikeMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCommentMapper;
+import com.tonghang.server.mapper.TFavoriteMapper;
 import com.tonghang.server.mapper.TFriendMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
+import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
 import com.tonghang.server.util.OSSUtil;
@@ -55,6 +61,10 @@ public class SocialServiceImpl {
     private UserService userService;
     @Autowired
     private TCircleLikeMapper likeMapper;
+    @Autowired
+    private TFavoriteMapper favoriteMapper;
+    @Autowired
+    private TServiceMapper serviceMapper;
 
     public Object publishSns(int userId, String txt, String pictures)
             throws ServiceException {
@@ -107,7 +117,7 @@ public class SocialServiceImpl {
                     }
                 }
             }
-            result.add(TCircleDTO.builder(bean, u, commentdto, trade));
+            result.add(TCircleDTO.builder(bean, u, commentdto, trade, null));
 
         }
 
@@ -175,7 +185,11 @@ public class SocialServiceImpl {
                     }
                 }
             }
-            TCircleDTO dto = TCircleDTO.builder(circle, u, commentdto, trade);
+            List<Integer> userids = likeMapper
+                    .selectAllLikePidByCircleId(circle.getId());
+            List<TPhone> userinfos = userMapper.selectByIds(userids);
+            TCircleDTO dto = TCircleDTO.builder(circle, u, commentdto, trade,
+                    userinfos);
             TCircleLike like = likeMapper.selectByCircleIdAndPid(circle.getId(),
                     user.getId());
             if (like == null) {
@@ -210,13 +224,8 @@ public class SocialServiceImpl {
                 TFriend friend = new TFriend();
                 friend.setPid(user.getId());
                 friend.setFid(targetUser.getId());
+                friend.setConfirm(0);
                 friendMapper.insert(friend);
-                TNotification notification = new TNotification();
-                notification.setPid(targetUser.getId());
-                notification.setContent("有新的好友申请");
-                notification.setTitle("好友通知");
-                notification.setDatetime(new Date());
-                notification.setType(NotificationTypeEnum.Friend.getCode());
             }
         }
         List<TFriend> friends = friendMapper.selectApplyNotConfirm(userId);
@@ -286,7 +295,11 @@ public class SocialServiceImpl {
                     commentdto.add(new TCommentDTO(bean, userinfo));
                 }
             }
-            result.add(TCircleDTO.builder(circle, u, commentdto, trade));
+            List<Integer> userids = likeMapper
+                    .selectAllLikePidByCircleId(circle.getId());
+            List<TPhone> userinfos = userMapper.selectByIds(userids);
+            result.add(TCircleDTO.builder(circle, u, commentdto, trade,
+                    userinfos));
 
         }
         return result;
@@ -346,10 +359,15 @@ public class SocialServiceImpl {
             notification.setContent(txt);
             notification.setDatetime(new Date());
             notification.setContentId(circleId);
+            notification.setProId(userId);
             notification.setPid(commentMapper
                     .selectByPrimaryKey(Integer.valueOf(commentId)).getPidId());
             notification.setTitle("有人评论你的评论");
-            notification.setType("1");
+            if ("1".equals(circle.getType())) {
+                notification.setType(NotificationTypeEnum.Circle.getCode());
+            } else {
+                notification.setType(NotificationTypeEnum.Article.getCode());
+            }
         }
         commentMapper.insert(comment);
         Integer pid = circleMapper.selectByPrimaryKey(circleId).getPid();
@@ -358,8 +376,13 @@ public class SocialServiceImpl {
         notification.setDatetime(new Date());
         notification.setContentId(circleId);
         notification.setPid(pid);
+        notification.setProId(userId);
         notification.setTitle("你的同行圈收到评论");
-        notification.setType("1");
+        if ("1".equals(circle.getType())) {
+            notification.setType(NotificationTypeEnum.Circle.getCode());
+        } else {
+            notification.setType(NotificationTypeEnum.Article.getCode());
+        }
         notificationMapper.insert(notification);
         circle.setComment(circle.getComment() + 1);// TODO 存在数据库并发隔离性问题
                                                    // 建议改成查询comment数量
@@ -463,6 +486,102 @@ public class SocialServiceImpl {
             friendresult.add(new TFriendDTO(bean, userinfo));
         }
         return friendresult;
+    }
+
+    public Object favorite(int userId, String type, String id)
+            throws ServiceException {
+        TPhone user = userMapper.selectByPrimaryKey(Integer.valueOf(userId));
+        if (user == null) {
+            throw new ServiceException(ErrorCode.code101.getCode(),
+                    ErrorCode.code101.getHttpCode(),
+                    ErrorCode.code101.getDesc());
+        }
+        TFavorite bean = favoriteMapper.selectByPidFavid(type, userId,
+                Integer.valueOf(id));
+        if (bean == null) {
+            bean = new TFavorite();
+            bean.setPid(userId);
+            bean.setFavoriteId(Integer.valueOf(id));
+            bean.setType(type);
+            favoriteMapper.insert(bean);
+        } else {
+            favoriteMapper.selectByPidFavid(type, userId, Integer.valueOf(id));
+        }
+        List<TFavorite> favorites = favoriteMapper.selectByPid(userId);
+        List<TFavoriteDTO> result = new ArrayList<TFavoriteDTO>();
+        for (TFavorite f : favorites) {
+            if ("1".equals(f.getType())) {
+                TService service = serviceMapper
+                        .selectByPrimaryKey(f.getFavoriteId());
+                TPhone userinfo = userMapper.getUserInfoById(service.getPid());
+                TServiceDTO dto = TServiceDTO.builder(service, userinfo);
+                result.add(new TFavoriteDTO(f, dto, null));
+            } else if ("2".equals(f.getType())) {
+                TCircle cirle = circleMapper
+                        .selectByPrimaryKey(f.getFavoriteId());
+                TPhone userinfo = userMapper.getUserInfoById(cirle.getPid());
+                TTrade tarde = tradeMapper
+                        .selectByPrimaryKey(userinfo.getTradeId());
+                TCircleDTO dto = TCircleDTO.builder(cirle, userinfo, null,
+                        tarde, null);
+                result.add(new TFavoriteDTO(f, null, dto));
+            }
+        }
+        return result;
+    }
+
+    public Object favoritelist(int userId) throws ServiceException {
+        TPhone user = userMapper.selectByPrimaryKey(Integer.valueOf(userId));
+        if (user == null) {
+            throw new ServiceException(ErrorCode.code101.getCode(),
+                    ErrorCode.code101.getHttpCode(),
+                    ErrorCode.code101.getDesc());
+        }
+        List<TFavorite> favorites = favoriteMapper.selectByPid(userId);
+        List<TFavoriteDTO> result = new ArrayList<TFavoriteDTO>();
+        for (TFavorite f : favorites) {
+            if ("1".equals(f.getType())) {
+                TService service = serviceMapper
+                        .selectByPrimaryKey(f.getFavoriteId());
+                TPhone userinfo = userMapper.getUserInfoById(service.getPid());
+                TServiceDTO dto = TServiceDTO.builder(service, userinfo);
+                result.add(new TFavoriteDTO(f, dto, null));
+            } else if ("2".equals(f.getType())) {
+                TCircle cirle = circleMapper
+                        .selectByPrimaryKey(f.getFavoriteId());
+                TPhone userinfo = userMapper.getUserInfoById(cirle.getPid());
+                TTrade tarde = tradeMapper
+                        .selectByPrimaryKey(userinfo.getTradeId());
+                TCircleDTO dto = TCircleDTO.builder(cirle, userinfo, null,
+                        tarde, null);
+                result.add(new TFavoriteDTO(f, null, dto));
+            }
+        }
+        return result;
+    }
+
+    public Object hotArticle(int userId, String pageSize, String pageNo)
+            throws ServiceException {
+        TPhone user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            throw new ServiceException(ErrorCode.code101.getCode(),
+                    ErrorCode.code101.getHttpCode(),
+                    ErrorCode.code101.getDesc());
+        }
+        List<ArticlesVo> result = new ArrayList<ArticlesVo>();
+        List<ArticlesVo> articles = new ArrayList<ArticlesVo>();
+        articles = circleMapper.getHotArticles();
+        for (ArticlesVo bean : articles) {
+            TCircleLike like = likeMapper.selectByCircleIdAndPid(bean.getId(),
+                    userId);
+            if (like != null) {
+                bean.setLike(true);
+            } else {
+                bean.setLike(false);
+            }
+            result.add(bean);
+        }
+        return result;
     }
 
 }

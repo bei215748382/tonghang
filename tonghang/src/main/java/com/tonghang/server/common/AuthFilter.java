@@ -112,7 +112,7 @@ public class AuthFilter implements Filter {
                 String mobile = param1.get("mobile");
                 if (StringUtils.isNotBlank(mobile)) {
                     Pattern p = Pattern.compile(
-                            "((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}");
+                            "((13[0-9])|(15[^4,\\D])|(18[0-1,5-9]))\\d{8}");
                     Matcher m = p.matcher(mobile);
                     if (!m.matches()) {
                         throw new ServiceException(ErrorCode.code120);

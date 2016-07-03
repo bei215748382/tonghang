@@ -2,15 +2,16 @@ package com.tonghang.server.common.dto;
 
 import java.io.Serializable;
 
+import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
-import com.tonghang.server.entity.TTrack;
 
-public class TTrackDTO extends TTrack  implements  Serializable{
+public class TNotificationDTO  extends  TNotification  implements Serializable {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 6506080061956657413L;
+    private static final long serialVersionUID = -2864695993699100693L;
+    
     
     private TPhone userinfo;
 
@@ -21,15 +22,13 @@ public class TTrackDTO extends TTrack  implements  Serializable{
     public void setUserinfo(TPhone userinfo) {
         this.userinfo = userinfo;
     }
-    
-    public TTrackDTO(TTrack track) {
-        super(track);
+
+    public TNotificationDTO(TNotification bean) {
+        super(bean);
     }
 
-    public TTrackDTO(TTrack track, TPhone user) {
-        super(track);
+    public TNotificationDTO(TNotification bean, TPhone user) {
+        super(bean);
         this.userinfo = user;
-        this.setTargetPid(null);
     }
 }
-

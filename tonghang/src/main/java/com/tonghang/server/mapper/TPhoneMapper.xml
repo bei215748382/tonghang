@@ -131,6 +131,9 @@
 			<if test="groupId != null and groupId != ''">
 				group_id = #{groupId}
 			</if>
+			<if test="company != null and company != ''">
+				company = #{company}
+			</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -206,7 +209,7 @@
 	</select>
 	
 	<select id="getUserInfoById" parameterType="java.lang.Integer" resultMap="UserInfoResultMap">
-		select p.company,p.name,p.position,p.pic,p.college,p.education,p.remark,city.name city_name,trade.name trade_name
+		select p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark,city.name city_name,trade.name trade_name
 		from t_phone p
 		left outer join  t_city city on city.id = p.city_id
 		left outer join t_trade trade on trade.id = p.trade_id

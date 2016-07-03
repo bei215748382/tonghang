@@ -37,7 +37,7 @@ public class AppBaseController {
         }
         for (String key : params.keySet()) {
             String param = params.get(key);
-            if (StringUtils.isBlank(param)) {
+            if (StringUtils.isEmpty(param)) {
                 throw new ServiceException(ErrorCode.code20.getCode(),
                         ErrorCode.code20.getHttpCode(),
                         "param[" + key + "] is needed.");

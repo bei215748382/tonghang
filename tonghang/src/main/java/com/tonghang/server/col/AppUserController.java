@@ -170,11 +170,12 @@ public class AppUserController extends AppBaseController {
         String name = params.get("name");
         String describe = params.get("describe");
         String id = params.get("id");
+        String filepaths = params.get("filepaths");
         String files = baseRequest.getFilepaths();
         result.put("code", 200);
         result.put("msg", "success");
         result.put("data", userService.updateService(
-                baseRequest.getUserId().intValue(), id, name, describe, files));
+                baseRequest.getUserId().intValue(), id, name, describe, files, filepaths));
 
         return JSON.toJSONString(result);
     }

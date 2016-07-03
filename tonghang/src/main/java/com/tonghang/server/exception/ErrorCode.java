@@ -55,7 +55,7 @@ public enum ErrorCode {
     code100(500,100,"tel number has  been  registed"),
     //
     /** 用户唯一标识码不存在 */
-    code101(500, 101, "auid invalid"),
+    code101(500, 101, "userId invalid"),
     /** 登陆账号不存在 */
     code102(500, 102, "account invalid"),
     /** 密码不正确 */

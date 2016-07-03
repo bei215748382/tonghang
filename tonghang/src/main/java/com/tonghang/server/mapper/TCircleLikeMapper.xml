@@ -31,5 +31,12 @@
 		and
 		circle_id =#{circleId}
 	</select>
+	
+	<select id="selectAllLikePidByCircleId" parameterType="java.lang.Integer" resultType="integer">
+
+		select pid from t_circle_like
+		where 
+		circle_id =#{circleId}
+	</select>
 
 </mapper>

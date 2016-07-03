@@ -185,12 +185,16 @@ public class UserService {
         if (StringUtils.isNoneBlank(cityId)) {
             user.setCityId(Integer.valueOf(cityId));
         }
+        String company = params.get("company");
+        if (StringUtils.isNoneBlank(company)) {
+            user.setCompany(company);
+        }
         String education = params.get("education");
         if (StringUtils.isNoneBlank(education)) {
             user.setEducation(education);
         }
         String tags = params.get("tags");
-        if (StringUtils.isEmpty(tags)) {
+        if (StringUtils.isNotBlank(tags)) {
             user.setRemark(tags);
         }
         userMapper.updateByPrimaryKey(user);
@@ -333,8 +337,8 @@ public class UserService {
 
         List<TTrack> tracks = trackMapper.findOneBeenTrack(userId);
         List<TTrackDTO> result = new ArrayList<TTrackDTO>();
-        for(TTrack bean :tracks){
-            TPhone userinfo = userMapper.getUserInfoById(bean.getPid()); 
+        for (TTrack bean : tracks) {
+            TPhone userinfo = userMapper.getUserInfoById(bean.getPid());
             result.add(new TTrackDTO(bean, userinfo));
         }
         return result;
@@ -370,7 +374,8 @@ public class UserService {
     }
 
     public Object updateService(int userId, String id, String name,
-            String describe, String pictures) throws ServiceException {
+            String describe, String pictures, String paths)
+                    throws ServiceException {
 
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
@@ -398,11 +403,12 @@ public class UserService {
                 pictures += filepath + ",";
             }
         }
-
+        pictures = paths + pictures;
         service.setDescription(describe);
         service.setTitle(name);
         service.setPid(userId);
         service.setPictures(pictures);
+        service.setTimestamp(new Date());
         serviceMap.updateByPrimaryKey(service);
 
         TCircle circle = new TCircle();

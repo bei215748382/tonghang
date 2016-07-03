@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tonghang.server.mapper.TFavoriteMapper">
+	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TFavorite">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="fav_id" property="favoriteId" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<delete id="deleteByPidFavid" parameterType="java.lang.Integer">
+		delete from
+		t_favorite
+		where pid = #{pid}  and type=#{type} 
+		and fav_id =#{favId}
+	</delete>
+	<insert id="insert" parameterType="com.tonghang.server.entity.TFavorite">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="BEFORE">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_favorite ( fav_id, pid,
+		type, create_time )
+		values
+		(
+		#{favoriteId}, #{pid},
+		#{type}, #{createTime})
+	</insert>
+	<select id="selectByPid" parameterType="integer" resultMap="BaseResultMap">
+	select * 
+	from t_favorite
+	where pid =#{pid}
+	</select>
+	<select id="selectByPidFavid"  resultMap="BaseResultMap">
+		select * from
+		t_favorite
+		where pid = #{pid} and type=#{type} 
+		and fav_id =#{favId} limit 1
+	</select>
+</mapper>

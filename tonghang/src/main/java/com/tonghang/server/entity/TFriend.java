@@ -45,8 +45,8 @@ public class TFriend {
     }
 
     public TFriend(TFriend bean) {
-        this.confirm = bean.confirm;
-        this.fid = bean.fid;
+        this.confirm = bean.getConfirm();
+        this.fid = bean.getFid();
         this.pid = bean.getPid();
         this.id = bean.getId();
     }
