@@ -151,6 +151,7 @@ public class AppSupportController extends AppBaseController {
         result.put("data", supportService.getMessage(baseRequest.getUserId().intValue()));
         return JSON.toJSONString(result);
     }
+    
     @RequestMapping(value = "/readmessage", method = { RequestMethod.POST,
             RequestMethod.DELETE })
     public @ResponseBody Object readMessage(HttpServletRequest request,
@@ -165,6 +166,17 @@ public class AppSupportController extends AppBaseController {
         result.put("code", 200);
         result.put("msg", "success");
         result.put("data", supportService.readMessage(baseRequest.getUserId().intValue(),id));
+        return JSON.toJSONString(result);
+    }
+    
+    @RequestMapping(value = "/banner", method = { RequestMethod.POST,
+            RequestMethod.DELETE })
+    public @ResponseBody Object banner(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", supportService.banner());
         return JSON.toJSONString(result);
     }
 

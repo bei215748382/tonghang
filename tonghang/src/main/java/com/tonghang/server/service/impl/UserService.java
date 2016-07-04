@@ -20,6 +20,7 @@ import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCircleLike;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
+import com.tonghang.server.entity.TFavorite;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
 import com.tonghang.server.entity.TService;
@@ -31,6 +32,7 @@ import com.tonghang.server.mapper.TCircleLikeMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
+import com.tonghang.server.mapper.TFavoriteMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TServiceMapper;
@@ -73,6 +75,8 @@ public class UserService {
     private TCommentMapper commentMapper;
     @Autowired
     private TCircleLikeMapper likeMapper;
+    @Autowired
+    private TFavoriteMapper favoriteMapper;
 
     public Map<String, Object> registUser(String mobile, String password,
             String longitude, String latitude, String device)
@@ -188,14 +192,36 @@ public class UserService {
         String tradeId = params.get("tradeId");
         if (StringUtils.isNoneBlank(tradeId)) {
             user.setTradeId(Integer.valueOf(tradeId));
+            TTrade trade = tradeMapper.selectByPrimaryKey(Integer.valueOf(tradeId));
+            if (StringUtils.isNotBlank(user.getLanguage())
+                    && "en_US".equals(user.getLanguage())) {
+                user.setTrade(trade.getEnName());
+            } else {
+                user.setTrade(trade.getName());
+            }
         }
         String provinceId = params.get("provinceId");
-        if (StringUtils.isNoneBlank(tradeId)) {
+        if (StringUtils.isNoneBlank(provinceId)) {
+            TProvince province = provinceMapper
+                    .selectByPrimaryKey(Integer.valueOf(provinceId));
             user.setProvinceId(Integer.valueOf(provinceId));
+            if (StringUtils.isNotBlank(user.getLanguage())
+                    && "en_US".equals(user.getLanguage())) {
+                user.setProvince(province.getEnName());
+            } else {
+                user.setProvince(province.getName());
+            }
         }
         String cityId = params.get("cityId");
         if (StringUtils.isNoneBlank(cityId)) {
             user.setCityId(Integer.valueOf(cityId));
+            TCity city = cityMapper.selectByPrimaryKey(Integer.valueOf(cityId));
+            if (StringUtils.isNotBlank(user.getLanguage())
+                    && "en_US".equals(user.getLanguage())) {
+                user.setCity(city.getEnName());
+            } else {
+                user.setCity(city.getName());
+            }
         }
         String company = params.get("company");
         if (StringUtils.isNoneBlank(company)) {
@@ -313,7 +339,7 @@ public class UserService {
         circle.setComment(0);
         circleMapper.insert(circle);
         circle.setType(1);
-        circle.setContent("我发布了新服务["+name+"]");
+        circle.setContent("我发布了新服务[" + name + "]");
         circleMapper.insert(circle);
         TServiceDTO result = new TServiceDTO(service);
         return result;
@@ -361,6 +387,20 @@ public class UserService {
         List<TTrackDTO> result = new ArrayList<TTrackDTO>();
         for (TTrack bean : tracks) {
             TPhone userinfo = userMapper.getUserInfoById(bean.getPid());
+            if (userinfo.getCityId() != null && userinfo.getProvinceId() != null) {
+                TProvince province = provinceMapper
+                        .selectByPrimaryKey(userinfo.getProvinceId());
+                TCity city = cityMapper.selectByPrimaryKey(userinfo.getCityId());
+                if (StringUtils.isNotBlank(user.getLanguage())
+                        && "en_US".equals(user.getLanguage())
+                        && province != null && city != null) {
+                    user.setProvince(province.getEnName());
+                    user.setCity(city.getEnName());
+                } else {
+                    user.setProvince(province.getName());
+                    user.setCity(city.getName());
+                }
+            }
             result.add(new TTrackDTO(bean, userinfo));
         }
         return result;
@@ -466,6 +506,20 @@ public class UserService {
             trackMapper.insert(track);
         }
         TPhone u = userMapper.getUserInfoById(service.getPid());
+        if (u.getCityId() != null && u.getProvinceId() != null) {
+            TProvince province = provinceMapper
+                    .selectByPrimaryKey(u.getProvinceId());
+            TCity city = cityMapper.selectByPrimaryKey(u.getCityId());
+            if (StringUtils.isNotBlank(user.getLanguage())
+                    && "en_US".equals(user.getLanguage())
+                    && province != null && city != null) {
+                user.setProvince(province.getEnName());
+                user.setCity(city.getEnName());
+            } else {
+                user.setProvince(province.getName());
+                user.setCity(city.getName());
+            }
+        }
         TTrade trade = tradeMapper.selectByPrimaryKey(service.getTradeId());
         List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
         if (service.getComment() != 0) {
@@ -491,7 +545,9 @@ public class UserService {
         } else {
             dto.setLike(true);
         }
-
+        TFavorite favorite = favoriteMapper.selectByPidFavid("1", userId,
+                service.getId());
+        dto.setFavorite(favorite);
         return dto;
     }
 

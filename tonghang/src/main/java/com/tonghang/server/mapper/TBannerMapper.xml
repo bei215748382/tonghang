@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tonghang.server.mapper.TBannerMapper">
+	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TBanner">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="img" property="img" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_banner
+		where id = #{id}
+	</delete>
+	<insert id="insert" parameterType="com.tonghang.server.entity.TBanner">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="BEFORE">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_banner (id, img, url,
+		state
+		)
+		values (#{id}, #{img}, #{url},
+		#{state} 
+		)
+	</insert>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select id, img, url,
+		state from t_banner
+	</select>
+	<select id="selectAllEnable" resultMap="BaseResultMap">
+		select id, img, url,
+		state from t_banner  where state =1 
+	</select>
+</mapper>

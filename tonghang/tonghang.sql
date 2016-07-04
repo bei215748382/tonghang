@@ -236,3 +236,16 @@ CREATE TABLE `t_favorite` (
   `create_time` datetime DEFAULT NULL COMMENT '收藏时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for t_banner
+-- ----------------------------
+DROP TABLE IF EXISTS `t_banner`;
+CREATE TABLE `t_banner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `url` varchar(255) DEFAULT NULL COMMENT '跳转地址',
+  `img` varchar(255) DEFAULT NULL COMMENT '展示图',
+  `state` int(11) DEFAULT NULL COMMENT '0禁用1启用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

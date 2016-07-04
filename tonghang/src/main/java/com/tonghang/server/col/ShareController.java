@@ -40,12 +40,6 @@ public class ShareController  extends  AppBaseController {
         try {
             TCircleDTO bean = socialService.getCircleInfoById(id);
             model.addAttribute("bean", bean);
-            // if (UrlFilterUtil.isMobile(agent)) {
-            // echoHtml(_request, _response, model, "video_new_m");
-            // return;
-            // }
-            // echoHtml(_request, _response, model, "video");
-            forward(request, response, "/WEB_INF/views/share/share.html");
         } catch (ServiceException e1) {
             log.error("get share info error");
             model.addAttribute("errormsg", "找不到相关分享信息");

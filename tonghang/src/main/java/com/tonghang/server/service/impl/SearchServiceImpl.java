@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tonghang.server.common.dto.TCircleDTO;
-import com.tonghang.server.common.dto.TServiceDTO;
 import com.tonghang.server.common.dto.TUserDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
-import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
@@ -87,7 +85,7 @@ public class SearchServiceImpl {
         return result;
     }
 
-    private TPhone complateUserInfo(TPhone user) {
+    public TPhone complateUserInfo(TPhone user) {
         String lang = "zh_CN";
         if (StringUtils.isNotEmpty(user.getLanguage())) {
             lang = user.getLanguage();

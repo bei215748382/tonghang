@@ -8,7 +8,7 @@
 		<result column="type" property="type" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
-	<delete id="deleteByPidFavid" parameterType="java.lang.Integer">
+	<delete id="deleteByPidFavid" >
 		delete from
 		t_favorite
 		where pid = #{pid}  and type=#{type} 

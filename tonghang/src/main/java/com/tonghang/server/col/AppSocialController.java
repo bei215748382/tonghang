@@ -168,12 +168,32 @@ public class AppSocialController extends AppBaseController {
         String tradeId = params.get("tradeId");
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", socialService.browseArticle(
+        result.put("data", socialService.browseArticles(
                 baseRequest.getUserId().intValue(), tradeId, pageSize, pageNo));
 
         return JSON.toJSONString(result);
     }
-    
+
+    @RequestMapping(value = "/getarticle", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object getArticle(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String id = params.get("id");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService
+                .browseArticle(baseRequest.getUserId().intValue(), id));
+
+        return JSON.toJSONString(result);
+    }
+
     @RequestMapping(value = "/hotarticle", method = { RequestMethod.POST,
             RequestMethod.PUT })
     public @ResponseBody Object hotArticle(HttpServletRequest request,

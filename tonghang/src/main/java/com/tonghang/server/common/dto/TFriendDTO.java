@@ -26,9 +26,9 @@ public class TFriendDTO extends TFriend implements Serializable {
         super(friend);
     }
 
-    public TFriendDTO(TFriend friend, TPhone user) {
+    public TFriendDTO(TFriend friend, TPhone userinfo) {
         super(friend);
-        this.userinfo = user;
+        this.userinfo = userinfo;
     }
 
 }

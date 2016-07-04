@@ -17,6 +17,7 @@ import com.tonghang.server.entity.TProvince;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
+import com.tonghang.server.mapper.TBannerMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
@@ -40,6 +41,8 @@ public class SupportServiceImpl {
     private TTradeMapper tradeMapper;
     @Autowired
     private TNotificationMapper notificationMapper;
+    @Autowired
+    private TBannerMapper bannerMapper;
 
     private static Logger log = org.slf4j.LoggerFactory
             .getLogger(SupportServiceImpl.class);
@@ -148,10 +151,26 @@ public class SupportServiceImpl {
         if (user != null) {
             notifications = notificationMapper.selectByPid(userId);
             for (TNotification bean : notifications) {
-                if (NotificationTypeEnum.Circle.getCode()
-                        .equals(bean.getType())||NotificationTypeEnum.Article.getCode()
-                        .equals(bean.getType())) {
+                if (NotificationTypeEnum.Circle.getCode().equals(bean.getType())
+                        || NotificationTypeEnum.Article.getCode()
+                                .equals(bean.getType())) {
                     TPhone userinfo = userDao.getUserInfoById(bean.getProId());
+                    if (userinfo.getCityId() != null
+                            && userinfo.getProvinceId() != null) {
+                        TProvince province = provinceMapper
+                                .selectByPrimaryKey(userinfo.getProvinceId());
+                        TCity city = cityMapper
+                                .selectByPrimaryKey(userinfo.getCityId());
+                        if (StringUtils.isNotBlank(user.getLanguage())
+                                && "en_US".equals(user.getLanguage())
+                                && province != null && city != null) {
+                            user.setProvince(province.getEnName());
+                            user.setCity(city.getEnName());
+                        } else {
+                            user.setProvince(province.getName());
+                            user.setCity(city.getName());
+                        }
+                    }
                     result.add(new TNotificationDTO(bean, userinfo));
                 } else {
                     result.add(new TNotificationDTO(bean));
@@ -177,6 +196,10 @@ public class SupportServiceImpl {
                     ErrorCode.code102.getDesc());
         }
         return "success";
+    }
+
+    public Object banner() {
+        return bannerMapper.selectAllEnable();
     }
 
 }

@@ -27,8 +27,8 @@ public class TNotificationDTO  extends  TNotification  implements Serializable {
         super(bean);
     }
 
-    public TNotificationDTO(TNotification bean, TPhone user) {
+    public TNotificationDTO(TNotification bean, TPhone userinfo) {
         super(bean);
-        this.userinfo = user;
+        this.userinfo = userinfo;
     }
 }

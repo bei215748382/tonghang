@@ -26,9 +26,9 @@ public class TTrackDTO extends TTrack  implements  Serializable{
         super(track);
     }
 
-    public TTrackDTO(TTrack track, TPhone user) {
+    public TTrackDTO(TTrack track, TPhone userinfo) {
         super(track);
-        this.userinfo = user;
+        this.userinfo = userinfo;
         this.setTargetPid(null);
     }
 }

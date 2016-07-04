@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TFavorite;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TTrade;
 
@@ -21,8 +22,17 @@ public class TCircleDTO extends TCircle implements Serializable {
     private List<TPhone> userlikes;
     private String[] imgs;
 
+    private TFavorite favorite;
+
     private boolean like;
 
+    public TFavorite getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(TFavorite favorite) {
+        this.favorite = favorite;
+    }
 
     public List<TPhone> getUserlikes() {
         return userlikes;
@@ -68,6 +78,13 @@ public class TCircleDTO extends TCircle implements Serializable {
         this.setPics(null);
     }
 
+    public TCircleDTO(TCircle circle, TFavorite favorite) {
+        super(circle);
+        this.favorite = favorite;
+        this.setImgs(circle.getPics());
+        this.setPics(null);
+    }
+
     public List<TCommentDTO> getComments() {
         return comments;
     }
@@ -76,8 +93,8 @@ public class TCircleDTO extends TCircle implements Serializable {
         this.comments = comments;
     }
 
-    public static TCircleDTO builder(TCircle circle, TPhone user,
-            List<TCommentDTO> comments, TTrade trade,List<TPhone> userlikes) {
+    public static TCircleDTO builder(TCircle circle, TPhone userinfo,
+            List<TCommentDTO> comments, TTrade trade, List<TPhone> userlikes) {
         TCircleDTO bean = new TCircleDTO(circle);
         bean.setComments(comments);
 
@@ -91,14 +108,14 @@ public class TCircleDTO extends TCircle implements Serializable {
         }
         bean.setPics(null);
         if (trade != null) {
-            if (StringUtils.isNoneBlank(user.getLanguage())
-                    && "en_US".equals(user.getLanguage())) {
-                user.setTrade(trade.getEnName());
+            if (StringUtils.isNoneBlank(userinfo.getLanguage())
+                    && "en_US".equals(userinfo.getLanguage())) {
+                userinfo.setTrade(trade.getEnName());
             } else {
-                user.setTrade(trade.getName());
+                userinfo.setTrade(trade.getName());
             }
         }
-        bean.setUserinfo(user);
+        bean.setUserinfo(userinfo);
         bean.setUserlikes(userlikes);
         return bean;
     }
