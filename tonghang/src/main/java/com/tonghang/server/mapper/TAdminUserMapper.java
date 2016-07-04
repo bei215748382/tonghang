@@ -1,6 +1,7 @@
 package com.tonghang.server.mapper;
 
 import com.tonghang.server.entity.TAdminUser;
+
 import java.util.List;
 
 public interface TAdminUserMapper {
@@ -13,4 +14,6 @@ public interface TAdminUserMapper {
     List<TAdminUser> selectAll();
 
     int updateByPrimaryKey(TAdminUser record);
+
+    TAdminUser selectByUsername(String username);
 }

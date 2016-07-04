@@ -1,6 +1,7 @@
 package com.tonghang.server.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.tonghang.server.entity.TAdminUser;
 import com.tonghang.server.entity.TCircle;
@@ -73,5 +74,9 @@ public interface AdminService {
     List<TComment> getUserComment(Integer id);//根据用户id获取用户发表的评论
 
     TService getServiceById(Integer id);//根据服务id获取服务
+
+    Map<String, Object> login(TAdminUser user);//用户登入
+
+    Map<String, Object> registUser(TAdminUser user);//注册用户
 
 }

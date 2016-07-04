@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>慢性病管理后台登入</title>
+<title>同行管理后台登入</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="${ctx}/common/plugins/bootstrap/bootstrap.css"
 	rel="stylesheet">
@@ -30,7 +30,7 @@
 					<div class="box">
 						<div class="box-content">
 							<div class="text-center">
-								<h3 class="page-header">慢性病管理后台登入</h3>
+								<h3 class="page-header">同行管理后台登入</h3>
 							</div>
 							<div class="form-group">
 								<label class="control-label">用户名：</label> <input type="text"

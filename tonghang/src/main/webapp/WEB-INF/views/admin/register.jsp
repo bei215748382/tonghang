@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>慢性病管家管理后台账户注册</title>
+<title>同行管理后台账户注册</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="${ctx}/common/plugins/bootstrap/bootstrap.css"
 	rel="stylesheet">
@@ -28,14 +28,15 @@
 						account?</a>
 				</div>
 				<form method="POST" id="defaultForm" action="registerUser.do">
+                    <input type="hidden" name="role" value="超级管理员" >
 					<div class="box">
 						<div class="box-content">
 							<div class="text-center">
-								<h3 class="page-header">慢性病管理后台账户注册</h3>
+								<h3 class="page-header">同行管理后台账户注册</h3>
 							</div>
 							<div class="form-group">
 								<label class="control-label">手机号</label> <input type="text"
-									class="form-control" name="phone" />
+									class="form-control" name="username" />
 							</div>
 							<div class="form-group">
 								<label class="control-label">密码</label> <input

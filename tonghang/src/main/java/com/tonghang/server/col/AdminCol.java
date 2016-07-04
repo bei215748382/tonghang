@@ -3,9 +3,11 @@ package com.tonghang.server.col;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.FileUtil;
+import com.tonghang.server.util.StringUtil;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CheckCommentVo;
@@ -36,6 +39,36 @@ public class AdminCol {
 
     @Autowired
     private AdminService adminService;
+    
+    // 登陆提交
+    @RequestMapping(value = "login")
+    public String login(TAdminUser user,HttpServletRequest request) {
+        Map<String, Object> map = adminService.login(user);
+        HttpSession session = request.getSession();
+        session.setAttribute(StringUtil.adminLogin, map.get(StringUtil.responseObj));
+        return "redirect:index";
+    }
+
+    // 退出
+    @RequestMapping("logout")
+    public String logout(HttpSession session) throws Exception {
+        // session过期
+        session.invalidate();
+        return "redirect:login";
+    }
+
+    // 注册页面
+    @RequestMapping("register")
+    public String register() throws Exception {
+        return "admin/register";
+    }
+
+    // 注册
+    @RequestMapping("registerUser")
+    public String registerUser(TAdminUser user) throws Exception {
+        adminService.registUser(user);
+        return "admin/login";
+    }
 
     @RequestMapping(value = "index")
     public String index() {

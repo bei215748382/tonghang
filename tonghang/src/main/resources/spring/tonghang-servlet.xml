@@ -30,11 +30,11 @@
 	<mvc:resources location="/common/" mapping="/common/**"></mvc:resources>
  
 	<!--拦截器 -->
-<!-- 	<mvc:interceptors> -->
+	<mvc:interceptors>
 		<!--多个拦截器,顺序执行 -->
-<!-- 		<mvc:interceptor> -->
-<!-- 			<mvc:mapping path="/admin/**" /> -->
-<!-- 			<bean class="com.mlnx.chronic.filter.LoginInterceptor"></bean> -->
-<!-- 		</mvc:interceptor> -->
-<!-- 	</mvc:interceptors> -->
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**" />
+			<bean class="com.tonghang.server.filter.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>

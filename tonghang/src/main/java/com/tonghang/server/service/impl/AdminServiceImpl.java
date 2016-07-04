@@ -1,6 +1,8 @@
 package com.tonghang.server.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.service.AdminService;
+import com.tonghang.server.util.EnumCollection.ResponseCode;
+import com.tonghang.server.util.MD5Util;
+import com.tonghang.server.util.StringUtil;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CheckCommentVo;
@@ -192,6 +197,69 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public TService getServiceById(Integer id) {
         return tServiceMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Map<String, Object> login(TAdminUser user) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            TAdminUser u = tAdminUserMapper.selectByUsername(user.getUsername());
+            if (u != null) {//验证用户是否存在
+                String passwordMD5 = MD5Util.string2MD5(user.getPassword());
+                if (u.getPassword().equals(passwordMD5)) {//验证密码是否正确
+                    if(StringUtil.adminRole.equals(u.getRole())){//验证用户是否有权限登入
+                        map.put(StringUtil.responseCode,
+                                ResponseCode.LOGIN_SUCCESS.getCode());
+                        map.put(StringUtil.responseMsg,
+                                ResponseCode.LOGIN_SUCCESS.getMsg());
+                        map.put(StringUtil.responseObj, u);
+                    } else{
+                        map.put(StringUtil.responseCode,
+                                ResponseCode.LOGIN_ROLE_FAILED.getCode());
+                        map.put(StringUtil.responseMsg,
+                                ResponseCode.LOGIN_ROLE_FAILED.getMsg()); 
+                    }
+                } else {
+                    map.put(StringUtil.responseCode,
+                            ResponseCode.LOGIN_PASSWORD_ERROR.getCode());
+                    map.put(StringUtil.responseMsg,
+                            ResponseCode.LOGIN_PASSWORD_ERROR.getMsg());
+                }
+            } else {
+                map.put(StringUtil.responseCode,
+                        ResponseCode.LOGIN_USER_NOT_EXIST.getCode());
+                map.put(StringUtil.responseMsg,
+                        ResponseCode.LOGIN_USER_NOT_EXIST.getMsg());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put(StringUtil.responseCode, ResponseCode.LOGIN_ERROR.getCode());
+            map.put(StringUtil.responseMsg, ResponseCode.LOGIN_ERROR.getMsg());
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String,Object> registUser(TAdminUser user) {
+        Map<String,Object> map = new HashMap<String,Object>();
+        try{
+            TAdminUser u = tAdminUserMapper.selectByUsername(user.getUsername());
+            if(u!=null){
+                map.put(StringUtil.responseCode, ResponseCode.REGIST_EXIST.getCode());
+                map.put(StringUtil.responseCode, ResponseCode.REGIST_EXIST.getMsg());
+            } else{
+                String passwordMD5 = MD5Util.string2MD5(user.getPassword());
+                user.setPassword(passwordMD5);
+                tAdminUserMapper.insert(user); 
+                map.put(StringUtil.responseCode, ResponseCode.REGIST_SUCCESS.getCode());
+                map.put(StringUtil.responseCode, ResponseCode.REGIST_SUCCESS.getMsg());
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+            map.put(StringUtil.responseCode, ResponseCode.REGIST_ERROR.getCode());
+            map.put(StringUtil.responseCode, ResponseCode.REGIST_ERROR.getMsg());
+        }
+        return map;
     }
 
 }
