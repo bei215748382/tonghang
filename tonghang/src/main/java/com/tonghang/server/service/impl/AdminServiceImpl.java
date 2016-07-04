@@ -189,4 +189,9 @@ public class AdminServiceImpl implements AdminService {
         return tCommentMapper.getCommentByUserId(id);
     }
 
+    @Override
+    public TService getServiceById(Integer id) {
+        return tServiceMapper.selectByPrimaryKey(id);
+    }
+
 }

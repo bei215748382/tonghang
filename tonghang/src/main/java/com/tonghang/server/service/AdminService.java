@@ -72,4 +72,6 @@ public interface AdminService {
 
     List<TComment> getUserComment(Integer id);//根据用户id获取用户发表的评论
 
+    TService getServiceById(Integer id);//根据服务id获取服务
+
 }

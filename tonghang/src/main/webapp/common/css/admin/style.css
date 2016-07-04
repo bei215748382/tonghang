@@ -8,6 +8,9 @@
 .wid-4,.wid-3{
 	float:left;
 }
+.center{
+  text-align:center;
+}
 body {
 	color: #525252;
 	background: #6AA6D6 url(../../img/admin/devoops_pattern_b10.png) 0 0

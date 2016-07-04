@@ -19,6 +19,7 @@ import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
+import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.FileUtil;
@@ -158,6 +159,20 @@ public class AdminCol {
         return mav;
     }
 
+    @RequestMapping(value = "service_info")
+    public ModelAndView service_info(Integer id) {
+        ModelAndView mav = new ModelAndView("admin/ajax/service_info");
+        TService service = adminService.getServiceById(id);
+        mav.addObject("service", service);
+        return mav;
+    }
+    
+    @RequestMapping(value = "industry_info")
+    public ModelAndView industry_info() {
+        ModelAndView mav = new ModelAndView("admin/ajax/industry_info");
+        return mav;
+    }
+    
     @RequestMapping(value = "articles_info")
     public ModelAndView articles_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/articles_info");

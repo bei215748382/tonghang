@@ -55,7 +55,7 @@
 								<td>${data.phone}</td>
 								<td>${data.trade}</td>
 								<td><c:if test="${data.state == 1}">激活</c:if><c:if test="${data.state == 2}">冻结</c:if></td>
-								<td>查看服务</td>
+								<td><button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('service_info?id=${data.id}')">查看服务</button></td>
 							</tr>
 						</c:forEach>
 						<!-- End: list_row -->
