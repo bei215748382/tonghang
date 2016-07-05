@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
 
+
 public class FileUtil {
 
 	/**
@@ -21,8 +23,9 @@ public class FileUtil {
 	 * @param request
 	 * @param file
 	 * @return
+	 * @throws IOException 
 	 */
-	public static String savePic(HttpServletRequest request, MultipartFile file) {
+	public static String savePic(HttpServletRequest request, MultipartFile file) throws IOException {
 		String path = request.getSession().getServletContext().getRealPath("/");
 		int a = path.indexOf("webapps");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -41,6 +44,8 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 		String pic = "/upload/" + today + "/" + fileName;
+		pic = OSSUtil.instance().uploadOss(pic, "upload"+File.separatorChar+today);
+		targetFile.delete();
 		return pic;
 	}
 

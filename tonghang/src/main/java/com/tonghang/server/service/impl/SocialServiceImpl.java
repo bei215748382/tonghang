@@ -761,8 +761,7 @@ public class SocialServiceImpl {
         return result;
     }
 
-    public Object hotArticle(int userId, String pageSize, String pageNo)
-            throws ServiceException {
+    public Object hotArticle(int userId) throws ServiceException {
         TPhone user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             throw new ServiceException(ErrorCode.code101.getCode(),
@@ -770,9 +769,10 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getDesc());
         }
         List<ArticlesVo> result = new ArrayList<ArticlesVo>();
-        List<ArticlesVo> articles = new ArrayList<ArticlesVo>();
-        articles = circleMapper.getHotArticles();
-        for (ArticlesVo bean : articles) {
+        List<ArticlesVo> articles = circleMapper.getHotArticles();
+        if (CollectionUtils.isNotEmpty(articles)) {
+            // for (ArticlesVo bean : articles) {
+            ArticlesVo bean = articles.get(0);
             TCircleLike like = likeMapper.selectByCircleIdAndPid(bean.getId(),
                     userId);
             if (like != null) {
@@ -781,6 +781,7 @@ public class SocialServiceImpl {
                 bean.setLike(false);
             }
             result.add(bean);
+            // }
         }
         return result;
     }

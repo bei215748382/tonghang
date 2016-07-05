@@ -201,16 +201,11 @@ public class AppSocialController extends AppBaseController {
         BasicRequestDTO baseRequest = (BasicRequestDTO) request
                 .getAttribute("requestDTO");
         checkUserLogin(baseRequest);
-        String content = baseRequest.getContent();
         Map<String, Object> result = new HashMap<String, Object>();
-        Map<String, String> params = (Map<String, String>) JSON.parse(content);
-        checkParams(params);
-        String pageSize = params.get("pageSize");
-        String pageNo = params.get("pageNo");
         result.put("code", 200);
         result.put("msg", "success");
         result.put("data", socialService.hotArticle(
-                baseRequest.getUserId().intValue(), pageSize, pageNo));
+                baseRequest.getUserId().intValue()));
 
         return JSON.toJSONString(result);
     }

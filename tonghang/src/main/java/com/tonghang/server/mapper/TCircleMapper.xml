@@ -464,7 +464,8 @@
 		left outer join t_trade trade
 		on trade.id =
 		t.trade_id
-		where type = 2 and hot =1
+		where type = 2 and hot =1 
+		order by  datetime  desc
 	</select>
 	<select id="getServicesByUserId" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
