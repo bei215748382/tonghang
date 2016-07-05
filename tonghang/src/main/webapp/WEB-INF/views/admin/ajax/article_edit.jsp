@@ -31,6 +31,7 @@
 					id="articleForm" action="article_edit_json"
 					enctype="multipart/form-data">
 					<input type="hidden" name="id" value="${article.id}">
+					<input type="hidden" name="type" value="${article.type}">
 					<input type="hidden" id="tradeValue" value="${article.trade.id}">
 					<input type="hidden" id="cityValue" value="${article.area}">
 					<div class="form-group">

@@ -44,7 +44,7 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 		String pic = "/upload/" + today + "/" + fileName;
-		pic = OSSUtil.instance().uploadOss(pic, "upload"+File.separatorChar+today);
+		pic = OSSUtil.instance().uploadOss(targetFile, "upload"+File.separatorChar+today);
 		targetFile.delete();
 		return pic;
 	}

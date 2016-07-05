@@ -63,6 +63,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">&nbsp;</label>
 						<div class="col-sm-4">
+						<input type="hidden" name="type" value="2">
 								<div class="radio-inline">
 									<label> <input type="radio" name="checked" 
 										value="1"> 发送推送<i class="fa fa-circle-o"></i>

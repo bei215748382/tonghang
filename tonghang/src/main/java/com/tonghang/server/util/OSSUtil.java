@@ -41,6 +41,21 @@ public class OSSUtil {
         return videoPath + File.separatorChar + key + File.separatorChar
                 + videofile.getName();
     }
+    
+    public String uploadOss(File videofile, String key) throws IOException {
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(videofile.length());
+        client.putObject(VideoBucket,
+                key + File.separatorChar + videofile.getName(), videofile,
+                metadata);
+        videofile.deleteOnExit();
+        if(videofile.exists()){
+            videofile.delete();
+        }
+        return videoPath + File.separatorChar + key + File.separatorChar
+                + videofile.getName();
+    }
 
     public String uploadOss(InputStream inputstream, ObjectMetadata metadata,
             String path) throws IOException {
