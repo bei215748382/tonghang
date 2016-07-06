@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TCircleSeen;
 import com.tonghang.server.entity.TFavorite;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TTrade;
@@ -23,8 +24,19 @@ public class TCircleDTO extends TCircle implements Serializable {
     private String[] imgs;
 
     private TFavorite favorite;
-
+    
+    private TCircleSeen seen;
+    
     private boolean like;
+
+
+    public TCircleSeen getSeen() {
+        return seen;
+    }
+
+    public void setSeen(TCircleSeen seen) {
+        this.seen = seen;
+    }
 
     public TFavorite getFavorite() {
         return favorite;
@@ -117,6 +129,34 @@ public class TCircleDTO extends TCircle implements Serializable {
         }
         bean.setUserinfo(userinfo);
         bean.setUserlikes(userlikes);
+        return bean;
+    }
+    
+    public static TCircleDTO builder(TCircle circle, TPhone userinfo,
+            List<TCommentDTO> comments, TTrade trade, List<TPhone> userlikes,TCircleSeen seen) {
+        TCircleDTO bean = new TCircleDTO(circle);
+        bean.setComments(comments);
+
+        bean.setImgs(circle.getPics());
+        if (circle.getType() == 1) {
+            bean.setPic(null);
+        } else {
+            if (StringUtils.isNotBlank(circle.getPic())) {
+                bean.setPic(circle.getPic().split(",")[0]);
+            }
+        }
+        bean.setPics(null);
+        if (trade != null) {
+            if (StringUtils.isNoneBlank(userinfo.getLanguage())
+                    && "en_US".equals(userinfo.getLanguage())) {
+                userinfo.setTrade(trade.getEnName());
+            } else {
+                userinfo.setTrade(trade.getName());
+            }
+        }
+        bean.setUserinfo(userinfo);
+        bean.setUserlikes(userlikes);
+        bean.setSeen(seen);
         return bean;
     }
 

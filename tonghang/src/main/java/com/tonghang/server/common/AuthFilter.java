@@ -32,6 +32,7 @@ import com.tonghang.server.common.dto.ResponseResult;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.util.CodecUtil;
+import com.tonghang.server.util.RequestSignatureUtil;
 
 public class AuthFilter implements Filter {
     private static Logger log = LoggerFactory.getLogger(AuthFilter.class);
@@ -106,29 +107,10 @@ public class AuthFilter implements Filter {
                     content, sign, time, appKey, userId, accessToken,
                     filepaths);
 
-            Map<String, String> param1 = (Map<String, String>) JSON
-                    .parse(content);
-            if (param1 != null) {
-                String mobile = param1.get("mobile");
-                if (StringUtils.isNotBlank(mobile)) {
-                    Pattern p = Pattern.compile(
-                            "((13[0-9])|(15[^4,\\D])|(18[0-1,5-9]))\\d{8}");
-                    Matcher m = p.matcher(mobile);
-                    if (!m.matches()) {
-                        throw new ServiceException(ErrorCode.code120);
-                    }
-                }
+            if (auth == null || auth.equals("")) {
+                log.info("auth = {} is error", auth);
+                throw new ServiceException(ErrorCode.code21);
             }
-
-            // if (auth == null || auth.equals("")) {
-            // log.info("auth = {} is error", auth);
-            // response.getWriter()
-            // .println(ResponseResult.error(
-            // new ServiceException(ErrorCode.code21.getCode(),
-            // ErrorCode.code21.getHttpCode(),
-            // ErrorCode.code21.getDesc())));
-            // return;
-            // }
             String userAndPass = "";
             // userAndPass = new String(Base64.getDecoder().decode(auth.split("
             // ")[1]));
@@ -151,12 +133,27 @@ public class AuthFilter implements Filter {
             // return result;
             // }
             // try {
-            // RequestSignatureUtil.checkRequestLegal(content, time, appKey,
-            // sign);
+             RequestSignatureUtil.checkRequestLegal(content, time, appKey,
+             sign);
             // } catch (ServiceException e) {
             // response.getWriter().println(ResponseResult.error(e));
             // return;
             // }
+
+            Map<String, String> param1 = (Map<String, String>) JSON
+                    .parse(content);
+            if (param1 != null) {
+                String mobile = param1.get("mobile");
+                if (StringUtils.isNotBlank(mobile)) {
+                    Pattern p = Pattern.compile(
+                            "((13[0-9])|(15[^4,\\D])|(18[0-1,5-9]))\\d{8}");
+                    Matcher m = p.matcher(mobile);
+                    if (!m.matches()) {
+                        throw new ServiceException(ErrorCode.code120);
+                    }
+                }
+            }
+
             BasicRequestDTO requestDTO = new BasicRequestDTO();
             requestDTO.setAppkey(appKey);
             requestDTO.setAccessToken(accessToken);

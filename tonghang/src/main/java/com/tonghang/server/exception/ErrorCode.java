@@ -102,7 +102,7 @@ public enum ErrorCode {
      * 服务不存在
      */
     code200(500, 200, "service not exist"),
-    /** 无权删除评论 **/
+    /** circle or article not exist **/
     code300(500, 300, "circle or article not exist"),
     //
     /** 文件上传异常，请和服务器同步数据 */

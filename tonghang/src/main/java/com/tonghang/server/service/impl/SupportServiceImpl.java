@@ -122,6 +122,11 @@ public class SupportServiceImpl {
 
     }
 
+    /** 在用户登录的情况下 返回所有行业列表
+     * @param userId 用户id
+     * @return
+     * @throws ServiceException
+     */
     public List<TTrade> getTrade(Long userId) throws ServiceException {
         TPhone user = userDao.selectByPrimaryKey(userId.intValue());
         List<TTrade> trades = new ArrayList<TTrade>();

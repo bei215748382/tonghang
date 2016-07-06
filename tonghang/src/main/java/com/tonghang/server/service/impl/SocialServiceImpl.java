@@ -19,6 +19,7 @@ import com.tonghang.server.common.dto.TFriendDTO;
 import com.tonghang.server.common.dto.TUserDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCircleLike;
+import com.tonghang.server.entity.TCircleSeen;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TFavorite;
@@ -31,6 +32,7 @@ import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.mapper.TCircleLikeMapper;
 import com.tonghang.server.mapper.TCircleMapper;
+import com.tonghang.server.mapper.TCircleSeenMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TFavoriteMapper;
@@ -38,7 +40,6 @@ import com.tonghang.server.mapper.TFriendMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
-import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
 import com.tonghang.server.util.OSSUtil;
@@ -67,11 +68,11 @@ public class SocialServiceImpl {
     @Autowired
     private TFavoriteMapper favoriteMapper;
     @Autowired
-    private TServiceMapper serviceMapper;
-    @Autowired
     private TProvinceMapper provinceMapper;
     @Autowired
     private TCityMapper cityMapper;
+    @Autowired
+    private TCircleSeenMapper seenMapper;
 
     public Object publishSns(int userId, String txt, String pictures)
             throws ServiceException {
@@ -228,6 +229,8 @@ public class SocialServiceImpl {
         if (circle == null) {
             throw new ServiceException(ErrorCode.code200);
         }
+        circle.setPageView(circle.getPageView()+1);
+        circleMapper.updateByPrimaryKey(circle);
         TPhone u = userMapper.getUserInfoById(circle.getPid());
         TTrade trade = tradeMapper.selectByPrimaryKey(circle.getTradeId());
         List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
@@ -423,6 +426,25 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getDesc());
         }
         TCircle article = circleMapper.selectByPrimaryKey(Integer.valueOf(id));
+        if (article == null) {
+            throw new ServiceException(ErrorCode.code300);
+        }
+        article.setPageView(article.getPageView() + 1);
+        circleMapper.updateByPrimaryKey(article);
+        String content = article.getContent();
+        content = content.substring(
+                content.indexOf("<body>") + "<body>".length(),
+                content.indexOf("</body>"));
+        article.setContent(content);
+        TCircleSeen seen = seenMapper.selectByUserAndCircle(user.getId(),
+                article.getId());
+        if (seen == null) {
+            seen = new TCircleSeen();
+            seen.setCircleD(article.getId());
+            seen.setPid(userId);
+            seen.setTimestamp(new Date());
+            seenMapper.insert(seen);
+        }
         TTrade trade = tradeMapper.selectByPrimaryKey(article.getTradeId());
         List<TCommentDTO> commentdto = new ArrayList<TCommentDTO>();
         if (article.getComment() != 0) {
@@ -463,7 +485,7 @@ public class SocialServiceImpl {
         } else {
             dto.setLike(true);
         }
-
+        dto.setSeen(seen);
         return dto;
 
     }
@@ -602,8 +624,8 @@ public class SocialServiceImpl {
         }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("user", userService.getInfo(targetUserId));
-        result.put("service",
-                userService.getServices(Integer.valueOf(userId), targetUserId));
+        List<TCircle> services = circleMapper.getServicesByUserId(user.getId());
+        result.put("service", new TCircleDTO(services.get(0)));
         List<TCircle> circles = circleMapper
                 .getMyCircles(Integer.valueOf(targetUserId));
         if (circles != null && circles.size() > 0) {

@@ -1,5 +1,7 @@
 package com.tonghang.server.col;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tonghang.server.common.dto.TCircleDTO;
+import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.service.impl.SocialServiceImpl;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/share")
 public class ShareController  extends  AppBaseController {
 
     private static Logger log = LoggerFactory.getLogger(ShareController.class);
@@ -25,28 +28,44 @@ public class ShareController  extends  AppBaseController {
     @Autowired
     private SocialServiceImpl socialService;
 
-    @RequestMapping(value = "/share/{id}", method = RequestMethod.GET)
-    public void getvideo(HttpServletRequest request,
+    @RequestMapping(value = "/c/{id}", method = RequestMethod.GET)
+    public String getcircle(HttpServletRequest request,
             HttpServletResponse response, Model model,
             @PathVariable("id") Integer id) {
-        this.processShareInfo(request, response, model, id);
-    }
-
-    private void processShareInfo(HttpServletRequest request,
-            HttpServletResponse response, Model model, Integer id) {
-        // 取用户操作系统信息
-        // String agent = request.getHeader("User-Agent") == null ? ""
-        // : request.getHeader("User-Agent");
         try {
             TCircleDTO bean = socialService.getCircleInfoById(id);
             model.addAttribute("bean", bean);
+            return "share/share";
         } catch (ServiceException e1) {
             log.error("get share info error");
             model.addAttribute("errormsg", "找不到相关分享信息");
-            forward(request, response, "/WEB_INF/views/share/error.html");
+            forward(request, response, "share/error");
+            return null;
         }
-
     }
+    
+    @RequestMapping(value = "/homepage/{id}", method = RequestMethod.GET)
+    public String homepage(HttpServletRequest request,
+            HttpServletResponse response, Model model,
+            @PathVariable("id") String id) {
+        try {
+            Map<String, Object>  bean = (Map<String, Object>) socialService.homepage(id, id);
+            TPhone user = (TPhone) bean.get("user");
+            TCircleDTO service = (TCircleDTO) bean.get("service");
+            TCircleDTO circle = (TCircleDTO) bean.get("circle");
+            model.addAttribute("user", user);
+            model.addAttribute("service", service);
+            model.addAttribute("circle", circle);
+            return "share/homepage";
+        } catch (ServiceException e1) {
+            log.error("get share info error");
+            model.addAttribute("errormsg", "找不到相关分享信息");
+            forward(request, response, "share/error");
+            return null;
+        }
+    }
+
+
 
    
 }

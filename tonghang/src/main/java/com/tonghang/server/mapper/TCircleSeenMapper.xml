@@ -36,4 +36,11 @@
     select id, " circle_d", pid, timestamp
     from t_circle_seen
   </select>
+  
+  <select id="selectByUserAndCircle" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, " circle_d", pid, timestamp
+    from t_circle_seen
+    where pid = #{pid,jdbcType=INTEGER}
+    and circle_d = #{circleId,jdbcType=INTEGER}
+  </select>
 </mapper>
