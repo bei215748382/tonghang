@@ -625,7 +625,9 @@ public class SocialServiceImpl {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("user", userService.getInfo(targetUserId));
         List<TCircle> services = circleMapper.getServicesByUserId(user.getId());
-        result.put("service", new TCircleDTO(services.get(0)));
+        List<TCircleDTO> s = new ArrayList<TCircleDTO>();
+        s.add(new TCircleDTO(services.get(0)));
+        result.put("service", s);
         List<TCircle> circles = circleMapper
                 .getMyCircles(Integer.valueOf(targetUserId));
         if (circles != null && circles.size() > 0) {

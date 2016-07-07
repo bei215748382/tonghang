@@ -15,30 +15,30 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_circle_seen (id, " circle_d", pid, 
+    insert into t_circle_seen (id, circle_d, pid, 
       timestamp)
     values (#{id,jdbcType=INTEGER}, #{circleD,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
       #{timestamp,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TCircleSeen" >
     update t_circle_seen
-    set " circle_d" = #{circleD,jdbcType=INTEGER},
+    set circle_d = #{circleD,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER},
       timestamp = #{timestamp,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, " circle_d", pid, timestamp
+    select id, circle_d, pid, timestamp
     from t_circle_seen
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, " circle_d", pid, timestamp
+    select id, circle_d, pid, timestamp
     from t_circle_seen
   </select>
   
   <select id="selectByUserAndCircle" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, " circle_d", pid, timestamp
+    select id, circle_d, pid, timestamp
     from t_circle_seen
     where pid = #{pid,jdbcType=INTEGER}
     and circle_d = #{circleId,jdbcType=INTEGER}
