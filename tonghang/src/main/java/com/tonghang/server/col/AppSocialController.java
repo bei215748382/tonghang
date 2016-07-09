@@ -66,6 +66,25 @@ public class AppSocialController extends AppBaseController {
         return JSON.toJSONString(result);
     }
 
+    @RequestMapping(value = "/getsns", method = { RequestMethod.POST,
+            RequestMethod.GET })
+    public @ResponseBody Object getSns(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String circleId = params.get("circleId");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService
+                .getSns(baseRequest.getUserId().intValue(), circleId));
+        return JSON.toJSONString(result);
+    }
+
     @RequestMapping(value = "/recommend", method = { RequestMethod.POST,
             RequestMethod.GET })
     public @ResponseBody Object recommend(HttpServletRequest request,
@@ -193,6 +212,26 @@ public class AppSocialController extends AppBaseController {
 
         return JSON.toJSONString(result);
     }
+    
+    @RequestMapping(value = "/share", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object share(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String id = params.get("id");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService
+                .share(baseRequest.getUserId().intValue(), id));
+
+        return JSON.toJSONString(result);
+    }
 
     @RequestMapping(value = "/hotarticle", method = { RequestMethod.POST,
             RequestMethod.PUT })
@@ -204,8 +243,8 @@ public class AppSocialController extends AppBaseController {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("code", 200);
         result.put("msg", "success");
-        result.put("data", socialService.hotArticle(
-                baseRequest.getUserId().intValue()));
+        result.put("data",
+                socialService.hotArticle(baseRequest.getUserId().intValue()));
 
         return JSON.toJSONString(result);
     }

@@ -106,11 +106,13 @@ public class AuthFilter implements Filter {
                     "request content = {},sign = {},time = {},appKey = {},userId = {},accessToken = {},files = {}",
                     content, sign, time, appKey, userId, accessToken,
                     filepaths);
-
-            if (auth == null || auth.equals("")) {
-                log.info("auth = {} is error", auth);
-                throw new ServiceException(ErrorCode.code21);
+            if(StringUtils.isBlank(appKey)){
+                throw new ServiceException(ErrorCode.code6);
             }
+//            if (auth == null || auth.equals("")) {
+//                log.info("auth = {} is error", auth);
+//                throw new ServiceException(ErrorCode.code21);
+//            }
             String userAndPass = "";
             // userAndPass = new String(Base64.getDecoder().decode(auth.split("
             // ")[1]));
@@ -133,8 +135,7 @@ public class AuthFilter implements Filter {
             // return result;
             // }
             // try {
-             RequestSignatureUtil.checkRequestLegal(content, time, appKey,
-             sign);
+//            RequestSignatureUtil.checkRequestLegal(content, time, appKey, sign);
             // } catch (ServiceException e) {
             // response.getWriter().println(ResponseResult.error(e));
             // return;
@@ -168,11 +169,14 @@ public class AuthFilter implements Filter {
             chain.doFilter(req, res);
         } catch (Exception e) {
             log.error("======" + "error======msg:" + e.getMessage());
-            if (e.getCause() instanceof ServiceException) {
+            if (e.getCause() instanceof ServiceException ) {
                 response.getWriter().println(
                         ResponseResult.error((ServiceException) e.getCause()));
-            } else {
-
+            } else if( e instanceof ServiceException){
+                response.getWriter().println(
+                        ResponseResult.error((ServiceException) e));
+            }
+            else{
                 response.getWriter()
                         .println(ResponseResult.error(
                                 new ServiceException(ErrorCode.code10.getCode(),

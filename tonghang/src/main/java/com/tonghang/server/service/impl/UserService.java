@@ -96,6 +96,7 @@ public class UserService {
             user.setLongitude(Double.valueOf(longitude));
         user.setLanguage("zh_CN");
         user.setDevice(device);
+        user.setSex("4");
         userMapper.insert(user);
         user = userMapper.selectByPhone(mobile);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -132,6 +133,13 @@ public class UserService {
         data.put("userId", user.getId());
         data.put("token", tokenService.generateAccessToken(user));
         data.put("impassword", huanXinService.getUser(user.getPhone()));
+        if(StringUtils.isBlank(user.getName())||StringUtils.isBlank(user.getPic())
+                ||null==user.getCityId()|| null == user.getProvinceId() || null == user.getTradeId()
+                || "4".equals(user.getSex()) || StringUtils.isBlank(user.getSex())){
+            data.put("info", false);
+        }else{
+            data.put("info", true);
+        }
         return data;
     }
 
@@ -445,7 +453,7 @@ public class UserService {
                     ErrorCode.code101.getHttpCode(),
                     ErrorCode.code101.getDesc());
         }
-        TService service = serviceMap.selectByPrimaryKey(Integer.valueOf(id));
+        TCircle service = circleMapper.getServiceById(Integer.valueOf(id));
         if (service == null) {
             throw new ServiceException(ErrorCode.code200);
         }
@@ -466,12 +474,12 @@ public class UserService {
             }
         }
         pictures = paths + pictures;
-        service.setDescription(describe);
+        service.setContent(describe);
         service.setTitle(name);
         service.setPid(userId);
-        service.setPictures(pictures);
-        service.setTimestamp(new Date());
-        serviceMap.updateByPrimaryKey(service);
+        service.setPics(pictures);
+        service.setDatetime(new Date());
+        circleMapper.updateByPrimaryKey(service);
 
         TCircle circle = circleMapper.selectByPrimaryKey(Integer.valueOf(id));
         if (circle == null) {
@@ -483,7 +491,7 @@ public class UserService {
         circle.setPics(pictures);
         circle.setDatetime(new Date());
         circleMapper.updateByPrimaryKey(circle);
-        TCircleDTO result = new TCircleDTO(circle);
+        TCircleDTO result = new TCircleDTO(service);
         return result;
 
     }
@@ -545,7 +553,7 @@ public class UserService {
         } else {
             dto.setLike(true);
         }
-        TFavorite favorite = favoriteMapper.selectByPidFavid("1", userId,
+        TFavorite favorite = favoriteMapper.selectByPidFavid("3", userId,
                 service.getId());
         dto.setFavorite(favorite);
         return dto;

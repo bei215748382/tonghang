@@ -24,7 +24,7 @@
 		values
 		(
 		#{favoriteId}, #{pid},
-		#{type}, #{createTime})
+		#{type}, now())
 	</insert>
 	<select id="selectByPid" parameterType="integer" resultMap="BaseResultMap">
 	select * 

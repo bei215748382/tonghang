@@ -22,6 +22,7 @@
         <div>${user.trade}</div>
         <div>${user.company}</div>
         <div>${user.position}</div>
+        <c:if test="circle!=null">
         <h3>同行圈</h3>
         <h3>${circle.title}</h3>
         <div>${circle.datetime}</div>
@@ -33,6 +34,8 @@
               onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' />
           </c:forEach>
         </div>
+        </c:if>
+        <c:if test="service!=null">
         <h3>服务</h3>
         <h3>${service.title}</h3>
         <div>${service.datetime}</div>
@@ -44,6 +47,7 @@
               onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' />
           </c:forEach>
         </div>
+        </c:if>
       </div>
     </div>
   </div>

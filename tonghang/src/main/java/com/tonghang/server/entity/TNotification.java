@@ -5,6 +5,9 @@ import java.util.Date;
 public class TNotification {
     private Integer id;
 
+    /**
+     *  System("系统通知", "1"), Article("资讯评论通知", "2"), Circle("同行圈评论通知", "3"), Check("审核通知", "4")，Service("服务评论","5");
+     */
     private String type;
 
     private String title;

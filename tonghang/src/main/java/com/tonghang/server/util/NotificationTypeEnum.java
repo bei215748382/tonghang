@@ -2,7 +2,8 @@ package com.tonghang.server.util;
 
 public enum NotificationTypeEnum {
 
-    System("系统通知", "1"), Article("资讯评论通知", "2"), Circle("同行圈评论通知", "3"), Check("审核通知", "4");
+    System("系统通知", "1"), Article("资讯评论通知", "2"), Circle("同行圈评论通知", "3"), Check("审核通知", "4")
+    , Service("服务通知", "5");
 
     private String name;
     private String code;

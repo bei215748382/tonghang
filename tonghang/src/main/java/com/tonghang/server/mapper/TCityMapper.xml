@@ -60,11 +60,11 @@
 
 	<select id="selectMostUsed" resultMap="BaseResultMap">
 		select id ,province_id, name
-		from t_phone
+		from t_city
 		where
-		city_id is not null
+		id is not null
 		group by
-		city_id
+		id
 		order by
 		count(*) desc
 		limit 6;
@@ -72,11 +72,11 @@
 
 	<select id="selectMostUsedEn" resultMap="BaseResultMap">
 		select id ,province_id, en_name
-		from t_phone
+		from t_city
 		where
-		city_id is not null
+		id is not null
 		group by
-		city_id
+		id
 		order by
 		count(*) desc
 		limit 6;
