@@ -93,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<ServiceVo> getServices() {
-        return tServiceMapper.getServices();
+        return tCircleMapper.getServices();
     }
 
     @Override
@@ -160,18 +160,18 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<ServiceVo> getUncheckedServices() {
-        return tServiceMapper.getUncheckedServices();
+    public List<CircleVo> getUncheckedServices() {
+        return tCircleMapper.getUncheckedServices();
     }
 
     @Override
-    public List<ServiceVo> getCheckedServices() {
-        return tServiceMapper.getCheckedServices();
+    public List<CircleVo> getCheckedServices() {
+        return tCircleMapper.getCheckedServices();
     }
 
     @Override
     public Boolean checkService(Integer id) {
-        return tServiceMapper.checkService(id);
+        return tCircleMapper.checkService(id);
     }
 
     @Override
@@ -194,10 +194,6 @@ public class AdminServiceImpl implements AdminService {
         return tCommentMapper.getCommentByUserId(id);
     }
 
-    @Override
-    public TService getServiceById(Integer id) {
-        return tServiceMapper.selectByPrimaryKey(id);
-    }
 
     @Override
     public Map<String, Object> login(TAdminUser user) {
@@ -260,6 +256,11 @@ public class AdminServiceImpl implements AdminService {
             map.put(StringUtil.responseCode, ResponseCode.REGIST_ERROR.getMsg());
         }
         return map;
+    }
+
+    @Override
+    public TCircle getServiceById(Integer id) {
+        return tCircleMapper.selectByPrimaryKey(id);
     }
 
 }

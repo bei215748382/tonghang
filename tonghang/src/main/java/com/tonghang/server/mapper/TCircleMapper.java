@@ -8,6 +8,7 @@ import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CircleVo;
+import com.tonghang.server.vo.ServiceVo;
 
 public interface TCircleMapper {
     int deleteByPrimaryKey(Integer id);
@@ -45,5 +46,14 @@ public interface TCircleMapper {
     List<TCircle> getCircleByUserId(Integer id);
     
     List<TCircle> getServicesByUserId(Integer userId);
+    
     TCircle getServiceById(Integer id);
+
+    List<CircleVo> getUncheckedServices();
+    
+    List<CircleVo> getCheckedServices();
+
+    Boolean checkService(Integer id);
+
+    List<ServiceVo> getServices();
 }

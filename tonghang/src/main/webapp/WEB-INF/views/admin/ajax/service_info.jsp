@@ -18,10 +18,10 @@
       </div>
       <div class="box-content no-padding center">
         <h3>${service.title}</h3>
-        <div>${service.description}</div>
-        <div>阅读&nbsp;55&nbsp;&nbsp;喜欢&nbsp;7&nbsp;&nbsp;评论&nbsp;15&nbsp;&nbsp;分享&nbsp;3&nbsp;&nbsp;收藏&nbsp;1</div>
+        <div>${service.content}</div>
+        <div>阅读&nbsp;${service.pageView}&nbsp;&nbsp;喜欢&nbsp;${service.favour}&nbsp;&nbsp;评论&nbsp;${service.comment}&nbsp;&nbsp;分享&nbsp;${service.share}&nbsp;&nbsp;收藏&nbsp;1</div>
         <div>
-          <c:forEach items="${service.pictures}" var="pic">
+          <c:forEach items="${service.pics}" var="pic">
             <img src="${pic}" alt="${pic}"
               onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' />
           </c:forEach>
