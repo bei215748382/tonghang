@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,9 @@ import com.tonghang.server.util.SMSUtil;
 
 @Service
 public class UserService {
+
+    private static Logger log = org.slf4j.LoggerFactory
+            .getLogger(UserService.class);
 
     @Autowired
     private TPhoneMapper userMapper;
@@ -115,6 +119,7 @@ public class UserService {
                     ErrorCode.code102.getHttpCode(),
                     ErrorCode.code102.getDesc());
         }
+        log.info(user.toString());
         // if (!user.getPassword().equals(password)) {
         // throw new ServiceException(ErrorCode.code103);
         // }
@@ -133,11 +138,13 @@ public class UserService {
         data.put("userId", user.getId());
         data.put("token", tokenService.generateAccessToken(user));
         data.put("impassword", huanXinService.getUser(user.getPhone()));
-        if(StringUtils.isBlank(user.getName())||StringUtils.isBlank(user.getPic())
-                ||null==user.getCityId()|| null == user.getProvinceId() || null == user.getTradeId()
-                || "4".equals(user.getSex()) || StringUtils.isBlank(user.getSex())){
+        if (StringUtils.isBlank(user.getName())
+                || StringUtils.isBlank(user.getPic())
+                || null == user.getCityId() || null == user.getProvinceId()
+                || null == user.getTradeId() || "4".equals(user.getSex())
+                || StringUtils.isBlank(user.getSex())) {
             data.put("info", false);
-        }else{
+        } else {
             data.put("info", true);
         }
         return data;
@@ -200,7 +207,8 @@ public class UserService {
         String tradeId = params.get("tradeId");
         if (StringUtils.isNoneBlank(tradeId)) {
             user.setTradeId(Integer.valueOf(tradeId));
-            TTrade trade = tradeMapper.selectByPrimaryKey(Integer.valueOf(tradeId));
+            TTrade trade = tradeMapper
+                    .selectByPrimaryKey(Integer.valueOf(tradeId));
             if (StringUtils.isNotBlank(user.getLanguage())
                     && "en_US".equals(user.getLanguage())) {
                 user.setTrade(trade.getEnName());
@@ -392,13 +400,16 @@ public class UserService {
         }
 
         List<TTrack> tracks = trackMapper.findOneBeenTrack(userId);
+        trackMapper.updateState(tracks);
         List<TTrackDTO> result = new ArrayList<TTrackDTO>();
         for (TTrack bean : tracks) {
             TPhone userinfo = userMapper.getUserInfoById(bean.getPid());
-            if (userinfo.getCityId() != null && userinfo.getProvinceId() != null) {
+            if (userinfo.getCityId() != null
+                    && userinfo.getProvinceId() != null) {
                 TProvince province = provinceMapper
                         .selectByPrimaryKey(userinfo.getProvinceId());
-                TCity city = cityMapper.selectByPrimaryKey(userinfo.getCityId());
+                TCity city = cityMapper
+                        .selectByPrimaryKey(userinfo.getCityId());
                 if (StringUtils.isNotBlank(user.getLanguage())
                         && "en_US".equals(user.getLanguage())
                         && province != null && city != null) {
@@ -519,8 +530,8 @@ public class UserService {
                     .selectByPrimaryKey(u.getProvinceId());
             TCity city = cityMapper.selectByPrimaryKey(u.getCityId());
             if (StringUtils.isNotBlank(user.getLanguage())
-                    && "en_US".equals(user.getLanguage())
-                    && province != null && city != null) {
+                    && "en_US".equals(user.getLanguage()) && province != null
+                    && city != null) {
                 user.setProvince(province.getEnName());
                 user.setCity(city.getEnName());
             } else {
@@ -557,6 +568,25 @@ public class UserService {
                 service.getId());
         dto.setFavorite(favorite);
         return dto;
+    }
+
+    public static void main(String[] args) {
+        TPhone user = new TPhone();
+        user.setName("a");
+        user.setSex("1");
+        user.setCityId(1);
+        user.setProvinceId(1);
+        user.setPic("kak");
+        user.setTradeId(1);
+
+        if (StringUtils.isBlank(user.getName())
+                || StringUtils.isBlank(user.getPic())
+                || null == user.getCityId() || null == user.getProvinceId()
+                || null == user.getTradeId() || "4".equals(user.getSex())
+                || StringUtils.isBlank(user.getSex())) {
+
+            System.out.println("!!!!!!!!!!");
+        }
     }
 
 }

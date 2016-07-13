@@ -54,4 +54,9 @@
 		select id, type, title, pid, content, content_id, datetime, url,pro_id 
 		from t_notification where pid =#{pid}
 	</select>
+	
+	<select id="selectByPidAndType" resultMap="BaseResultMap">
+		select id, type, title, pid, content, content_id, datetime, url,pro_id 
+		from t_notification where pid =#{userId} and type =#{type} 
+	</select>
 </mapper>

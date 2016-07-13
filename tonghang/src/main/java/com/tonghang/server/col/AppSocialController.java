@@ -233,6 +233,27 @@ public class AppSocialController extends AppBaseController {
         return JSON.toJSONString(result);
     }
 
+    @RequestMapping(value = "/delete", method = { RequestMethod.POST,
+            RequestMethod.PUT })
+    public @ResponseBody Object delete(HttpServletRequest request,
+            HttpServletResponse response) throws ServiceException {
+        BasicRequestDTO baseRequest = (BasicRequestDTO) request
+                .getAttribute("requestDTO");
+        checkUserLogin(baseRequest);
+        String content = baseRequest.getContent();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, String> params = (Map<String, String>) JSON.parse(content);
+        checkParams(params);
+        String id = params.get("id");
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", socialService
+                .delete(baseRequest.getUserId().intValue(), id));
+
+        return JSON.toJSONString(result);
+    }
+
+    
     @RequestMapping(value = "/hotarticle", method = { RequestMethod.POST,
             RequestMethod.PUT })
     public @ResponseBody Object hotArticle(HttpServletRequest request,

@@ -2,22 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tonghang.server.mapper.TTrackMapper">
 	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TTrack">
-		<id column="id" property="id"  jdbcType="INTEGER" />
-		<result column="pid" property="pid"  jdbcType="INTEGER" />
-		<result column="target_pid" property="targetPid"  jdbcType="INTEGER" />
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="target_pid" property="targetPid" jdbcType="INTEGER" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<insert id="insert" parameterType="com.tonghang.server.entity.TTrack">
-		insert into t_track ( pid, target_pid , create_time  )
+		insert into t_track ( pid,
+		target_pid , create_time )
 		values (#{pid,jdbcType=VARCHAR},
-		#{targetPid, jdbcType=INTEGER},now() 
+		#{targetPid, jdbcType=INTEGER},now()
 		)
 	</insert>
-	
+
 	<select id="findOneBeenTrack" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
-		select id, pid, create_time 
-		from t_track 
-		where target_pid  = #{id,jdbcType=INTEGER}
+		select id, pid, create_time
+		from t_track
+		where target_pid = #{id,jdbcType=INTEGER}
 	</select>
+	<select id="findOneBeenTrackNotReadAcount" resultType="integer"
+		parameterType="java.lang.Integer">
+		select count(id)
+		from t_track
+		where target_pid = #{id,jdbcType=INTEGER} and state = 1
+	</select>
+	<update id="updateState">
+		update t_track set state = 2 where
+		id in (
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			#{item.id}
+		</foreach>
+		)
+
+	</update>
 </mapper>

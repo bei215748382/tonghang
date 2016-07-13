@@ -44,12 +44,10 @@ public enum ErrorCode {
     code24(500, 24, "access denied"),
     /** 重复请求 */
     code25(500, 25, "repeat request"),
-    /** 小影平台登陆令牌不正确或者已经过期 */
+    /** 登陆令牌不正确或者已经过期 */
     code50(500, 50, "accesstoken invalid or no longer valid"),
     /** 用户未授权 */
     code52(500, 52, "user is not authorized"),
-    /** 小影平台上传令牌不正确或者已经过期 */
-    code60(500, 60, "uploadtoken invalid or no longer valid"),
     code70(500, 70, "verify code wrong "),
     /** 手机号已被注册     */
     code100(500,100,"tel number has  been  registed"),

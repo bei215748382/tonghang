@@ -362,7 +362,7 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getDesc());
         }
         if (StringUtils.isNotBlank(targetUserId)
-                && StringUtils.isNumeric(targetUserId)) {
+                && StringUtils.isNumeric(targetUserId) && !String.valueOf(userId).equals(targetUserId)) {
             TPhone targetUser = userMapper
                     .selectByPrimaryKey(Integer.valueOf(targetUserId));
             if (targetUser == null) {
@@ -467,7 +467,7 @@ public class SocialServiceImpl {
                 List<TCircle> service = circleMapper
                         .getServicesByUserId(bean.getId());
                 newUsers.add(
-                        new TUserDTO(user,
+                        new TUserDTO(bean,
                                 CollectionUtils.isEmpty(service) ? null
                                         : service.get(0),
                                 null, trade, null, null));
@@ -499,7 +499,7 @@ public class SocialServiceImpl {
                 List<TCircle> service = circleMapper
                         .getServicesByUserId(bean.getId());
                 activeUsers
-                        .add(new TUserDTO(user,
+                        .add(new TUserDTO(bean,
                                 CollectionUtils.isEmpty(service) ? null
                                         : service.get(0),
                                 null, trade, null, null));
@@ -968,6 +968,26 @@ public class SocialServiceImpl {
         }
         circle.setShare(circle.getShare()+1);
         circleMapper.updateByPrimaryKey(circle);
+        return "success";
+    }
+
+    public Object delete(int userId, String circleId) throws ServiceException {
+        TPhone user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            throw new ServiceException(ErrorCode.code101.getCode(),
+                    ErrorCode.code101.getHttpCode(),
+                    ErrorCode.code101.getDesc());
+        }
+        TCircle circle = circleMapper
+                .selectByPrimaryKey(Integer.valueOf(circleId));
+        if(circle == null) {
+            throw new ServiceException(ErrorCode.code300);
+        }
+        if(circle.getPid() == userId){
+            circleMapper.deleteByPrimaryKey(circle.getId());
+        }else{
+            throw new ServiceException(ErrorCode.code4);
+        }
         return "success";
     }
 

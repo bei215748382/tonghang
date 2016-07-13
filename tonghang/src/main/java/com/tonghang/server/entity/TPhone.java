@@ -268,4 +268,18 @@ public class TPhone {
         this.education = education;
     }
 
+    @Override
+    public String toString() {
+        return "TPhone [id=" + id + ", phone=" + phone + ", timestamp="
+                + timestamp + ", name=" + name + ", pic=" + pic + ", sex=" + sex
+                + ", position=" + position + ", college=" + college
+                + ", education=" + education + ", tradeId=" + tradeId
+                + ", provinceId=" + provinceId + ", cityId=" + cityId
+                + ", remark=" + remark + ", device=" + device + ", longitude="
+                + longitude + ", latitude=" + latitude + ", state=" + state
+                + ", language=" + language + ", groupId=" + groupId + ", trade="
+                + trade + ", province=" + province + ", city=" + city
+                + ", company=" + company + "]";
+    }
+
 }

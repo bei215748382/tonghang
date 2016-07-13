@@ -15,5 +15,14 @@ public interface TTrackMapper {
 	 */
 	public List<TTrack>  findOneBeenTrack(int targetPid);
 	
+	/**
+	 * 查询未读取的足迹
+	 * @param targetPid
+	 * @return
+	 */
+	public Integer findOneBeenTrackNotReadAcount(int targetPid);
+	
+	public void updateState(List<TTrack> tracks);
+	
 	
 }

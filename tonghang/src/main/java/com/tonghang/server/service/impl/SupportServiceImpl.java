@@ -1,7 +1,9 @@
 package com.tonghang.server.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
+import com.tonghang.server.mapper.TTrackMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
 
@@ -43,6 +46,8 @@ public class SupportServiceImpl {
     private TNotificationMapper notificationMapper;
     @Autowired
     private TBannerMapper bannerMapper;
+    @Autowired
+    private TTrackMapper trackMapper;
 
     private static Logger log = org.slf4j.LoggerFactory
             .getLogger(SupportServiceImpl.class);
@@ -122,8 +127,11 @@ public class SupportServiceImpl {
 
     }
 
-    /** 在用户登录的情况下 返回所有行业列表
-     * @param userId 用户id
+    /**
+     * 在用户登录的情况下 返回所有行业列表
+     * 
+     * @param userId
+     *            用户id
      * @return
      * @throws ServiceException
      */
@@ -205,6 +213,34 @@ public class SupportServiceImpl {
 
     public Object banner() {
         return bannerMapper.selectAllEnable();
+    }
+
+    public Object getMessageAmount(int userId) throws ServiceException {
+        TPhone user = userDao.selectByPrimaryKey(userId);
+        Map<String, Object> data = new HashMap<String, Object>();
+        if (user != null) {
+            List<TNotification> notifications1 = notificationMapper
+                    .selectByPidAndType(userId, "1");
+            List<TNotification> notifications2 = notificationMapper
+                    .selectByPidAndType(userId, "2");
+            List<TNotification> notifications3 = notificationMapper
+                    .selectByPidAndType(userId, "3");
+            List<TNotification> notifications4 = notificationMapper
+                    .selectByPidAndType(userId, "4");
+            List<TNotification> notifications5 = notificationMapper
+                    .selectByPidAndType(userId, "5");
+            data.put("system", notifications1.size());
+            data.put("article", notifications2.size());
+            data.put("circle", notifications3.size());
+            data.put("check", notifications4.size());
+            data.put("service", notifications5.size());
+            Integer trackAcount = trackMapper
+                    .findOneBeenTrackNotReadAcount(userId);
+            data.put("track", trackAcount);
+        } else {
+            throw new ServiceException(ErrorCode.code102);
+        }
+        return data;
     }
 
 }
