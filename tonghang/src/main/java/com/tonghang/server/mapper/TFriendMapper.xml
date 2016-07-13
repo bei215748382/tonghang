@@ -61,9 +61,27 @@
   	select id,pid,fid, confirm 
   	from  t_friend  where  (fid =#{userId}   and  confirm = 0 )  
   </select>
+  
+   <select  id="selectBeenApplyNotConfirmAndNotRead"  resultMap="BaseResultMap"   parameterType="integer" >
+  	select id,pid,fid, confirm 
+  	from  t_friend  where  (fid =#{userId}   and  confirm = 0 and state = 1)  
+  </select>
+  
    <select  id="isApplyFriends"  resultMap="BaseResultMap"   parameterType="integer" >
   	select id,pid,fid, confirm 
   	from  t_friend  where  (pid =#{userId}  and fid =#{targetUserId} ) 
   	 or (fid =#{userId}  and pid =#{targetUserId})  limit 1
   </select>
+  
+  <update id="updateStateByPrimaryKey">
+		update t_friend set state = 2 where
+		id in (
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			#{item.id}
+		</foreach>
+		)
+
+	</update>
+  
 </mapper>

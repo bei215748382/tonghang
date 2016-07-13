@@ -28,6 +28,7 @@
 	
 	<!-- 配置静态资源  -->
 	<mvc:resources location="/common/" mapping="/common/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/views/webshare/" mapping="/share/**"></mvc:resources>
  
 	<!--拦截器 -->
 	<mvc:interceptors>

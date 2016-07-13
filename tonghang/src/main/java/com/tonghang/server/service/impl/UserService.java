@@ -39,6 +39,7 @@ import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTrackMapper;
 import com.tonghang.server.mapper.TTradeMapper;
+import com.tonghang.server.util.DESUtil;
 import com.tonghang.server.util.OSSUtil;
 import com.tonghang.server.util.SMSUtil;
 
@@ -93,7 +94,11 @@ public class UserService {
         }
         user = new TPhone();
         user.setPhone(mobile);
-        user.setPassword(password);
+        try {
+            user.setPassword(new DESUtil("password").encrypt(password));
+        } catch (Exception e) {
+            throw new ServiceException(ErrorCode.code103);
+        }
         if (StringUtils.isNotBlank(latitude))
             user.setLatitude(Double.valueOf(latitude));
         if (StringUtils.isNotBlank(longitude))
@@ -120,9 +125,15 @@ public class UserService {
                     ErrorCode.code102.getDesc());
         }
         log.info(user.toString());
-        // if (!user.getPassword().equals(password)) {
-        // throw new ServiceException(ErrorCode.code103);
-        // }
+        try {
+            if (!user.getPassword()
+                    .equals(new DESUtil("password").encrypt(password))) {
+                throw new ServiceException(ErrorCode.code103);
+            }
+        } catch (Exception e) {
+            log.error("encrypt fail" + e.getMessage());
+            throw new ServiceException(ErrorCode.code400);
+        }
         if (StringUtils.isNotEmpty(latitude)) {
             user.setLatitude(Double.valueOf(latitude));
             flag = true;
@@ -162,7 +173,11 @@ public class UserService {
         Map<String, Object> data = new HashMap<String, Object>();
         if (StringUtils.isNoneEmpty(locationCode)
                 && locationCode.equals(code)) {
-            user.setPassword(password);
+            try {
+                user.setPassword(new DESUtil("password").encrypt(password));
+            } catch (Exception e) {
+                throw new ServiceException(ErrorCode.code103);
+            }
             userMapper.updateByPrimaryKey(user);
             data.put("userId", user.getId());
             data.put("token", tokenService.generateAccessToken(user));

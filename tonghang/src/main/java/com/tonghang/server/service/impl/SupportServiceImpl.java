@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.tonghang.server.common.dto.TNotificationDTO;
+import com.tonghang.server.entity.TCircle;
+import com.tonghang.server.entity.TCircleSeen;
 import com.tonghang.server.entity.TCity;
+import com.tonghang.server.entity.TFriend;
 import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
@@ -20,13 +23,17 @@ import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
 import com.tonghang.server.mapper.TBannerMapper;
+import com.tonghang.server.mapper.TCircleMapper;
+import com.tonghang.server.mapper.TCircleSeenMapper;
 import com.tonghang.server.mapper.TCityMapper;
+import com.tonghang.server.mapper.TFriendMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TTrackMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
+import com.tonghang.server.vo.ArticlesVo;
 
 @Service
 public class SupportServiceImpl {
@@ -48,6 +55,12 @@ public class SupportServiceImpl {
     private TBannerMapper bannerMapper;
     @Autowired
     private TTrackMapper trackMapper;
+    @Autowired
+    private TCircleMapper circleMapper;
+    @Autowired
+    private TCircleSeenMapper seenMapper;
+    @Autowired
+    private TFriendMapper  friendMapper;
 
     private static Logger log = org.slf4j.LoggerFactory
             .getLogger(SupportServiceImpl.class);
@@ -237,6 +250,16 @@ public class SupportServiceImpl {
             Integer trackAcount = trackMapper
                     .findOneBeenTrackNotReadAcount(userId);
             data.put("track", trackAcount);
+            List<ArticlesVo> articles = circleMapper.getArticles();
+            List<TCircleSeen> seens = seenMapper.selectByUser(user.getId());
+            if (articles != null && seens != null) {
+                data.put("articleunread", articles.size() - seens.size());
+            } else {
+                data.put("articleunread",0);
+            }
+            List<TFriend> friends = friendMapper
+                    .selectBeenApplyNotConfirm(Integer.valueOf(userId));
+            data.put("friend", friends.size());
         } else {
             throw new ServiceException(ErrorCode.code102);
         }

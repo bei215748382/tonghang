@@ -43,4 +43,9 @@
     where pid = #{pid,jdbcType=INTEGER}
     and circle_d = #{circleId,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectByUser" resultMap="BaseResultMap" >
+    select id, circle_d, pid, timestamp
+    from t_circle_seen  where  pid = #{pid}
+  </select>
 </mapper>

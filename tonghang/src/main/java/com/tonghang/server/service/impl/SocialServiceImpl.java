@@ -787,6 +787,9 @@ public class SocialServiceImpl {
         }
         List<TFriend> friends = friendMapper
                 .selectBeenApplyNotConfirm(Integer.valueOf(userId));
+        if(CollectionUtils.isEmpty(friends)){
+            friendMapper.updateStateByPrimaryKey(friends);
+        }
         List<TFriendDTO> friendresult = new ArrayList<TFriendDTO>();
         for (TFriend bean : friends) {
             TPhone userinfo = userMapper.getUserInfoById(bean.getFid());

@@ -26,5 +26,9 @@ public interface TFriendMapper {
 
     List<TFriend> selectBeenApplyNotConfirm(Integer userId);
     
+    void updateStateByPrimaryKey(List<TFriend> record);
+    
+    List<TFriend> selectBeenApplyNotConfirmAndNotRead(Integer userId);
+    
     TFriend isApplyFriends(@Param("userId") Integer userId, @Param("targetUserId") Integer targetUserId);
 }

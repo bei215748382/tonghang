@@ -102,6 +102,8 @@ public enum ErrorCode {
     code200(500, 200, "service not exist"),
     /** circle or article not exist **/
     code300(500, 300, "circle or article not exist"),
+    
+    code400(500, 400, "encrypt fail"),
     //
     /** 文件上传异常，请和服务器同步数据 */
     code601(500, 601, "File upload error"),

@@ -106,13 +106,13 @@ public class AuthFilter implements Filter {
                     "request content = {},sign = {},time = {},appKey = {},userId = {},accessToken = {},files = {}",
                     content, sign, time, appKey, userId, accessToken,
                     filepaths);
-            if(StringUtils.isBlank(appKey)){
+            if (StringUtils.isBlank(appKey)) {
                 throw new ServiceException(ErrorCode.code6);
             }
-//            if (auth == null || auth.equals("")) {
-//                log.info("auth = {} is error", auth);
-//                throw new ServiceException(ErrorCode.code21);
-//            }
+            // if (auth == null || auth.equals("")) {
+            // log.info("auth = {} is error", auth);
+            // throw new ServiceException(ErrorCode.code21);
+            // }
             String userAndPass = "";
             // userAndPass = new String(Base64.getDecoder().decode(auth.split("
             // ")[1]));
@@ -134,12 +134,7 @@ public class AuthFilter implements Filter {
             // log.info("userAndPass = {} is error", userAndPass);
             // return result;
             // }
-            // try {
-//            RequestSignatureUtil.checkRequestLegal(content, time, appKey, sign);
-            // } catch (ServiceException e) {
-            // response.getWriter().println(ResponseResult.error(e));
-            // return;
-            // }
+            RequestSignatureUtil.checkRequestLegal(content, time, appKey, sign);
 
             Map<String, String> param1 = (Map<String, String>) JSON
                     .parse(content);
@@ -162,21 +157,20 @@ public class AuthFilter implements Filter {
             requestDTO.setFilepaths(filepaths);
             if (StringUtils.isNotBlank(userId)) {
                 requestDTO.setUserId(Long.valueOf(userId));
-                // checkUserLogin(requestDTO);
+                checkUserLogin(requestDTO);
             }
             httpRequest.setAttribute("requestDTO", requestDTO);
 
             chain.doFilter(req, res);
         } catch (Exception e) {
             log.error("======" + "error======msg:" + e.getMessage());
-            if (e.getCause() instanceof ServiceException ) {
+            if (e.getCause() instanceof ServiceException) {
                 response.getWriter().println(
                         ResponseResult.error((ServiceException) e.getCause()));
-            } else if( e instanceof ServiceException){
-                response.getWriter().println(
-                        ResponseResult.error((ServiceException) e));
-            }
-            else{
+            } else if (e instanceof ServiceException) {
+                response.getWriter()
+                        .println(ResponseResult.error((ServiceException) e));
+            } else {
                 response.getWriter()
                         .println(ResponseResult.error(
                                 new ServiceException(ErrorCode.code10.getCode(),
@@ -231,7 +225,7 @@ public class AuthFilter implements Filter {
         }
         if (at.getExpriation() < System.currentTimeMillis()) {
             throw new ServiceException(ErrorCode.code50.getCode(),
-                    ErrorCode.code50.getHttpCode(), ErrorCode.code50.getDesc());
+                    ErrorCode.code50.getHttpCode(), "token expired ");
         }
         return at;
     }

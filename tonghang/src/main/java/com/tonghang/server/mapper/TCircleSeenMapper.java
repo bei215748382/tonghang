@@ -17,4 +17,5 @@ public interface TCircleSeenMapper {
     int updateByPrimaryKey(TCircleSeen record);
     
     TCircleSeen selectByUserAndCircle(@Param("pid")Integer pid,@Param("circleId")Integer circleId);
+    List<TCircleSeen> selectByUser(@Param("pid")Integer pid);
 }
