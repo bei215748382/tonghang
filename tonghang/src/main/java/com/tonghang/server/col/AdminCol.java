@@ -258,7 +258,21 @@ public class AdminCol {
         mav.addObject("article", article);
         return mav;
     }
-
+    
+    @RequestMapping(value = "article_edit_json")
+    public void article_edit_json(MultipartFile file, TCircle circle,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (file != null && file.getOriginalFilename() != "") {
+            String pic = FileUtil.savePic(request, file);
+            circle.setPic(pic);
+        }
+        if (circle.getChecked() == 1) {
+            circle.setDatetime(new Date());// 如果文章设置为发送，那么发布时间就设定
+        }
+        adminService.updateArticle(circle);
+        response.sendRedirect("index#articles_info");
+    }
+    
     @RequestMapping(value = "user_increase_info")
     public ModelAndView user_increase_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/user_increase_info");

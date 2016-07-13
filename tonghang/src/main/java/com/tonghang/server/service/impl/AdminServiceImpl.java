@@ -263,4 +263,10 @@ public class AdminServiceImpl implements AdminService {
         return tCircleMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public void updateArticle(TCircle circle) {
+        tCircleMapper.updateByPrimaryKey(circle);
+        
+    }
+
 }

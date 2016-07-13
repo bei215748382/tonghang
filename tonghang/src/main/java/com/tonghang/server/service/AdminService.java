@@ -79,4 +79,6 @@ public interface AdminService {
 
     Map<String, Object> registUser(TAdminUser user);//注册用户
 
+    void updateArticle(TCircle circle);//更新文章
+
 }

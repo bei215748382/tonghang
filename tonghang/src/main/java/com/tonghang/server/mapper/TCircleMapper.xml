@@ -413,8 +413,7 @@
 		left outer
 		join t_phone p on p.id =
 		comment.pid_id
-		where t.id = #{id} and
-		comment.checked = 1
+		where t.id = #{id} 
 	</select>
 
 	<select id="getTradeArticles" resultMap="ArticlesVoResultMap"
