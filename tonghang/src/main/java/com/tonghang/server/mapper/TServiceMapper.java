@@ -3,7 +3,7 @@ package com.tonghang.server.mapper;
 import java.util.List;
 
 import com.tonghang.server.entity.TService;
-import com.tonghang.server.vo.ServiceVo;
+import com.tonghang.server.vo.CircleVo;
 
 public interface TServiceMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,13 +20,13 @@ public interface TServiceMapper {
 
 	List<TService> getServiceChecked();
 
-    List<ServiceVo> getServices();
+    List<CircleVo> getServices();
     
     List<TService> getServicesByUserId(int userId);
 
-    List<ServiceVo> getUncheckedServices();
+    List<CircleVo> getUncheckedServices();
     
-    List<ServiceVo> getCheckedServices();
+    List<CircleVo> getCheckedServices();
 
     Boolean checkService(Integer id);
 }

@@ -119,6 +119,71 @@
 			<result column="p_group_id" property="groupId" jdbcType="INTEGER" />
 		</association>
 	</resultMap>
+	<resultMap id="ServiceVoResultMap" type="com.tonghang.server.vo.ServiceVo">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="pictures" property="pictures"
+			typeHandler="com.tonghang.server.mybatis.handler.StringToListHandler" />
+		<result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+       <result column="checked" property="checked" jdbcType="INTEGER" />
+		<result column="uid" property="uid" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="tradeName" property="trade" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="circleVoResultMapSQL">
+		select
+		c.*,
+		p.id p_id,
+		p.phone p_phone,
+		p.password p_password,
+		p.timestamp p_timestamp,
+		p.name
+		p_name,
+		p.pic p_pic,
+		p.sex p_sex,
+		p.position p_position,
+		p.college
+		p_college,
+		p.trade_id p_trade_id,
+		p.province_id p_province_id,
+		p.city_id
+		p_city_id,
+		p.remark p_remark,
+		p.device p_device,
+		p.longitude p_longitude,
+		p.latitude p_latitude,
+		p.state p_state,
+		p.language p_language,
+		p.group_id p_group_id
+		from t_circle c
+		left outer join t_phone p on p.id
+		= c.pid
+	</sql>
+	<sql id="serviceVoSql">
+		select
+		s.id,
+		s.title,
+		s.content description,
+		s.pics pictures,
+		s.datetime timestamp,
+        s.checked,
+		p.id uid,
+		p.name,
+		p.phone,
+		p.state,
+		p.trade_id,
+		t.name tradeName
+		from
+		t_circle s
+		left outer join
+		t_phone p on p.id = s.pid
+		left outer join
+		t_trade t on t.id =
+		p.trade_id
+	</sql>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
 		t_circle
@@ -209,63 +274,11 @@
 		from t_circle
 	</select>
 	<select id="getCircleUnCheck" resultMap="CircleVoResultMap">
-		select
-		c.*,
-		p.id p_id,
-		p.phone p_phone,
-		p.password p_password,
-		p.timestamp p_timestamp,
-		p.name
-		p_name,
-		p.pic p_pic,
-		p.sex p_sex,
-		p.position p_position,
-		p.college
-		p_college,
-		p.trade_id p_trade_id,
-		p.province_id p_province_id,
-		p.city_id
-		p_city_id,
-		p.remark p_remark,
-		p.device p_device,
-		p.longitude p_longitude,
-		p.latitude p_latitude,
-		p.state p_state,
-		p.language p_language,
-		p.group_id p_group_id
-		from t_circle c
-		left outer join t_phone p on p.id
-		= c.pid
+		<include refid="circleVoResultMapSQL"></include>
 		where checked is null
 	</select>
 	<select id="getCircleChecked" resultMap="CircleVoResultMap">
-		select
-		c.*,
-		p.id p_id,
-		p.phone p_phone,
-		p.password p_password,
-		p.timestamp p_timestamp,
-		p.name
-		p_name,
-		p.pic p_pic,
-		p.sex p_sex,
-		p.position p_position,
-		p.college
-		p_college,
-		p.trade_id p_trade_id,
-		p.province_id p_province_id,
-		p.city_id
-		p_city_id,
-		p.remark p_remark,
-		p.device p_device,
-		p.longitude p_longitude,
-		p.latitude p_latitude,
-		p.state p_state,
-		p.language p_language,
-		p.group_id p_group_id
-		from t_circle c
-		left outer join t_phone p on p.id
-		= c.pid
+		<include refid="circleVoResultMapSQL"></include>
 		where checked is not null
 	</select>
 	<select id="getMyCircles" resultMap="BaseResultMap">
@@ -400,8 +413,7 @@
 		left outer
 		join t_phone p on p.id =
 		comment.pid_id
-		where t.id = #{id} and
-		comment.checked = 1
+		where t.id = #{id} 
 	</select>
 
 	<select id="getTradeArticles" resultMap="ArticlesVoResultMap"
@@ -474,5 +486,23 @@
 	<select id="getServiceById" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
 		select * from t_circle where id = #{id} and type =3
+	</select>
+	<select id="getUncheckedServices" resultMap="CircleVoResultMap">
+		<include refid="circleVoResultMapSQL"></include>
+		where checked is null and type = 3
+	</select>
+	<select id="getCheckedServices" resultMap="CircleVoResultMap">
+		<include refid="circleVoResultMapSQL"></include>
+		where checked is not null and type = 3
+	</select>
+	<update id="checkService" parameterType="java.lang.Integer">
+		update t_circle
+		set
+		checked = 1
+		where id = #{id}
+	</update>
+	<select id="getServices" resultMap="ServiceVoResultMap">
+		<include refid="serviceVoSql"></include>
+		where type = 3
 	</select>
 </mapper>

@@ -59,9 +59,9 @@ public interface AdminService {
 
     Boolean editAdminUser(TAdminUser user);//编辑管理用户
 
-    List<ServiceVo> getUncheckedServices();//获取未审核的服务
+    List<CircleVo> getUncheckedServices();//获取未审核的服务
 
-    List<ServiceVo> getCheckedServices();//获取审核通过的服务
+    List<CircleVo> getCheckedServices();//获取审核通过的服务
 
     Boolean checkService(Integer id);//对服务审核
 
@@ -73,10 +73,12 @@ public interface AdminService {
 
     List<TComment> getUserComment(Integer id);//根据用户id获取用户发表的评论
 
-    TService getServiceById(Integer id);//根据服务id获取服务
+    TCircle getServiceById(Integer id);//根据服务id获取服务
 
     Map<String, Object> login(TAdminUser user);//用户登入
 
     Map<String, Object> registUser(TAdminUser user);//注册用户
+
+    void updateArticle(TCircle circle);//更新文章
 
 }

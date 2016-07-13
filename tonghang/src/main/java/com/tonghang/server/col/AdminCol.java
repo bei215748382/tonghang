@@ -115,8 +115,8 @@ public class AdminCol {
     @RequestMapping(value = "get_service_unchecked")
     public ModelAndView get_service_unchecked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_service_info");
-        List<ServiceVo> list = adminService.getUncheckedServices();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
+        List<CircleVo> list = adminService.getUncheckedServices();
         mav.addObject("dataList", list);
         return mav;
     }
@@ -124,8 +124,8 @@ public class AdminCol {
     @RequestMapping(value = "get_service_checked")
     public ModelAndView get_service_checked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_service_info");
-        List<ServiceVo> list = adminService.getCheckedServices();
+        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
+        List<CircleVo> list = adminService.getCheckedServices();
         mav.addObject("dataList", list);
         return mav;
     }
@@ -167,8 +167,8 @@ public class AdminCol {
         ModelAndView mav = new ModelAndView("admin/ajax/user_info");
         TPhone user = adminService.getUserById(id);
         mav.addObject("user", user);
-        List<ServiceVo> list = adminService.getServices();
-        mav.addObject("services", list);
+        TCircle service = adminService.getServiceById(id);
+        mav.addObject("services", service);
         return mav;
     }
     
@@ -195,7 +195,7 @@ public class AdminCol {
     @RequestMapping(value = "service_info")
     public ModelAndView service_info(Integer id) {
         ModelAndView mav = new ModelAndView("admin/ajax/service_info");
-        TService service = adminService.getServiceById(id);
+        TCircle service = adminService.getServiceById(id);
         mav.addObject("service", service);
         return mav;
     }
@@ -258,7 +258,21 @@ public class AdminCol {
         mav.addObject("article", article);
         return mav;
     }
-
+    
+    @RequestMapping(value = "article_edit_json")
+    public void article_edit_json(MultipartFile file, TCircle circle,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (file != null && file.getOriginalFilename() != "") {
+            String pic = FileUtil.savePic(request, file);
+            circle.setPic(pic);
+        }
+        if (circle.getChecked() == 1) {
+            circle.setDatetime(new Date());// 如果文章设置为发送，那么发布时间就设定
+        }
+        adminService.updateArticle(circle);
+        response.sendRedirect("index#articles_info");
+    }
+    
     @RequestMapping(value = "user_increase_info")
     public ModelAndView user_increase_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/user_increase_info");

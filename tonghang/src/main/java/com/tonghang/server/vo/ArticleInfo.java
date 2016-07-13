@@ -23,6 +23,8 @@ public class ArticleInfo {
 	private Integer comment;
 
 	private Integer type;
+	
+    private Integer share;
 
 	private Integer pid;
 
@@ -35,6 +37,8 @@ public class ArticleInfo {
 	private TTrade trade;
 
 	private String content;
+	
+	private String url;
 	
 	private List<CommentVo> comments;
 
@@ -165,5 +169,20 @@ public class ArticleInfo {
     public void setComments(List<CommentVo> comments) {
         this.comments = comments;
     }
-	
+
+    public Integer getShare() {
+        return share;
+    }
+
+    public void setShare(Integer share) {
+        this.share = share;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
