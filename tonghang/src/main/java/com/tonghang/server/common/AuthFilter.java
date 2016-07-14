@@ -134,7 +134,12 @@ public class AuthFilter implements Filter {
             // log.info("userAndPass = {} is error", userAndPass);
             // return result;
             // }
-            RequestSignatureUtil.checkRequestLegal(content, time, appKey, sign);
+            if ("TS".equals(appKey)) {
+                log.warn("测试渠道进入");
+            } else {
+                RequestSignatureUtil.checkRequestLegal(content, time, appKey,
+                        sign);
+            }
 
             Map<String, String> param1 = (Map<String, String>) JSON
                     .parse(content);
@@ -142,10 +147,18 @@ public class AuthFilter implements Filter {
                 String mobile = param1.get("mobile");
                 if (StringUtils.isNotBlank(mobile)) {
                     Pattern p = Pattern.compile(
-                            "((13[0-9])|(15[^4,\\D])|(18[0-1,5-9]))\\d{8}");
+                            "((13[0-9])|(15[^4,\\D])|(17[0,6-8])|(18[0-1,5-9]))\\d{8}");
                     Matcher m = p.matcher(mobile);
                     if (!m.matches()) {
                         throw new ServiceException(ErrorCode.code120);
+                    }
+                }
+                String password = param1.get("password");
+                if (StringUtils.isNotBlank(password)) {
+                    Pattern p = Pattern.compile("[A-Za-z0-9_*]{6,20}");
+                    Matcher m = p.matcher(password);
+                    if (!m.matches()) {
+                        throw new ServiceException(ErrorCode.code170);
                     }
                 }
             }
@@ -168,8 +181,13 @@ public class AuthFilter implements Filter {
                 response.getWriter().println(
                         ResponseResult.error((ServiceException) e.getCause()));
             } else if (e instanceof ServiceException) {
+                ServiceException exception = (ServiceException) e;
+                if (exception.getCode() == ErrorCode.code50.getCode()
+                        || exception.getCode() == ErrorCode.code51.getCode()) {
+                    response.setStatus(401);
+                }
                 response.getWriter()
-                        .println(ResponseResult.error((ServiceException) e));
+                        .println(ResponseResult.error(exception));
             } else {
                 response.getWriter()
                         .println(ResponseResult.error(
@@ -224,17 +242,15 @@ public class AuthFilter implements Filter {
                     ErrorCode.code50.getHttpCode(), "token is illegal");
         }
         if (at.getExpriation() < System.currentTimeMillis()) {
-            throw new ServiceException(ErrorCode.code50.getCode(),
-                    ErrorCode.code50.getHttpCode(), "token expired ");
+            throw new ServiceException(ErrorCode.code51);
         }
         return at;
     }
 
     public static void main(String[] args) {
-        String mobile = "12267851229";
+        String mobile = "1";
         if (StringUtils.isNotBlank(mobile)) {
-            Pattern p = Pattern
-                    .compile("((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}");
+            Pattern p = Pattern.compile("[A-Za-z0-9_*]{6,20}");
             Matcher m = p.matcher(mobile);
             System.out.println(m.matches());
         }

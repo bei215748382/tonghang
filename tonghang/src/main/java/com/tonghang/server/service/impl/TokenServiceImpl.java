@@ -19,7 +19,8 @@ public class TokenServiceImpl {
         AccessToken accessToken = new AccessToken();
         accessToken.setAuid(user.getId());
         accessToken
-                .setExpriation(System.currentTimeMillis() + 24 * 60 * 60 * 100);
+                .setExpriation(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
+        accessToken.setPlatformType(Integer.valueOf(user.getDevice()));
         String token = CodecUtil.encodeToken2Ciphertext(JSON.toJSONString(accessToken));
         if (log.isDebugEnabled()) {
             log.debug("{} -> {}", accessToken, token);

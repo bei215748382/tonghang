@@ -152,9 +152,9 @@ public class DESUtil {
 
     public static void main(String[] args) {
         try {
-            String test1 = "987654321";
+            String test1 = "98765432100123456789";
             DESUtil des1 = new DESUtil();// 使用默认密钥
-            System.out.println(new DESUtil("password").encrypt("123456"));
+            System.out.println(new DESUtil("password").encrypt("kong9521"));
             System.out.println("加密前的字符：" + test1);
             System.out.println("加密后的字符：" + des1.encrypt(test1));
             System.out.println("解密后的字符：" + des1.decrypt(des1.encrypt(test1)));

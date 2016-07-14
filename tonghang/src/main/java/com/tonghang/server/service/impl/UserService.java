@@ -97,7 +97,7 @@ public class UserService {
         try {
             user.setPassword(new DESUtil("password").encrypt(password));
         } catch (Exception e) {
-            throw new ServiceException(ErrorCode.code103);
+            throw new ServiceException(ErrorCode.code170);
         }
         if (StringUtils.isNotBlank(latitude))
             user.setLatitude(Double.valueOf(latitude));
@@ -128,7 +128,7 @@ public class UserService {
         try {
             if (!user.getPassword()
                     .equals(new DESUtil("password").encrypt(password))) {
-                throw new ServiceException(ErrorCode.code103);
+                throw new ServiceException(ErrorCode.code171);
             }
         } catch (Exception e) {
             log.error("encrypt fail" + e.getMessage());
@@ -176,7 +176,7 @@ public class UserService {
             try {
                 user.setPassword(new DESUtil("password").encrypt(password));
             } catch (Exception e) {
-                throw new ServiceException(ErrorCode.code103);
+                throw new ServiceException(ErrorCode.code170);
             }
             userMapper.updateByPrimaryKey(user);
             data.put("userId", user.getId());

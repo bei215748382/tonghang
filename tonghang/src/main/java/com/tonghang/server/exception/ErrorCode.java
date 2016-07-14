@@ -45,7 +45,9 @@ public enum ErrorCode {
     /** 重复请求 */
     code25(500, 25, "repeat request"),
     /** 登陆令牌不正确或者已经过期 */
-    code50(500, 50, "accesstoken invalid or no longer valid"),
+    code50(500, 50, "token invalid "),
+    /** 登陆令牌已经过期 */
+    code51(500, 51, "token expired  "),
     /** 用户未授权 */
     code52(500, 52, "user is not authorized"),
     code70(500, 70, "verify code wrong "),
@@ -56,8 +58,6 @@ public enum ErrorCode {
     code101(500, 101, "userId invalid"),
     /** 登陆账号不存在 */
     code102(500, 102, "account invalid"),
-    /** 密码不正确 */
-    code103(500, 103, "password invalid"),
     /** 账号未激活 */
     code104(500, 104, "account nonactivated"),
     /** 账号被冻结 */
@@ -96,6 +96,10 @@ public enum ErrorCode {
     /** 用户昵称被保留 **/
     code160(500, 160, "not find solarise user"),
 
+    /** 密码无效 */
+    code170(500, 170, "password invalid"),
+    
+    code171(500, 171, "password error"),
     /**
      * 服务不存在
      */
