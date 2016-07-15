@@ -33,9 +33,9 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>98</td>
-							<td>98</td>
-							<td>98</td>
+							<td>${map.ios}</td>
+							<td>${map.android}</td>
+							<td>${map.other}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -72,130 +72,135 @@ function drawLine(){
 	var data1=[];
 	var data2=[];
 	var data3=[];
-	for(var i = 0;i<30;i++){
-		date.push(i);
-		data1.push(Math.round(Math.random()*100));
-		data2.push(Math.round(Math.random()*100));
-		data3.push(Math.round(Math.random()*100));
-	}
-	
-    // 指定图表的配置项和数据
-    var option = {
-    	    tooltip: {
-    	        trigger: 'axis',
-    	        position: function (pt) {
-    	            return [pt[0], '10%'];
-    	        }
-    	    },
-    	    title: {
-    	        text: '用户数据增长图',
-    	    },
-    	    legend: {
-    	        data:['IOS','Android','其他']
-    	    },
-    	    toolbox: {
-    	        show: true,
-    	        feature: {
-    	            dataView: {show: true, readOnly: false},
-    	            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-    	            restore: {show: true},
-    	            saveAsImage: {show: true}
-    	        }
-    	    },
-    	    xAxis: {
-    	        type: 'category',
-    	        boundaryGap: false,
-    	        data: date
-    	    },
-    	    yAxis: {
-    	        type: 'value',
-    	        boundaryGap: [0, '100%']
-    	    },
-    	    dataZoom: [{
-    	        type: 'inside',
-    	        start: 0,
-    	        end: 30
-    	    }, {
-    	        start: 0,
-    	        end: 30
-    	    }],
-    	    series: [
-    	        {
-    	            name:'IOS',
-    	            type:'bar',
-    	            smooth:true,
-    	            symbol: 'none',
-    	            sampling: 'average',
-    	            itemStyle: {
-    	                normal: {
-    	                    color: 'rgb(255, 0, 0)'
-    	                }
-    	            },
-    	            areaStyle: {
-    	                normal: {
-    	                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-    	                        offset: 0,
-    	                        color: 'rgb(255, 0, 0)'
-    	                    }, {
-    	                        offset: 1,
-    	                        color: 'rgb(100, 0, 0)'
-    	                    }])
-    	                }
-    	            },
-    	            data: data1
-    	        },{
-    	            name:'Android',
-    	            type:'bar',
-    	            smooth:true,
-    	            symbol: 'none',
-    	            sampling: 'average',
-    	            itemStyle: {
-    	                normal: {
-    	                    color: 'rgb(255, 255, 0)'
-    	                }
-    	            },
-    	            areaStyle: {
-    	                normal: {
-    	                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-    	                        offset: 0,
-    	                        color: 'rgb(255, 255, 0)'
-    	                    }, {
-    	                        offset: 1,
-    	                        color: 'rgb(255, 0, 131)'
-    	                    }])
-    	                }
-    	            },
-    	            data: data2
-    	        },{
-    	            name:'其他',
-    	            type:'bar',
-    	            smooth:true,
-    	            symbol: 'none',
-    	            sampling: 'average',
-    	            itemStyle: {
-    	                normal: {
-    	                    color: 'rgb(0, 0, 255)'
-    	                }
-    	            },
-    	            areaStyle: {
-    	                normal: {
-    	                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-    	                        offset: 0,
-    	                        color: 'rgb(0, 0, 255)'
-    	                    }, {
-    	                        offset: 1,
-    	                        color: 'rgb(0, 0, 131)'
-    	                    }])
-    	                }
-    	            },
-    	            data: data3
-    	        }
-    	    ]
-    	};
 
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+	myChart.showLoading();
+	$.get('get_inc_data').done(function (result) {
+		myChart.hideLoading();
+		console.log(result);
+		for(var i = 0; i < result.length; i++){
+			var now = new Date(result[i].date);
+			date.push([ now.getFullYear(), now.getMonth() + 1,
+					now.getDate() ].join('-'));
+			data1.push(result[i].ios);
+			data2.push(result[i].android);
+			data3.push(result[i].other);
+			}
+	    // 指定图表的配置项和数据
+	    var option = {
+	    	    tooltip: {
+	    	        trigger: 'axis',
+	    	        position: function (pt) {
+	    	            return [pt[0], '10%'];
+	    	        }
+	    	    },
+	    	    title: {
+	    	        text: '用户数据增长图',
+	    	    },
+	    	    legend: {
+	    	        data:['IOS','Android','其他']
+	    	    },
+	    	    toolbox: {
+	    	        show: true,
+	    	        feature: {
+	    	            dataView: {show: true, readOnly: false},
+	    	            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+	    	            restore: {show: true},
+	    	            saveAsImage: {show: true}
+	    	        }
+	    	    },
+	    	    xAxis: {
+	    	        type: 'category',
+	    	        boundaryGap: false,
+	    	        data: date
+	    	    },
+	    	    yAxis: {
+	    	        type: 'value',
+	    	        boundaryGap: [0, '100%']
+	    	    },
+	    	    dataZoom: [{
+	    	        type: 'inside',
+	    	        start: 0,
+	    	        end: 30
+	    	    }, {
+	    	        start: 0,
+	    	        end: 30
+	    	    }],
+	    	    series: [
+	    	        {
+	    	            name:'IOS',
+	    	            type:'bar',
+	    	            smooth:true,
+	    	            symbol: 'none',
+	    	            sampling: 'average',
+	    	            itemStyle: {
+	    	                normal: {
+	    	                    color: 'rgb(255, 0, 0)'
+	    	                }
+	    	            },
+	    	            areaStyle: {
+	    	                normal: {
+	    	                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+	    	                        offset: 0,
+	    	                        color: 'rgb(255, 0, 0)'
+	    	                    }, {
+	    	                        offset: 1,
+	    	                        color: 'rgb(100, 0, 0)'
+	    	                    }])
+	    	                }
+	    	            },
+	    	            data: data1
+	    	        },{
+	    	            name:'Android',
+	    	            type:'bar',
+	    	            smooth:true,
+	    	            symbol: 'none',
+	    	            sampling: 'average',
+	    	            itemStyle: {
+	    	                normal: {
+	    	                    color: 'rgb(255, 255, 0)'
+	    	                }
+	    	            },
+	    	            areaStyle: {
+	    	                normal: {
+	    	                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+	    	                        offset: 0,
+	    	                        color: 'rgb(255, 255, 0)'
+	    	                    }, {
+	    	                        offset: 1,
+	    	                        color: 'rgb(255, 0, 131)'
+	    	                    }])
+	    	                }
+	    	            },
+	    	            data: data2
+	    	        },{
+	    	            name:'其他',
+	    	            type:'bar',
+	    	            smooth:true,
+	    	            symbol: 'none',
+	    	            sampling: 'average',
+	    	            itemStyle: {
+	    	                normal: {
+	    	                    color: 'rgb(0, 0, 255)'
+	    	                }
+	    	            },
+	    	            areaStyle: {
+	    	                normal: {
+	    	                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+	    	                        offset: 0,
+	    	                        color: 'rgb(0, 0, 255)'
+	    	                    }, {
+	    	                        offset: 1,
+	    	                        color: 'rgb(0, 0, 131)'
+	    	                    }])
+	    	                }
+	    	            },
+	    	            data: data3
+	    	        }
+	    	    ]
+	    	};
+		    // 使用刚指定的配置项和数据显示图表。
+		    myChart.setOption(option);
+	});
 }
 	$(document).ready(function() {
 		// Add Drag-n-Drop feature

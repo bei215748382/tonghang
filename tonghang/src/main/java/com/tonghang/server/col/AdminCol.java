@@ -30,6 +30,7 @@ import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
+import com.tonghang.server.vo.IncVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
@@ -276,12 +277,18 @@ public class AdminCol {
     @RequestMapping(value = "user_increase_info")
     public ModelAndView user_increase_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/user_increase_info");
+        Map<String, Object> map = adminService.getTodayInc();
+        mav.addObject("map",map);
         return mav;
     }
     
     @RequestMapping(value = "user_distribution_info")
     public ModelAndView user_distribution_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/user_distribution_info");
+        IncVo distr = adminService.getDistribution();
+        Map<String,Object> map = adminService.getDistributionMap();
+        mav.addObject("device", distr);
+        mav.addObject("map",map);
         return mav;
     }
     
@@ -312,5 +319,10 @@ public class AdminCol {
         return adminService.editAdminUser(user);
     }
     
+    @ResponseBody
+    @RequestMapping(value = "get_inc_data")
+    public List<IncVo> get_inc_data() {
+        return adminService.get_inc_data();
+    }
     
 }

@@ -1,9 +1,12 @@
 package com.tonghang.server.mapper;
 
 import com.tonghang.server.entity.TPhone;
+import com.tonghang.server.vo.IncVo;
+import com.tonghang.server.vo.TodayIncVo;
 import com.tonghang.server.vo.UserVo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -52,4 +55,16 @@ public interface TPhoneMapper {
      */
     List<TPhone> selectActiveUsersId(@Param("pageNo") Integer pageNo,
             @Param("pageSize") Integer pageSize,@Param("tradeId") Integer tradeId);
+    
+    List<TodayIncVo> getTodayNum();
+
+    List<IncVo> get_inc_data();
+
+    IncVo getDistribution();
+
+    int getServicePeople();
+
+    int getNoServicePeople();
+
+    List<TodayIncVo> getCityPeople();
 }

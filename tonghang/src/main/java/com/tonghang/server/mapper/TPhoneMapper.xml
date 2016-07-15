@@ -260,32 +260,67 @@
 		where p.id = #{id}
 	</select>
 
-	<select id="selectNewUsersId"  resultMap="UserInfoResultMap" parameterType="integer">
+	<select id="selectNewUsersId" resultMap="UserInfoResultMap"
+		parameterType="integer">
 		select
-		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark 
+		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark
 		from t_phone p
-		where 1 =1 
+		where 1 =1
 		<if test="tradeId!=null">
-		and p.trade_id = #{tradeId} </if>
+			and p.trade_id = #{tradeId}
+		</if>
 		order by p.timestamp desc limit 5
 	</select>
 
-	<select id="selectActiveUsersId" parameterType="integer" resultMap="UserInfoResultMap">
+	<select id="selectActiveUsersId" parameterType="integer"
+		resultMap="UserInfoResultMap">
 		SELECT
-		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark 
+		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark
 		FROM
 		t_phone p
 		left JOIN
-		(SELECT pid 
-		from t_friend 
-		group by pid 
-		ORDER BY COUNT(pid) DESC 
+		(SELECT pid
+		from t_friend
+		group by pid
+		ORDER BY
+		COUNT(pid) DESC
 		) a
 		on p.id = a.pid
-		where 1=1 
+		where 1=1
 		<if test="tradeId!=null">
-		and p.trade_id = #{tradeId}</if>
-		LIMIT #{pageNo} ,#{pageSize} 
+			and p.trade_id = #{tradeId}
+		</if>
+		LIMIT #{pageNo} ,#{pageSize}
 	</select>
-
+	<select id="getTodayNum" resultType="com.tonghang.server.vo.TodayIncVo">
+		select device,count(device)
+		num from t_phone where to_days(timestamp) =
+		to_days(now()) group by
+		device;
+	</select>
+	<select id="get_inc_data" resultType="com.tonghang.server.vo.IncVo">
+		select date(timestamp) date,sum(if(device = 1,1,0))
+		android,sum(if(device=2,1,0)) ios,sum(if(device=3,1,0)) other from
+		t_phone where DATE_SUB(CURDATE(), INTERVAL 30 DAY) <![CDATA[ <=  ]]>
+		date(timestamp) group by date(timestamp);
+	</select>
+	<select id="getDistribution" resultType="com.tonghang.server.vo.IncVo">
+		select sum(if(device =
+		1,1,0))
+		android,sum(if(device=2,1,0)) ios,sum(if(device=3,1,0)) other
+		from
+		t_phone
+	</select>
+	<select id="getServicePeople" resultType="java.lang.Integer">
+		select count(1) from t_phone where id
+		in (select pid from t_circle where type = 3);
+	</select>
+	<select id="getNoServicePeople" resultType="java.lang.Integer">
+		select count(1) from t_phone where id not
+		in (select pid from t_circle where type = 3);
+	</select>
+	<select id="getCityPeople" resultType="com.tonghang.server.vo.TodayIncVo">
+		select count(1) num,c.name device from t_phone p left outer join t_city c on
+		c.id = p.city_id group by p.city_id;
+	</select>
 </mapper>
