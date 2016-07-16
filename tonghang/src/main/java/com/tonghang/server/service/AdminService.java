@@ -14,6 +14,7 @@ import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
+import com.tonghang.server.vo.IncVo;
 import com.tonghang.server.vo.ServiceVo;
 import com.tonghang.server.vo.UserVo;
 
@@ -81,4 +82,11 @@ public interface AdminService {
 
     void updateArticle(TCircle circle);//更新文章
 
+    Map<String,Object> getTodayInc();//获取今日新增人数
+
+    List<IncVo> get_inc_data();//获取三十日增长曲线
+
+    IncVo getDistribution();//获取终端分布
+
+    Map<String, Object> getDistributionMap();//获取人群分布数据
 }

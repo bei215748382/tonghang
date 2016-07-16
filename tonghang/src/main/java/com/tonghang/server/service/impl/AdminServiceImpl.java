@@ -29,7 +29,9 @@ import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
 import com.tonghang.server.vo.CheckCommentVo;
 import com.tonghang.server.vo.CircleVo;
+import com.tonghang.server.vo.IncVo;
 import com.tonghang.server.vo.ServiceVo;
+import com.tonghang.server.vo.TodayIncVo;
 import com.tonghang.server.vo.UserVo;
 
 @Service
@@ -267,6 +269,48 @@ public class AdminServiceImpl implements AdminService {
     public void updateArticle(TCircle circle) {
         tCircleMapper.updateByPrimaryKey(circle);
         
+    }
+
+    @Override
+    public Map<String, Object> getTodayInc() {
+        Map<String,Object> map = new HashMap<String, Object>();
+        List<TodayIncVo> list = tPhoneMapper.getTodayNum();
+        for(TodayIncVo l : list){
+            switch (l.getDevice()) {
+            case "1":
+                map.put("android", l.getNum());
+                break;
+            case "2":
+                map.put("ios", l.getNum());
+                break;
+            default:
+                map.put("other", l.getNum());
+                break;
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public List<IncVo> get_inc_data() {
+        return tPhoneMapper.get_inc_data();
+    }
+
+    @Override
+    public IncVo getDistribution() {
+        return tPhoneMapper.getDistribution();
+    }
+
+    @Override
+    public Map<String, Object> getDistributionMap() {
+        Map<String,Object> map = new HashMap<String, Object>();
+        int peopleS = tPhoneMapper.getServicePeople();//有服务人数
+        int peopleN = tPhoneMapper.getNoServicePeople();//没服务人数
+        List<TodayIncVo> list = tPhoneMapper.getCityPeople();//获取城市分布
+        map.put("peopleS", peopleS);
+        map.put("peopleN", peopleN);
+        map.put("peopleC", list);
+        return map;
     }
 
 }
