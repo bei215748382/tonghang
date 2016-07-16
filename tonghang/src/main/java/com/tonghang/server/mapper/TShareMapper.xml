@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tonghang.server.mapper.TShareMapper">
+	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TShare">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="cid" property="cid" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<insert id="insert" parameterType="com.tonghang.server.entity.TService">
+		insert into t_share ( pid,
+		cid,
+		create_time
+		)
+		values (#{pid}, #{cid},now()
+		)
+	</insert>
+	<select id="selectByCid" resultMap="BaseResultMap" parameterType="integer">
+		select id, pid, cid,
+		create_time from t_share where cid =#{cid}
+	</select>
+	<select id="selectByPid" resultMap="BaseResultMap" parameterType="integer">
+		select id, pid, cid,
+		create_time from t_share where pid =#{pid}
+	</select>
+	<select id="selectPidsByCid" resultType="integer" parameterType="integer">
+		select pid
+		create_time from t_share where pid =#{pid}
+	</select>
+</mapper>

@@ -226,6 +226,18 @@ div.flicking_con a.on {
     margin-top: -2px;
     vertical-align: middle;
 }
+
+.icon-likes{
+    display: inline-block;
+    width: 14px;
+    height: 12px;
+    background: url('../img/icon_17.png') 0 0 no-repeat;
+    background-size:100%;
+    margin-right: 3px;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+
 .list_main_li .icon-liked{
     display: inline-block;
     width: 14px;
@@ -375,6 +387,21 @@ div.flicking_con a.on {
     margin-right: 12px;
 }
 
+.click_likes span.selected{
+    color: #FFA50E;
+    border-bottom: 2px solid #FFA50E;
+}
+
+.click_likes{
+    padding: 0 3.2%;
+    border-bottom: 1px solid #e1e1e1;
+}
+.click_likes span{
+    padding: 3.2% 0;
+    font-size: 12px;
+    margin-right: 12px;
+}
+
 .main_detail .click_like span.selected{
     color: #FFA50E;
     border-bottom: 2px solid #FFA50E;
@@ -413,6 +440,8 @@ div.flicking_con a.on {
     margin-top: -2px;
     vertical-align: middle;
 }
+
+
 .main_detail .icon-liked{
     display: inline-block;
     width: 14px;

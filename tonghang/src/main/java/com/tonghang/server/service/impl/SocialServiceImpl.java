@@ -27,6 +27,7 @@ import com.tonghang.server.entity.TFriend;
 import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
+import com.tonghang.server.entity.TShare;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
 import com.tonghang.server.exception.ServiceException;
@@ -40,6 +41,7 @@ import com.tonghang.server.mapper.TFriendMapper;
 import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
+import com.tonghang.server.mapper.TShareMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.NotificationTypeEnum;
 import com.tonghang.server.util.OSSUtil;
@@ -73,6 +75,8 @@ public class SocialServiceImpl {
     private TCityMapper cityMapper;
     @Autowired
     private TCircleSeenMapper seenMapper;
+    @Autowired
+    private TShareMapper  shareMapper;
 
     public Object publishSns(int userId, String txt, String pictures)
             throws ServiceException {
@@ -237,7 +241,9 @@ public class SocialServiceImpl {
             TFavorite favorite = favoriteMapper.selectByPidFavid("1", userId,
                     circle.getId());
             dto.setFavorite(favorite);
-
+            List<Integer> shares = shareMapper.selectPidsByCid(circle.getId());
+            List<TPhone> usershares = userMapper.selectByIds(shares);
+            dto.setUsershares(usershares);
             result.add(dto);
 
         }
@@ -312,6 +318,9 @@ public class SocialServiceImpl {
         TFavorite favorite = favoriteMapper.selectByPidFavid("1", userId,
                 circle.getId());
         dto.setFavorite(favorite);
+        List<Integer> shares = shareMapper.selectPidsByCid(circle.getId());
+        List<TPhone> usershares = userMapper.selectByIds(shares);
+        dto.setUsershares(usershares);
 
 
         return dto;
@@ -611,6 +620,9 @@ public class SocialServiceImpl {
         TFavorite favorite = favoriteMapper.selectByPidFavid("2", userId,
                 article.getId());
         dto.setFavorite(favorite);
+        List<Integer> shares = shareMapper.selectPidsByCid(article.getId());
+        List<TPhone> usershares = userMapper.selectByIds(shares);
+        dto.setUsershares(usershares);
         return dto;
 
     }
@@ -787,7 +799,7 @@ public class SocialServiceImpl {
         }
         List<TFriend> friends = friendMapper
                 .selectBeenApplyNotConfirm(Integer.valueOf(userId));
-        if(CollectionUtils.isEmpty(friends)){
+        if(CollectionUtils.isNotEmpty(friends)){
             friendMapper.updateStateByPrimaryKey(friends);
         }
         List<TFriendDTO> friendresult = new ArrayList<TFriendDTO>();
@@ -971,6 +983,10 @@ public class SocialServiceImpl {
         }
         circle.setShare(circle.getShare()+1);
         circleMapper.updateByPrimaryKey(circle);
+        TShare  share = new TShare();
+        share.setCid(circle.getId());
+        share.setPid(user.getId());
+        shareMapper.insert(share);
         return "success";
     }
 

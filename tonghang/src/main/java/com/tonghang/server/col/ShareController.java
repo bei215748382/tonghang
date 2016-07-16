@@ -1,8 +1,10 @@
 package com.tonghang.server.col;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.tonghang.server.common.dto.TCircleDTO;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.exception.ServiceException;
@@ -30,42 +35,87 @@ public class ShareController extends AppBaseController {
     @Autowired
     private SocialServiceImpl socialService;
 
-    @RequestMapping(value = "/c/{id}", method = RequestMethod.GET)
-    public String getcircle(HttpServletRequest request,
-            HttpServletResponse response, Model model,
-            @PathVariable("id") Integer id) {
+    @RequestMapping(value = "/s", method = RequestMethod.GET)
+    public @ResponseBody Object getcircle(HttpServletRequest request,
+            HttpServletResponse response, @RequestParam("id") Integer id) {
         try {
             TCircleDTO bean = socialService.getCircleInfoById(id);
-            model.addAttribute("bean", bean);
-            return "share/share";
+            return JSON.toJSONString(bean);
         } catch (ServiceException e1) {
             log.error("get share info error");
-            model.addAttribute("errormsg", "找不到相关分享信息");
+            return "share/error";
+        }
+    }
+
+    @RequestMapping(value = "/h", method = RequestMethod.GET)
+    public @ResponseBody Object getHomepageInfo(HttpServletRequest request,
+            HttpServletResponse response, Model model,
+            @RequestParam("id") String id) {
+        try {
+            Map<String, Object> bean = (Map<String, Object>) socialService
+                    .homepage(id, id);
+            return JSON.toJSONString(bean);
+        } catch (ServiceException e1) {
+            log.error("get share info error");
             return "share/error";
         }
     }
 
     @RequestMapping(value = "/homepage/{id}", method = RequestMethod.GET)
-    public String homepage(HttpServletRequest request,
+    public void homepage(HttpServletRequest request,
             HttpServletResponse response, Model model,
-            @PathVariable("id") String id) {
+            @PathVariable("id") String id)
+                    throws ServletException, IOException {
         try {
             Map<String, Object> bean = (Map<String, Object>) socialService
                     .homepage(id, id);
-            TPhone user = (TPhone) bean.get("user");
-            List<TCircleDTO> services = (List<TCircleDTO>) bean.get("service");
-            if (CollectionUtils.isNotEmpty(services)) {
-
-                model.addAttribute("service", services.get(0));
+            if (bean != null) {
+                TPhone user = (TPhone) bean.get("user");
+                if (user != null) {
+                    request.getRequestDispatcher("/share/error.html")
+                            .forward(request, response);
+                    return;
+                }
             }
-            TCircleDTO circle = (TCircleDTO) bean.get("circle");
-            model.addAttribute("user", user);
-            model.addAttribute("circle", circle);
-            return "share/homepage";
+            request.getRequestDispatcher("/share/error.html").forward(request,
+                    response);
+            return;
         } catch (ServiceException e1) {
             log.error("get share info error");
-            model.addAttribute("errormsg", "找不到相关分享信息");
-            return "share/error";
+            request.getRequestDispatcher("/share/error.html").forward(request,
+                    response);
+            return;
+        }
+    }
+
+    @RequestMapping(value = "/c/{id}", method = RequestMethod.GET)
+    public void sharecircle(HttpServletRequest request,
+            HttpServletResponse response, @PathVariable("id") Integer id)
+                    throws ServletException, IOException {
+        try {
+            TCircleDTO bean = socialService.getCircleInfoById(id);
+            if (bean == null) {
+                request.getRequestDispatcher("/share/error.html")
+                        .forward(request, response);
+            } else {
+                if (1==(bean.getType())) {
+                    request.getRequestDispatcher("/share/circle.html")
+                            .forward(request, response);
+                } else if (2==(bean.getType())) {
+                    request.getRequestDispatcher("/share/article.html")
+                            .forward(request, response);
+                } else if (3==(bean.getType())) {
+                    request.getRequestDispatcher("/share/service.html")
+                            .forward(request, response);
+                }
+            }
+
+            return;
+        } catch (Exception e1) {
+            log.error("get share info error");
+            request.getRequestDispatcher("/share/error.html").forward(request,
+                    response);
+            return;
         }
     }
 

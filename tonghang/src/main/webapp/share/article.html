@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+<title>同行圈详情</title>
+<link rel="stylesheet" type="text/css"
+	href="../../common/css/common.css">
+<link rel="stylesheet" type="text/css" href="../../common/css/style.css">
+<script type="text/javascript">
+	window.onload = function init() {
+		var test2 = window.location.pathname; //fIh5g fdsyq window.location.pathname; /share/c/1 
+		var spilt_arr = test2.split("/"); //['share','c','1']
+		var id = spilt_arr[3]; //id
+
+		$
+				.ajax({
+					type : "get",
+					async : false,
+					url : "http://mytonghang.com/share/s",
+					data : {
+						"id" : id
+					},
+					dataType : "json",
+					success : function(data) {
+						var id = data.id;
+						var datetime = data.datetime;
+						var like = data.favour;
+						var comment = data.comment;
+						var pageView = data.pageView;
+						var share = data.share;
+						var title = data.title;
+						var content = data.content;
+						var type = data.type;
+						var imgs = data.imgs;
+						var comments = data.comments;
+						$('#datetime').text(getLocalTime(datetime));
+						$('#view').append(pageView+"游览");
+						$('#like').append(like);
+						$('#title').append(title);
+						$('#content').append(content);
+						$('#commentamount').append(comment);
+						$('#shareamount').append(share);
+						$('#tag').text("「" + tag + "」");
+						for (var i = 0; i < imgs.length; i++) {
+							$('#imgs').append(
+									"<li class='fl'><img src='" + imgs[i]
+											+ "!cover.h'></li>");
+						}
+						$('#imgs').append("<div class='clear'></div>");
+						$("#imgs").trigger("create");
+						for (var i = 0; i < comments.length; i++) {
+							$('#main')
+									.append(
+											"<section class='main_avatar'><div class='avatar fl'><a href=''><span><img src='"
+													+ comments[i].userinfo.pic
+													+ "!small.w 'alt='头像' class='user_img' ></span></a></div><div class='username fr'><span class='user_name'><a href='#'>"
+													+ comments[i].userinfo.name
+													+ "</a></span> <span class='level'>「"+comments[i].userinfo.remark+"」</span> <span class='address fr'><i class='icon-address'></i>绍兴</span></div><div class='position fr'><span>"
+													+ comments[i].userinfo.company
+													+ "</span></div><div class='title fr'><span>"
+													+ comments[i].content
+													+ "</span></div><div class='clear'></div></section>");
+						}
+					}
+				});
+	}
+	function getLocalTime(nS) {
+		return new Date(parseInt(nS)).toLocaleString().substr(0, 17)
+	}
+</script>
+</head>
+
+<body>
+	<section class="news_detail">
+   		<div class="news_title" id="title"></div>
+    	<div class="time">
+        	<span id="datetime"></span><span id="view"></span>
+    	</div>
+    	<div class="contents" id="content">
+    	</div>
+    
+		<section class="click_like" id="amount">
+			<span class="fl" id="like"><i class="icon-like"></i></span> 
+			<span class="fl" id="commentamount"><i class="icon-written"></i></span> 
+			<span class="fl" id="shareamount"><i class="icon-share"></i></span> 
+			<div class="clear"></div>
+		</section>
+		
+		
+    </section>
+		
+	<!-- <footer>
+		<div class="download">
+			<a href="#"><img src="../../common/img/download.jpg"></a>
+		</div>
+	</footer> -->
+
+</body>
+<script type="text/javascript"
+	src="../../common/js/jquery/jquery-1.9.1.min.js"></script>
+
+</html>

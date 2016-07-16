@@ -230,7 +230,7 @@
 	<select id="getUserInfoById" parameterType="java.lang.Integer"
 		resultMap="UserInfoResultMap">
 		select
-		p.id,p.company,p.name,p.position,p.pic,p.college,p.education,p.remark,city.name
+		p.id,p.company,p.name,p.position,p.pic,p.remark,city.name
 		city_name,trade.name trade_name
 		from t_phone p
 		left outer join t_city

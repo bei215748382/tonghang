@@ -37,6 +37,7 @@ import com.tonghang.server.mapper.TFavoriteMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
 import com.tonghang.server.mapper.TServiceMapper;
+import com.tonghang.server.mapper.TShareMapper;
 import com.tonghang.server.mapper.TTrackMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.util.DESUtil;
@@ -82,6 +83,8 @@ public class UserService {
     private TCircleLikeMapper likeMapper;
     @Autowired
     private TFavoriteMapper favoriteMapper;
+    @Autowired
+    private TShareMapper  shareMapper;
 
     public Map<String, Object> registUser(String mobile, String password,
             String longitude, String latitude, String device)
@@ -582,6 +585,9 @@ public class UserService {
         TFavorite favorite = favoriteMapper.selectByPidFavid("3", userId,
                 service.getId());
         dto.setFavorite(favorite);
+        List<Integer> shares = shareMapper.selectPidsByCid(service.getId());
+        List<TPhone> usershares = userMapper.selectByIds(shares);
+        dto.setUsershares(usershares);
         return dto;
     }
 

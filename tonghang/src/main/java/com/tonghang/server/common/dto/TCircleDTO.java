@@ -28,7 +28,15 @@ public class TCircleDTO extends TCircle implements Serializable {
     private TCircleSeen seen;
     
     private boolean like;
+    private List<TPhone> usershares;
+    
+    public List<TPhone> getUsershares() {
+        return usershares;
+    }
 
+    public void setUsershares(List<TPhone> usershares) {
+        this.usershares = usershares;
+    }
 
     public TCircleSeen getSeen() {
         return seen;
