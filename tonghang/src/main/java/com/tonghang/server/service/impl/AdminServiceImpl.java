@@ -12,14 +12,12 @@ import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
-import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.mapper.TAdminUserMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
-import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.EnumCollection.ResponseCode;
@@ -39,9 +37,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private TCircleMapper tCircleMapper;
-
-    @Autowired
-    private TServiceMapper tServiceMapper;
 
     @Autowired
     private TCommentMapper tCommentMapper;
@@ -66,16 +61,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<CircleVo> getCircleChecked() {
         return tCircleMapper.getCircleChecked();
-    }
-
-    @Override
-    public List<TService> getServiceUnCheck() {
-        return tServiceMapper.getServiceUnCheck();
-    }
-
-    @Override
-    public List<TService> getServiceChecked() {
-        return tServiceMapper.getServiceChecked();
     }
 
     @Override
@@ -196,26 +181,26 @@ public class AdminServiceImpl implements AdminService {
         return tCommentMapper.getCommentByUserId(id);
     }
 
-
     @Override
     public Map<String, Object> login(TAdminUser user) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            TAdminUser u = tAdminUserMapper.selectByUsername(user.getUsername());
-            if (u != null) {//验证用户是否存在
+            TAdminUser u = tAdminUserMapper
+                    .selectByUsername(user.getUsername());
+            if (u != null) {// 验证用户是否存在
                 String passwordMD5 = MD5Util.string2MD5(user.getPassword());
-                if (u.getPassword().equals(passwordMD5)) {//验证密码是否正确
-                    if(StringUtil.adminRole.equals(u.getRole())){//验证用户是否有权限登入
+                if (u.getPassword().equals(passwordMD5)) {// 验证密码是否正确
+                    if (StringUtil.adminRole.equals(u.getRole())) {// 验证用户是否有权限登入
                         map.put(StringUtil.responseCode,
                                 ResponseCode.LOGIN_SUCCESS.getCode());
                         map.put(StringUtil.responseMsg,
                                 ResponseCode.LOGIN_SUCCESS.getMsg());
                         map.put(StringUtil.responseObj, u);
-                    } else{
+                    } else {
                         map.put(StringUtil.responseCode,
                                 ResponseCode.LOGIN_ROLE_FAILED.getCode());
                         map.put(StringUtil.responseMsg,
-                                ResponseCode.LOGIN_ROLE_FAILED.getMsg()); 
+                                ResponseCode.LOGIN_ROLE_FAILED.getMsg());
                     }
                 } else {
                     map.put(StringUtil.responseCode,
@@ -231,31 +216,39 @@ public class AdminServiceImpl implements AdminService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            map.put(StringUtil.responseCode, ResponseCode.LOGIN_ERROR.getCode());
+            map.put(StringUtil.responseCode,
+                    ResponseCode.LOGIN_ERROR.getCode());
             map.put(StringUtil.responseMsg, ResponseCode.LOGIN_ERROR.getMsg());
         }
         return map;
     }
 
     @Override
-    public Map<String,Object> registUser(TAdminUser user) {
-        Map<String,Object> map = new HashMap<String,Object>();
-        try{
-            TAdminUser u = tAdminUserMapper.selectByUsername(user.getUsername());
-            if(u!=null){
-                map.put(StringUtil.responseCode, ResponseCode.REGIST_EXIST.getCode());
-                map.put(StringUtil.responseCode, ResponseCode.REGIST_EXIST.getMsg());
-            } else{
+    public Map<String, Object> registUser(TAdminUser user) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            TAdminUser u = tAdminUserMapper
+                    .selectByUsername(user.getUsername());
+            if (u != null) {
+                map.put(StringUtil.responseCode,
+                        ResponseCode.REGIST_EXIST.getCode());
+                map.put(StringUtil.responseCode,
+                        ResponseCode.REGIST_EXIST.getMsg());
+            } else {
                 String passwordMD5 = MD5Util.string2MD5(user.getPassword());
                 user.setPassword(passwordMD5);
-                tAdminUserMapper.insert(user); 
-                map.put(StringUtil.responseCode, ResponseCode.REGIST_SUCCESS.getCode());
-                map.put(StringUtil.responseCode, ResponseCode.REGIST_SUCCESS.getMsg());
+                tAdminUserMapper.insert(user);
+                map.put(StringUtil.responseCode,
+                        ResponseCode.REGIST_SUCCESS.getCode());
+                map.put(StringUtil.responseCode,
+                        ResponseCode.REGIST_SUCCESS.getMsg());
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            map.put(StringUtil.responseCode, ResponseCode.REGIST_ERROR.getCode());
-            map.put(StringUtil.responseCode, ResponseCode.REGIST_ERROR.getMsg());
+            map.put(StringUtil.responseCode,
+                    ResponseCode.REGIST_ERROR.getCode());
+            map.put(StringUtil.responseCode,
+                    ResponseCode.REGIST_ERROR.getMsg());
         }
         return map;
     }
@@ -268,24 +261,20 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void updateArticle(TCircle circle) {
         tCircleMapper.updateByPrimaryKey(circle);
-        
+
     }
 
     @Override
     public Map<String, Object> getTodayInc() {
-        Map<String,Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         List<TodayIncVo> list = tPhoneMapper.getTodayNum();
-        for(TodayIncVo l : list){
-            switch (l.getDevice()) {
-            case "1":
+        for (TodayIncVo l : list) {
+            if ("1".equals(l.getDevice())) {
                 map.put("android", l.getNum());
-                break;
-            case "2":
+            } else if ("2".equals(l.getDevice())) {
                 map.put("ios", l.getNum());
-                break;
-            default:
+            } else {
                 map.put("other", l.getNum());
-                break;
             }
         }
         return map;
@@ -303,10 +292,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Map<String, Object> getDistributionMap() {
-        Map<String,Object> map = new HashMap<String, Object>();
-        int peopleS = tPhoneMapper.getServicePeople();//有服务人数
-        int peopleN = tPhoneMapper.getNoServicePeople();//没服务人数
-        List<TodayIncVo> list = tPhoneMapper.getCityPeople();//获取城市分布
+        Map<String, Object> map = new HashMap<String, Object>();
+        int peopleS = tPhoneMapper.getServicePeople();// 有服务人数
+        int peopleN = tPhoneMapper.getNoServicePeople();// 没服务人数
+        List<TodayIncVo> list = tPhoneMapper.getCityPeople();// 获取城市分布
         map.put("peopleS", peopleS);
         map.put("peopleN", peopleN);
         map.put("peopleC", list);

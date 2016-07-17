@@ -67,11 +67,11 @@
 			<property name="ipIpDatafilePath" value="${ipip.data.filepath}">
 			</property>
 		</bean> -->
-		<bean id="ipInfoService"
+		<!-- <bean id="ipInfoService"
 			class="com.tonghang.server.service.impl.IpInfoDetailServiceImpl" init-method="init">
 			<property name="ipIpDatafilePath" value="G://mydata4vipday2.datx">
 			</property>
-		</bean>
+		</bean> -->
 	
 	</beans>
 	

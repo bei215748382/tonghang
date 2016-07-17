@@ -7,7 +7,7 @@
 		<result column="pid" property="pid" jdbcType="INTEGER" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
-	<insert id="insert" parameterType="com.tonghang.server.entity.TService">
+	<insert id="insert" parameterType="com.tonghang.server.entity.TShare">
 		insert into t_share ( pid,
 		cid,
 		create_time

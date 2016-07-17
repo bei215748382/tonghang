@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.tonghang.server.common.dto.TCircleDTO;
 import com.tonghang.server.common.dto.TCommentDTO;
-import com.tonghang.server.common.dto.TServiceDTO;
 import com.tonghang.server.common.dto.TTrackDTO;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCircleLike;
@@ -24,7 +23,6 @@ import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TFavorite;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TProvince;
-import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrack;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.exception.ErrorCode;
@@ -36,7 +34,6 @@ import com.tonghang.server.mapper.TCommentMapper;
 import com.tonghang.server.mapper.TFavoriteMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
-import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TShareMapper;
 import com.tonghang.server.mapper.TTrackMapper;
 import com.tonghang.server.mapper.TTradeMapper;
@@ -68,8 +65,6 @@ public class UserService {
     @Autowired
     private TCircleMapper circleMapper;
 
-    @Autowired
-    private TServiceMapper serviceMap;
 
     @Autowired
     private TokenServiceImpl tokenService;
@@ -347,12 +342,6 @@ public class UserService {
                 pictures += filepath + ",";
             }
         }
-        TService service = new TService();
-        service.setDescription(describe);
-        service.setTitle(name);
-        service.setPid(userId);
-        service.setPictures(pictures);
-        serviceMap.insert(service);
 
         TCircle circle = new TCircle();
         circle.setTitle(name);
@@ -375,7 +364,7 @@ public class UserService {
         circle.setType(1);
         circle.setContent("我发布了新服务[" + name + "]");
         circleMapper.insert(circle);
-        TServiceDTO result = new TServiceDTO(service);
+        TCircleDTO result = new TCircleDTO(circle);
         return result;
 
     }

@@ -8,7 +8,6 @@ import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
-import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
@@ -23,10 +22,6 @@ public interface AdminService {
 	List<CircleVo> getCircleUnCheck();//获取同行圈待审核的内容和已审核的内容,check等于null表示待审核
 
 	List<CircleVo> getCircleChecked();//获取同行圈待审核的内容和已审核的内容,1或者2表示已审核
-	
-	List<TService> getServiceUnCheck();//获取服务待审核的内容和已审核的内容,check等于null表示待审核
-	
-	List<TService> getServiceChecked();//获取服务待审核的内容和已审核的内容,1或者2表示已审核
 	
 	List<CheckCommentVo> getCommentUnCheck();//获取回复待审核的内容和已审核的内容,check等于null表示待审核
 	

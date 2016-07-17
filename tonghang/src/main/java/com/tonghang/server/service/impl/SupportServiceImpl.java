@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.tonghang.server.common.dto.TNotificationDTO;
-import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCircleSeen;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TFriend;
@@ -38,8 +37,6 @@ import com.tonghang.server.vo.ArticlesVo;
 @Service
 public class SupportServiceImpl {
 
-    @Autowired
-    private IpInfoDetailServiceImpl ipService;
 
     @Autowired
     private TPhoneMapper userDao;

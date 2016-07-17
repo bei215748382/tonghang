@@ -19,7 +19,6 @@ import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TProvinceMapper;
-import com.tonghang.server.mapper.TServiceMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 
 @Service
@@ -27,8 +26,6 @@ public class SearchServiceImpl {
 
     @Autowired
     private TPhoneMapper userMapper;
-    @Autowired
-    private TServiceMapper serviceMapper;
     @Autowired
     private TCircleMapper circleMapper;
     @Autowired
