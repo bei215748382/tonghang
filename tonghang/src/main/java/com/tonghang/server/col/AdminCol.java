@@ -21,7 +21,6 @@ import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
 import com.tonghang.server.entity.TPhone;
-import com.tonghang.server.entity.TService;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.FileUtil;
@@ -171,6 +170,12 @@ public class AdminCol {
         TCircle service = adminService.getServiceById(id);
         mav.addObject("services", service);
         return mav;
+    }
+    
+    @RequestMapping(value = "user_update")
+    @ResponseBody
+    public boolean user_update(TPhone phone) {
+        return adminService.updateUser(phone);
     }
     
     @ResponseBody

@@ -44,7 +44,7 @@ function user_info(id){
 			+'</div>'
 			+'<div class="wid-3">'
 			+'<div>'
-			+'	<select>'
+			+'	<select id="group">'
 			+'		<option>设置用户分组</option>'
 			+'		<option value="2">重要客户</option>'
 			+'		<option value="1" selected>普通客户（默认分组）</option>'
@@ -52,7 +52,7 @@ function user_info(id){
 			+'</div>'
 			+'<br/>'
 			+'<div>'
-			+'	<select>'
+			+'	<select id="state">'
 			+'		<option>设置用户状态</option>'
 			+'		<option value="1" selected>激活</option>'
 			+'		<option value="2">冻结</option>'
@@ -60,8 +60,20 @@ function user_info(id){
 			+'</div>'
 			+'</div>';
 			OpenModalBox("病人id:"+id,form);
+			
+			$("#group").change(function(){
+				  $.post("user_update",{id:id,groupId:$(this).val()},function(data){
+					  console.log("更新群组操作成功");
+				  });
+				});
+			$("#state").change(function(){
+			    $.post("user_update",{id:id,state:$(this).val()},function(data){
+					  console.log("更新状态操作成功");
+				  });
+			});
 		});
 	}
+	
 	function checkCircle(id){
 		var form = '<div>'
 		+'	<select  id="checked">'

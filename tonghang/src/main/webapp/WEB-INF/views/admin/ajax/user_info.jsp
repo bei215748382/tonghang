@@ -25,7 +25,7 @@
         <div class="no-move"></div>
       </div>
       <div class="box-content">
-        <input type="hidden" value="${user.id}" id="uid"/>
+        <input type="hidden" value="${user.id}" id="uid" />
         <div class="wid-3">
           <img src="${user.pic}" alt="头像" style="max-width: 100%" />
         </div>
@@ -43,7 +43,7 @@
         </div>
         <div class="wid-3">
           <div>
-            <select>
+            <select id="group">
               <option>设置用户分组</option>
               <option value="2">重要客户</option>
               <option value="1" selected>普通客户（默认分组）</option>
@@ -51,7 +51,7 @@
           </div>
           <br />
           <div>
-            <select>
+            <select id="state">
               <option>设置用户状态</option>
               <option value="1" selected>激活</option>
               <option value="2">冻结</option>
@@ -105,8 +105,7 @@
                 </td>
                 <td>${data.name}<br /> <fmt:formatDate
                     value="${data.timestamp}"
-                    pattern="yyyy-MM-dd HH:MM:ss" /><br /> 
-                    <c:if
+                    pattern="yyyy-MM-dd HH:MM:ss" /><br /> <c:if
                     test="${data.checked == 1}">审核通过</c:if> <c:if
                     test="${data.checked != 1}">
                     <button type="button" class="btn btn-default"
@@ -135,7 +134,12 @@
     <div class="box">
       <div class="box-header">
         <div class="box-name">
-          <i class="fa fa-search"></i> <span>他的行为</span>&nbsp;&nbsp;|&nbsp;&nbsp;<button  type="button" class="btn btn-default" onclick="hisCircle(${user.id})">他发布的朋友圈</button>&nbsp;&nbsp;|&nbsp;&nbsp;<button  type="button" class="btn btn-default" onclick="hisComment(${user.id})">他发布的评论</button>
+          <i class="fa fa-search"></i> <span>他的行为</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+          <button type="button" class="btn btn-default"
+            onclick="hisCircle(${user.id})">他发布的朋友圈</button>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <button type="button" class="btn btn-default"
+            onclick="hisComment(${user.id})">他发布的评论</button>
         </div>
         <div class="box-icons">
           <a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -146,7 +150,7 @@
         <div class="no-move"></div>
       </div>
       <div class="box-content">
-         <table
+        <table
           class="table table-bordered table-striped table-hover table-heading table-datatable"
           id="user_behavior_table">
         </table>
@@ -162,5 +166,16 @@
 		$('.form-control').tooltip();
 		// Add drag-n-drop feature to boxes
 		WinMove();
+		var uid = $("#uid").val();
+		$("#group").change(function(){
+			  $.post("user_update",{id:uid,groupId:$(this).val()},function(data){
+				  console.log("更新群组操作成功");
+			  });
+			});
+		$("#state").change(function(){
+		    $.post("user_update",{id:uid,state:$(this).val()},function(data){
+				  console.log("更新状态操作成功");
+			  });
+		});
 	});
 </script>

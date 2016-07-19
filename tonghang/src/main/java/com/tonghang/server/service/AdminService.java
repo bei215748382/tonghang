@@ -89,4 +89,6 @@ public interface AdminService {
     IncVo getDistribution();//获取终端分布
 
     Map<String, Object> getDistributionMap();//获取人群分布数据
+
+    boolean updateUser(TPhone phone);//更新用户
 }
