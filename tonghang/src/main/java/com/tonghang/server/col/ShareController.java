@@ -72,7 +72,7 @@ public class ShareController extends AppBaseController {
             if (bean != null) {
                 TPhone user = (TPhone) bean.get("user");
                 if (user != null) {
-                    request.getRequestDispatcher("/share/error.html")
+                    request.getRequestDispatcher("/share/homepage.html")
                             .forward(request, response);
                     return;
                 }

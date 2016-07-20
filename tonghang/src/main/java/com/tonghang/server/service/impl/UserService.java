@@ -122,6 +122,9 @@ public class UserService {
                     ErrorCode.code102.getHttpCode(),
                     ErrorCode.code102.getDesc());
         }
+        if(user.getState() == 2){
+            throw new ServiceException(ErrorCode.code106);
+        }
         log.info(user.toString());
         try {
             if (!user.getPassword()

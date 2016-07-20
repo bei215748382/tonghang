@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+<title>同行</title>
+<link rel="stylesheet" type="text/css"
+	href="../../common/css/common.css?3">
+<link rel="stylesheet" type="text/css"
+	href="../../common/css/style.css?3">
+<script type="text/javascript">
+	
+	window.onload = function init() {
+		var test2 = window.location.pathname; //fIh5g fdsyq window.location.pathname; /share/c/1 
+		var spilt_arr = test2.split("/"); //['share','c','1']
+		var id = spilt_arr[3]; //id
+
+		$
+				.ajax({
+					type : "get",
+					async : false,
+					url : "http://mytonghang.com/share/h",
+					data : {
+						"id" : id
+					},
+					dataType : "json",
+					success : function(data) {
+						var user = data.user;
+						var service = data.service[0];
+						var circle = data.circle;
+						$('#username').text(user.name);
+						$('#icon').attr("src", user.pic+"!icon.b");
+						$('#company').text(user.company);
+						$('#position').text(user.position);
+						$('#trade').append(user.trade);
+						$('#address').append(user.city);
+						if (user.remark != null) {
+							$('#tag').text("「" + user.remark + "」");
+						}
+						if (service != null) {
+							$('#service')
+									.append(
+											"<div><i class='icon-server'></i>服务</div><div class='serverinfo'><div class='news_img fl' href='#'><a href=''> <img src='"+service.imgs[0]+"!cover.h'></a></div><section class='news_content fr'><div id='title'>"
+													+ service.title
+													+ "</div><div class='fs10' id='content' >"
+													+ service.content
+													+ "</div></section><div class='clear'></div></div>");
+						}
+						if(circle != null){
+							var temp = "";
+							for (var i = 0; i < circle.imgs.length; i++) {
+								temp += "<li class='fl'><img src='"+circle.imgs[i]+"!cover.h'></li>";
+							}
+							$('#circle').append(" <li class='list_main_li'> <div class='list_main'> <div class='list_item_top clearfix'><div class='title fr'><span>"
+									+circle.content+"</span></div><div class='img_list fr'><ul>"
+									+temp
+									+"</ul></div><div class='click_like fr'><span class='liked'><i class='icon-liked'></i>"
+									+circle.favour
+									+"</span> <span class='writtend'><i class='icon-writtend'></i>"
+									+circle.comment
+									+"</span> <span><i class='icon-share'></i>"
+									+circle.share
+									+"</span></div></div><div class='clear'></div></div></li></ul>");
+						}else{
+							$('#circle').append("还没有动态");
+						}
+					}
+				});
+	}
+	function getLocalTime(nS) {
+		return new Date(parseInt(nS)).toLocaleString().substr(0, 17)
+	}
+</script>
+</head>
+
+<body>
+	<section class="userhome">
+		<section class="userinfo">
+			<div class="avatar">
+				<img src="" id="icon">
+			</div>
+			<div class="username">
+				<span id="username"><i class="sex icon-w"></i></span>
+			</div>
+			<div class="position">
+				<span id="company"></span><span id="position"></span>
+			</div>
+			<div class="desc">
+				<span id="tag">他还未添加标签哦</span>
+			</div>
+		</section>
+		<section class="industry">
+			<div class="trade" id="trade">
+				<i class="icon-circle"></i>
+			</div>
+			<div class="address" id="address">
+				<i class="icon-address"></i>
+			</div>
+		</section>
+
+	</section>
+	<section class="usermessage">
+		<section class="server" id="service">
+			
+		</section>
+
+		<section class="dynamic">
+			<div>
+				<i class="icon-dynamic"></i>动态
+			</div>
+			<div class="dynamicinfo"  id="circle">
+			</div>
+		</section>
+
+	</section>
+
+	<!-- <footer>
+    <div class="download">
+        <a href="#"><img src="../../common/img/download.jpg"></a>
+    </div>
+</footer> -->
+
+</body>
+<script type="text/javascript"
+	src="../../common/js/jquery/jquery-1.9.1.min.js"></script>
+</html>
