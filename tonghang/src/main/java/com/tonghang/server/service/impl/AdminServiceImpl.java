@@ -302,4 +302,10 @@ public class AdminServiceImpl implements AdminService {
         return map;
     }
 
+    @Override
+    public boolean updateUser(TPhone phone) {
+        tPhoneMapper.updateByPrimaryKey(phone);
+        return true;
+    }
+
 }
