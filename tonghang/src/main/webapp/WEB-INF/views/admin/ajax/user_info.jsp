@@ -94,26 +94,22 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Start: list_row -->
-            <c:forEach items="${services}" var="data">
               <tr>
-                <td><c:forEach items="${data.pictures}" var="pic">
+                <td><c:forEach items="${service.pics}" var="pic">
                     <img src="${pic}" alt="${pic}"
                       onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' />
                   </c:forEach></td>
-                <td>${data.title}<br />${data.description}
+                <td>${service.title}<br />${service.content}
                 </td>
-                <td>${data.name}<br /> <fmt:formatDate
-                    value="${data.timestamp}"
+                <td>${user.name}<br /> <fmt:formatDate
+                    value="${service.datetime}"
                     pattern="yyyy-MM-dd HH:MM:ss" /><br /> <c:if
-                    test="${data.checked == 1}">审核通过</c:if> <c:if
-                    test="${data.checked != 1}">
+                    test="${service.checked == 1}">审核通过</c:if> <c:if
+                    test="${service.checked != 1}">
                     <button type="button" class="btn btn-default"
-                      onclick="checkService(${data.id})">审核</button></td>
+                      onclick="checkService(${service.id})">审核</button></td>
                 </c:if>
               </tr>
-            </c:forEach>
-            <!-- End: list_row -->
           </tbody>
           <tfoot>
             <tr>

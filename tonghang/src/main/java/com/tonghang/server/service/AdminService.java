@@ -86,4 +86,6 @@ public interface AdminService {
     Map<String, Object> getDistributionMap();//获取人群分布数据
 
     boolean updateUser(TPhone phone);//更新用户
+
+    TCircle getServiceByUid(Integer id);//根据用户id获取用户服务,服务只有一个
 }

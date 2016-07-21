@@ -167,8 +167,8 @@ public class AdminCol {
         ModelAndView mav = new ModelAndView("admin/ajax/user_info");
         TPhone user = adminService.getUserById(id);
         mav.addObject("user", user);
-        TCircle service = adminService.getServiceById(id);
-        mav.addObject("services", service);
+        TCircle service = adminService.getServiceByUid(id);
+        mav.addObject("service", service);
         return mav;
     }
     

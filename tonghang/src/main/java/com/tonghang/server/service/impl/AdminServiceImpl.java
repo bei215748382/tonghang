@@ -308,4 +308,9 @@ public class AdminServiceImpl implements AdminService {
         return true;
     }
 
+    @Override
+    public TCircle getServiceByUid(Integer id) {
+        return tCircleMapper.getServiceByUid(id);
+    }
+
 }
