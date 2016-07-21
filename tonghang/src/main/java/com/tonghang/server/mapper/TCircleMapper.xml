@@ -505,4 +505,9 @@
 		<include refid="serviceVoSql"></include>
 		where type = 3
 	</select>
+	<delete id="deleteLastServiceByPid" parameterType="integer">
+		delete from
+		t_circle
+		where pid = #{pid} and type =3 order by id limit 1 
+	</delete>
 </mapper>

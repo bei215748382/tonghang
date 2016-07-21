@@ -56,4 +56,5 @@ public interface TCircleMapper {
     Boolean checkService(Integer id);
 
     List<ServiceVo> getServices();
+    void deleteLastServiceByPid(Integer pid);
 }

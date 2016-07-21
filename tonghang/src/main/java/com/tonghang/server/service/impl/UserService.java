@@ -364,6 +364,7 @@ public class UserService {
         }
         circle.setComment(0);
         circleMapper.insert(circle);
+        circleMapper.deleteLastServiceByPid(user.getId());
         circle.setType(1);
         circle.setContent("我发布了新服务[" + name + "]");
         circleMapper.insert(circle);
