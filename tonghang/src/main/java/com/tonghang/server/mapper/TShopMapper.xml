@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tonghang.server.mapper.TShopMapper">
+	<resultMap id="BaseResultMap" type="com.tonghang.server.entity.TShop">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="contacts" property="contacts" jdbcType="VARCHAR" />
+		<result column="telephone" property="telephone" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="county" property="county" jdbcType="VARCHAR" />
+		<result column="wechat" property="wechat" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="products" property="products" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_shop
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.tonghang.server.entity.TShop">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="BEFORE">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_shop ( name, address, contacts,telephone, mobile, province, city ,county,
+		wechat,qq ,email, products, description 
+		)
+		values
+		(
+		#{name}, #{address}, #{contacts},#{telephone}, #{mobile}, #{province}, #{city} ,#{county},
+		#{wechat},#{qq} ,#{email}, #{products}, #{description}
+		)
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TShop">
+		update t_shop
+		set
+		name =#{name},
+		address #{address}, 
+		contacts= #{contacts},
+		telephone =#{telephone},
+		 mobile = #{mobile}, 
+		 province =#{province}, 
+		city= #{city},
+		county =#{county},
+		wechat =#{wechat},
+		qq =#{qq},
+		email =#{email}, 
+		products =#{products}, 
+		description = #{description} 
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select  id, name, address, contacts,telephone, mobile, province, city ,county,
+		wechat,qq ,email, products, description 
+		from t_shop
+		where id
+		= #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select id, name, address, contacts,telephone, mobile, province, city ,county,
+		wechat,qq ,email, products, description 
+		from t_shop
+	</select>
+
+</mapper>
