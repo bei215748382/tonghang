@@ -43,7 +43,7 @@
                 <td>${data.id}</td>
                 <td>${data.url}</td>
                 <td><img src="${data.img}" alt="${data.img}"
-                  onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' /></td>
+                  onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' /><br/>${data.img}</td>
                 <td>1</td>
               </tr>
             </c:forEach>
