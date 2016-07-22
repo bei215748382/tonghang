@@ -116,7 +116,7 @@ public class AdminCol {
     @RequestMapping(value = "get_service_unchecked")
     public ModelAndView get_service_unchecked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
+        ModelAndView mav = new ModelAndView("admin/ajax/index_service_info");
         List<CircleVo> list = adminService.getUncheckedServices();
         mav.addObject("dataList", list);
         return mav;
@@ -125,7 +125,7 @@ public class AdminCol {
     @RequestMapping(value = "get_service_checked")
     public ModelAndView get_service_checked(HttpServletRequest request,
             HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("admin/ajax/index_info");
+        ModelAndView mav = new ModelAndView("admin/ajax/index_service_info");
         List<CircleVo> list = adminService.getCheckedServices();
         mav.addObject("dataList", list);
         return mav;
