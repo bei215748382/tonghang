@@ -92,7 +92,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">编辑正文</label>
 						<div class="col-sm-10">
-							<textarea class="form-control" rows="5" id="wysiwig_full" name=content></textarea>
+              <script id="editor" type="text/plain" style="width:1024px;height:500px;" name=content></script>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -110,11 +110,15 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {
-		TinyMCEStart('#wysiwig_full', 'extreme');
+// 		TinyMCEStart('#wysiwig_full', 'extreme');
 		// Add tooltip to form-controls
 		$('.form-control').tooltip();
 		LoadBootstrapValidatorScript(DemoFormValidator);
 		// Add drag-n-drop feature to boxes
 		WinMove();
+		
+	    //实例化编辑器
+	    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+	    var ue = UE.getEditor('editor');
 	});
 </script>

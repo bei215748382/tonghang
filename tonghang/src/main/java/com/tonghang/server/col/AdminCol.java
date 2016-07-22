@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tonghang.server.entity.TAdminUser;
+import com.tonghang.server.entity.TBanner;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
@@ -330,4 +331,27 @@ public class AdminCol {
         return adminService.get_inc_data();
     }
     
+    
+    @RequestMapping(value = "banners_info")
+    public ModelAndView banners_info() {
+        ModelAndView mav = new ModelAndView("admin/ajax/banners_info");
+        List<TBanner> list = adminService.getBanners();
+        mav.addObject("banners", list);
+        return mav;
+    }
+    
+    @RequestMapping(value = "banner_add")
+    public String add_banner() {
+        return "admin/ajax/banner_add";
+    }
+    
+    @RequestMapping(value = "set_banner")
+    public void set_banner(MultipartFile file,TBanner tBanner,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (file != null && file.getOriginalFilename() != "") {
+            String pic = FileUtil.savePic(request, file);
+            tBanner.setImg(pic);
+        }
+        adminService.saveBanner(tBanner);
+        response.sendRedirect("index#banners_info");
+    }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.tonghang.server.entity.TAdminUser;
+import com.tonghang.server.entity.TBanner;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
@@ -88,4 +89,8 @@ public interface AdminService {
     boolean updateUser(TPhone phone);//更新用户
 
     TCircle getServiceByUid(Integer id);//根据用户id获取用户服务,服务只有一个
+
+    List<TBanner> getBanners();//获取所有横幅资料
+
+    void saveBanner(TBanner banner);//保存banner
 }
