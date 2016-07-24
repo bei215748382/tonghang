@@ -59,7 +59,7 @@ function user_info(id){
 			+'	</select>'
 			+'</div>'
 			+'</div>';
-			OpenModalBox("病人id:"+id,form);
+			OpenModalBox("用户id:"+id,form);
 			
 			$("#group").change(function(){
 				  $.post("user_update",{id:id,groupId:$(this).val()},function(data){

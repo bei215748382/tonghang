@@ -32,7 +32,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">url</label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" name="title" />
+              <input type="text" class="form-control" name="url" />
             </div>
           </div>
           <div class="form-group">

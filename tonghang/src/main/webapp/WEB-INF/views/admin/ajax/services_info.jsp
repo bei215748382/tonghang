@@ -25,6 +25,8 @@
 					<thead>
 						<tr>
 							<th><label><input type="text" name="search_rate"
+									value="id" class="search_init" /></label></th>
+							<th><label><input type="text" name="search_rate"
 									value="技能名称" class="search_init" /></label></th>
 							<th><label><input type="text" name="search_rate"
 									value="技能说明" class="search_init" /></label></th>
@@ -46,10 +48,11 @@
 						<!-- Start: list_row -->
 						<c:forEach items="${services}" var="data">
 							<tr>
+								<td>${data.id}</td>
 								<td>${data.title}</td>
 								<td>${data.description}</td>
 								<td><c:forEach items="${data.pictures}" var="pic">
-								<img src="${pic}" alt="${pic}" onerror='this.src="${ctx}/common/img/admin/avatar.jpg"'/>
+								<img src="${pic}" alt="${pic}" />
 								</c:forEach></td>
 								<td>${data.name}</td>
 								<td>${data.phone}</td>

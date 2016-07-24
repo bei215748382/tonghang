@@ -40,13 +40,14 @@ public class AdminCol {
 
     @Autowired
     private AdminService adminService;
-    
+
     // 登陆提交
     @RequestMapping(value = "login")
-    public String login(TAdminUser user,HttpServletRequest request) {
+    public String login(TAdminUser user, HttpServletRequest request) {
         Map<String, Object> map = adminService.login(user);
         HttpSession session = request.getSession();
-        session.setAttribute(StringUtil.adminLogin, map.get(StringUtil.responseObj));
+        session.setAttribute(StringUtil.adminLogin,
+                map.get(StringUtil.responseObj));
         return "redirect:index";
     }
 
@@ -112,7 +113,6 @@ public class AdminCol {
         return adminService.checkService(id);
     }
 
-    
     @RequestMapping(value = "get_service_unchecked")
     public ModelAndView get_service_unchecked(HttpServletRequest request,
             HttpServletResponse response) {
@@ -130,7 +130,7 @@ public class AdminCol {
         mav.addObject("dataList", list);
         return mav;
     }
-    
+
     @RequestMapping(value = "checkComment")
     @ResponseBody
     public Boolean checkComment(Integer id) {
@@ -162,7 +162,7 @@ public class AdminCol {
         mav.addObject("users", list);
         return mav;
     }
-    
+
     @RequestMapping(value = "user_info")
     public ModelAndView user_info(Integer id) {
         ModelAndView mav = new ModelAndView("admin/ajax/user_info");
@@ -172,19 +172,19 @@ public class AdminCol {
         mav.addObject("service", service);
         return mav;
     }
-    
+
     @RequestMapping(value = "user_update")
     @ResponseBody
     public boolean user_update(TPhone phone) {
         return adminService.updateUser(phone);
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "get_user_circle")
     public List<TCircle> get_user_circle(Integer id) {
         return adminService.getUserCircle(id);
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "get_user_comment")
     public List<TComment> get_user_comment(Integer id) {
@@ -206,13 +206,13 @@ public class AdminCol {
         mav.addObject("service", service);
         return mav;
     }
-    
+
     @RequestMapping(value = "industry_info")
     public ModelAndView industry_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/industry_info");
         return mav;
     }
-    
+
     @RequestMapping(value = "articles_info")
     public ModelAndView articles_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
@@ -234,7 +234,7 @@ public class AdminCol {
     @RequestMapping(value = "article_add_json")
     public void article_add_json(MultipartFile file, TCircle circle,
             HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+                    throws IOException {
         if (file != null && file.getOriginalFilename() != "") {
             String pic = FileUtil.savePic(request, file);
             circle.setPic(pic);
@@ -258,6 +258,15 @@ public class AdminCol {
         return mav;
     }
 
+    @RequestMapping(value = "article_editstate")
+    public ModelAndView article_editstate(Integer id) {
+        adminService.updateArticleState(id);
+        ModelAndView mav = new ModelAndView("admin/ajax/articles_info");
+        List<ArticlesVo> list = adminService.getArticles();
+        mav.addObject("articles", list);
+        return mav;
+    }
+
     @RequestMapping(value = "article_info")
     public ModelAndView article_info(Integer id) {
         ModelAndView mav = new ModelAndView("admin/ajax/article_info");
@@ -265,10 +274,11 @@ public class AdminCol {
         mav.addObject("article", article);
         return mav;
     }
-    
+
     @RequestMapping(value = "article_edit_json")
     public void article_edit_json(MultipartFile file, TCircle circle,
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response)
+                    throws IOException {
         if (file != null && file.getOriginalFilename() != "") {
             String pic = FileUtil.savePic(request, file);
             circle.setPic(pic);
@@ -279,25 +289,26 @@ public class AdminCol {
         adminService.updateArticle(circle);
         response.sendRedirect("index#articles_info");
     }
-    
+
     @RequestMapping(value = "user_increase_info")
     public ModelAndView user_increase_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/user_increase_info");
         Map<String, Object> map = adminService.getTodayInc();
-        mav.addObject("map",map);
+        mav.addObject("map", map);
         return mav;
     }
-    
+
     @RequestMapping(value = "user_distribution_info")
     public ModelAndView user_distribution_info() {
-        ModelAndView mav = new ModelAndView("admin/ajax/user_distribution_info");
+        ModelAndView mav = new ModelAndView(
+                "admin/ajax/user_distribution_info");
         IncVo distr = adminService.getDistribution();
-        Map<String,Object> map = adminService.getDistributionMap();
+        Map<String, Object> map = adminService.getDistributionMap();
         mav.addObject("device", distr);
-        mav.addObject("map",map);
+        mav.addObject("map", map);
         return mav;
     }
-    
+
     @RequestMapping(value = "admin_user_info")
     public ModelAndView admin_user_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/admin_user_info");
@@ -305,33 +316,31 @@ public class AdminCol {
         mav.addObject("users", list);
         return mav;
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "add_admin_user")
     public Boolean add_admin_user(TAdminUser user) {
         return adminService.saveAdminUser(user);
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "get_admin_user")
     public TAdminUser get_admin_user(Integer id) {
         return adminService.getAdminUser(id);
     }
-    
-    
+
     @ResponseBody
     @RequestMapping(value = "edit_admin_user")
     public Boolean edit_admin_user(TAdminUser user) {
         return adminService.editAdminUser(user);
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "get_inc_data")
     public List<IncVo> get_inc_data() {
         return adminService.get_inc_data();
     }
-    
-    
+
     @RequestMapping(value = "banners_info")
     public ModelAndView banners_info() {
         ModelAndView mav = new ModelAndView("admin/ajax/banners_info");
@@ -339,14 +348,26 @@ public class AdminCol {
         mav.addObject("banners", list);
         return mav;
     }
-    
+
     @RequestMapping(value = "banner_add")
     public String add_banner() {
         return "admin/ajax/banner_add";
     }
-    
+
+    @RequestMapping(value = "banner_del")
+    public ModelAndView del_banner(Integer id, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        adminService.deleteBanner(id);
+        ModelAndView mav = new ModelAndView("admin/ajax/banners_info");
+        List<TBanner> list = adminService.getBanners();
+        mav.addObject("banners", list);
+        return mav;
+    }
+
     @RequestMapping(value = "set_banner")
-    public void set_banner(MultipartFile file,TBanner tBanner,HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void set_banner(MultipartFile file, TBanner tBanner,
+            HttpServletRequest request, HttpServletResponse response)
+                    throws IOException {
         if (file != null && file.getOriginalFilename() != "") {
             String pic = FileUtil.savePic(request, file);
             tBanner.setImg(pic);

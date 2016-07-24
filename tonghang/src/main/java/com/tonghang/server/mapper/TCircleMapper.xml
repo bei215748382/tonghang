@@ -97,6 +97,8 @@
 		<result column="trade_id" property="tradeId" jdbcType="INTEGER" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="imgs" property="imgs"
+			typeHandler="com.tonghang.server.mybatis.handler.StringToListHandler" />
 		<association property="phone" javaType="com.tonghang.server.entity.TPhone">
 			<id column="p_id" property="id" jdbcType="INTEGER" />
 			<result column="p_phone" property="phone" jdbcType="VARCHAR" />
@@ -136,6 +138,7 @@
 	<sql id="circleVoResultMapSQL">
 		select
 		c.*,
+		c.pics imgs,
 		p.id p_id,
 		p.phone p_phone,
 		p.password p_password,
@@ -275,11 +278,11 @@
 	</select>
 	<select id="getCircleUnCheck" resultMap="CircleVoResultMap">
 		<include refid="circleVoResultMapSQL"></include>
-		where checked is null
+		where checked is null and type =1  order by id  desc
 	</select>
 	<select id="getCircleChecked" resultMap="CircleVoResultMap">
 		<include refid="circleVoResultMapSQL"></include>
-		where checked is not null
+		where checked is not null and type =1 order by id desc 
 	</select>
 	<select id="getMyCircles" resultMap="BaseResultMap">
 		SELECT *
@@ -302,7 +305,7 @@
 		<if test="pageNo!=0">
 			AND id &lt; #{pageNo}
 		</if>
-		ORDER BY
+		ORDER BY  
 		datetime desc
 		limit #{pageSize}
 
@@ -336,7 +339,7 @@
 		from t_circle t
 		left outer join t_trade trade on trade.id =
 		t.trade_id
-		where type = 2
+		where type = 2 order by id desc 
 	</select>
 	<select id="getArticle" parameterType="java.lang.Integer"
 		resultMap="ArticlesVoResultMap">
@@ -489,11 +492,11 @@
 	</select>
 	<select id="getUncheckedServices" resultMap="CircleVoResultMap">
 		<include refid="circleVoResultMapSQL"></include>
-		where checked is null and type = 3
+		where checked is null and type = 3 order by id desc 
 	</select>
 	<select id="getCheckedServices" resultMap="CircleVoResultMap">
 		<include refid="circleVoResultMapSQL"></include>
-		where checked is not null and type = 3
+		where checked is not null and type = 3 order by id desc 
 	</select>
 	<update id="checkService" parameterType="java.lang.Integer">
 		update t_circle
@@ -503,10 +506,10 @@
 	</update>
 	<select id="getServices" resultMap="ServiceVoResultMap">
 		<include refid="serviceVoSql"></include>
-		where type = 3
+		where type = 3 order by id desc 
 	</select>
 	<select id="getServiceByUid" resultMap="BaseResultMap">
-    	select * from t_circle where pid = #{userId} and type =3 order by  datetime  desc limit 1;
+    	select * from t_circle where pid = #{userId} and type =3 order by  datetime  desc limit 1
 	</select>
 	<delete id="deleteLastServiceByPid" parameterType="integer">
 		delete from

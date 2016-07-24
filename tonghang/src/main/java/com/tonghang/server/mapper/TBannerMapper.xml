@@ -6,8 +6,9 @@
 		<result column="url" property="url" jdbcType="VARCHAR" />
 		<result column="img" property="img" jdbcType="VARCHAR" />
 		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="order_no" property="orderNo" jdbcType="INTEGER" />
 	</resultMap>
-	
+
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
 		t_banner
@@ -19,18 +20,27 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_banner (id, img, url,
-		state
+		state,order_no 
 		)
-		values (#{id}, #{img}, #{url},
-		#{state} 
+		values (#{id}, #{img},
+		#{url},
+		#{state},
+		#{order_no} 
 		)
 	</insert>
 	<select id="selectAll" resultMap="BaseResultMap">
-		select id, img, url,
-		state from t_banner
+		select id, img, url,order_no, 
+		state from
+		t_banner order by id desc
 	</select>
 	<select id="selectAllEnable" resultMap="BaseResultMap">
 		select id, img, url,
-		state from t_banner  where state =1 
+		state from t_banner where state =1 order by order_no
 	</select>
+	<select id="findById" resultMap="BaseResultMap">
+		select id, img, url,
+		state from
+		t_banner where id =#{id}
+	</select>
+
 </mapper>

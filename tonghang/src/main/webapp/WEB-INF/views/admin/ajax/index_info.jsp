@@ -39,6 +39,8 @@
 					<thead>
 						<tr>
 							<th><label><input type="text" name="search_rate"
+									value="id" class="search_init" /></label></th>
+							<th><label><input type="text" name="search_rate"
 									value="图片" class="search_init" /></label></th>
 							<th><label><input type="text" name="search_rate"
 									value="内容" class="search_init" /></label></th>
@@ -50,8 +52,10 @@
 						<!-- Start: list_row -->
 						<c:forEach items="${dataList}" var="data">
 							<tr>
-								<td><img src="${data.pic}" alt="${data.pic}"
-              onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' /></td>
+								<td>${data.id}</td>
+								<td><c:forEach items="${data.imgs}" var="pic">
+								<img src="${pic}"  />
+								</c:forEach></td>
 								<td>${data.content}</td>
 								<td>${data.phone.name}<br/>
 								<fmt:formatDate value="${data.datetime}"

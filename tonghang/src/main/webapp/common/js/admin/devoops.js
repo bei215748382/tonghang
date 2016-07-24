@@ -1583,7 +1583,7 @@ function TestTable1(){
 function TestTable2(){
 	var asInitVals = [];
 	var oTable = $('#datatable-2').dataTable( {
-		"aaSorting": [[ 0, "asc" ]],
+		"aaSorting": [[ 0, "desc" ]],
 		"sDom": "<'box-content'<'col-sm-6'f><'col-sm-6 text-right'l><'clearfix'>>rt<'box-content'<'col-sm-6'i><'col-sm-6 text-right'p><'clearfix'>>",
 		"sPaginationType": "bootstrap",
 		"oLanguage": {

@@ -76,7 +76,7 @@ public class SocialServiceImpl {
     @Autowired
     private TCircleSeenMapper seenMapper;
     @Autowired
-    private TShareMapper  shareMapper;
+    private TShareMapper shareMapper;
 
     public Object publishSns(int userId, String txt, String pictures)
             throws ServiceException {
@@ -213,14 +213,15 @@ public class SocialServiceImpl {
             List<Integer> userids = likeMapper
                     .selectAllLikePidByCircleId(circle.getId());
             List<TPhone> userlikes = userMapper.selectByIds(userids);
-            for(TPhone bean:userlikes){
+            for (TPhone bean : userlikes) {
                 if (bean.getCityId() != null && bean.getProvinceId() != null) {
                     TProvince province = provinceMapper
                             .selectByPrimaryKey(bean.getId());
-                    TCity city = cityMapper.selectByPrimaryKey(bean.getCityId());
+                    TCity city = cityMapper
+                            .selectByPrimaryKey(bean.getCityId());
                     if (StringUtils.isNotBlank(user.getLanguage())
-                            && "en_US".equals(user.getLanguage()) && province != null
-                            && city != null) {
+                            && "en_US".equals(user.getLanguage())
+                            && province != null && city != null) {
                         bean.setProvince(province.getEnName());
                         bean.setCity(city.getEnName());
                     } else {
@@ -290,14 +291,14 @@ public class SocialServiceImpl {
         List<Integer> userids = likeMapper
                 .selectAllLikePidByCircleId(circle.getId());
         List<TPhone> userlikes = userMapper.selectByIds(userids);
-        for(TPhone bean:userlikes){
+        for (TPhone bean : userlikes) {
             if (bean.getCityId() != null && bean.getProvinceId() != null) {
                 TProvince province = provinceMapper
                         .selectByPrimaryKey(bean.getId());
                 TCity city = cityMapper.selectByPrimaryKey(bean.getCityId());
                 if (StringUtils.isNotBlank(user.getLanguage())
-                        && "en_US".equals(user.getLanguage()) && province != null
-                        && city != null) {
+                        && "en_US".equals(user.getLanguage())
+                        && province != null && city != null) {
                     bean.setProvince(province.getEnName());
                     bean.setCity(city.getEnName());
                 } else {
@@ -322,12 +323,12 @@ public class SocialServiceImpl {
         List<TPhone> usershares = userMapper.selectByIds(shares);
         dto.setUsershares(usershares);
 
-
         return dto;
     }
 
     /**
-     *  给分享页使用
+     * 给分享页使用
+     * 
      * @param id
      * @return
      * @throws ServiceException
@@ -371,7 +372,8 @@ public class SocialServiceImpl {
                     ErrorCode.code101.getDesc());
         }
         if (StringUtils.isNotBlank(targetUserId)
-                && StringUtils.isNumeric(targetUserId) && !String.valueOf(userId).equals(targetUserId)) {
+                && StringUtils.isNumeric(targetUserId)
+                && !String.valueOf(userId).equals(targetUserId)) {
             TPhone targetUser = userMapper
                     .selectByPrimaryKey(Integer.valueOf(targetUserId));
             if (targetUser == null) {
@@ -456,21 +458,22 @@ public class SocialServiceImpl {
         List<TUserDTO> newUsers = new ArrayList<TUserDTO>();
         if (CollectionUtils.isNotEmpty(users)) {
             for (TPhone bean : users) {
-                    if (bean.getCityId() != null && bean.getProvinceId() != null) {
-                        TProvince province = provinceMapper
-                                .selectByPrimaryKey(bean.getId());
-                        TCity city = cityMapper.selectByPrimaryKey(bean.getCityId());
-                        if (StringUtils.isNotBlank(user.getLanguage())
-                                && "en_US".equals(user.getLanguage()) && province != null
-                                && city != null) {
-                            bean.setProvince(province.getEnName());
-                            bean.setCity(city.getEnName());
-                        } else {
-                            bean.setProvince(province.getName());
-                            bean.setCity(city.getName());
-                        }
+                if (bean.getCityId() != null && bean.getProvinceId() != null) {
+                    TProvince province = provinceMapper
+                            .selectByPrimaryKey(bean.getId());
+                    TCity city = cityMapper
+                            .selectByPrimaryKey(bean.getCityId());
+                    if (StringUtils.isNotBlank(user.getLanguage())
+                            && "en_US".equals(user.getLanguage())
+                            && province != null && city != null) {
+                        bean.setProvince(province.getEnName());
+                        bean.setCity(city.getEnName());
+                    } else {
+                        bean.setProvince(province.getName());
+                        bean.setCity(city.getName());
+                    }
                 }
-                
+
                 TTrade trade = tradeMapper
                         .selectByPrimaryKey(bean.getTradeId());
                 List<TCircle> service = circleMapper
@@ -492,10 +495,11 @@ public class SocialServiceImpl {
                 if (bean.getCityId() != null && bean.getProvinceId() != null) {
                     TProvince province = provinceMapper
                             .selectByPrimaryKey(bean.getId());
-                    TCity city = cityMapper.selectByPrimaryKey(bean.getCityId());
+                    TCity city = cityMapper
+                            .selectByPrimaryKey(bean.getCityId());
                     if (StringUtils.isNotBlank(user.getLanguage())
-                            && "en_US".equals(user.getLanguage()) && province != null
-                            && city != null) {
+                            && "en_US".equals(user.getLanguage())
+                            && province != null && city != null) {
                         bean.setProvince(province.getEnName());
                         bean.setCity(city.getEnName());
                     } else {
@@ -563,10 +567,12 @@ public class SocialServiceImpl {
         article.setPageView(article.getPageView() + 1);
         circleMapper.updateByPrimaryKey(article);
         String content = article.getContent();
-        content = content.substring(
-                content.indexOf("<body>") + "<body>".length(),
-                content.indexOf("</body>"));
-        article.setContent(content);
+        if (content.contains("<body>")) {
+            content = content.substring(
+                    content.indexOf("<body>") + "<body>".length(),
+                    content.indexOf("</body>"));
+            article.setContent(content);
+        }
         TCircleSeen seen = seenMapper.selectByUserAndCircle(user.getId(),
                 article.getId());
         if (seen == null) {
@@ -766,7 +772,8 @@ public class SocialServiceImpl {
         }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("user", userService.getInfo(targetUserId));
-        List<TCircle> services = circleMapper.getServicesByUserId(Integer.valueOf(targetUserId));
+        List<TCircle> services = circleMapper
+                .getServicesByUserId(Integer.valueOf(targetUserId));
         List<TCircleDTO> s = new ArrayList<TCircleDTO>();
         if (CollectionUtils.isNotEmpty(services)) {
             s.add(new TCircleDTO(services.get(0)));
@@ -799,7 +806,7 @@ public class SocialServiceImpl {
         }
         List<TFriend> friends = friendMapper
                 .selectBeenApplyNotConfirm(Integer.valueOf(userId));
-        if(CollectionUtils.isNotEmpty(friends)){
+        if (CollectionUtils.isNotEmpty(friends)) {
             friendMapper.updateStateByPrimaryKey(friends);
         }
         List<TFriendDTO> friendresult = new ArrayList<TFriendDTO>();
@@ -978,12 +985,12 @@ public class SocialServiceImpl {
         }
         TCircle circle = circleMapper
                 .selectByPrimaryKey(Integer.valueOf(circleId));
-        if(circle == null) {
+        if (circle == null) {
             throw new ServiceException(ErrorCode.code300);
         }
-        circle.setShare(circle.getShare()+1);
+        circle.setShare(circle.getShare() + 1);
         circleMapper.updateByPrimaryKey(circle);
-        TShare  share = new TShare();
+        TShare share = new TShare();
         share.setCid(circle.getId());
         share.setPid(user.getId());
         shareMapper.insert(share);
@@ -999,12 +1006,12 @@ public class SocialServiceImpl {
         }
         TCircle circle = circleMapper
                 .selectByPrimaryKey(Integer.valueOf(circleId));
-        if(circle == null) {
+        if (circle == null) {
             throw new ServiceException(ErrorCode.code300);
         }
-        if(circle.getPid() == userId){
+        if (circle.getPid() == userId) {
             circleMapper.deleteByPrimaryKey(circle.getId());
-        }else{
+        } else {
             throw new ServiceException(ErrorCode.code4);
         }
         return "success";

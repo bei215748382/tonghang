@@ -93,4 +93,9 @@ public interface AdminService {
     List<TBanner> getBanners();//获取所有横幅资料
 
     void saveBanner(TBanner banner);//保存banner
+
+    void updateArticleState(Integer id);
+
+    void deleteBanner(Integer id);
+    
 }

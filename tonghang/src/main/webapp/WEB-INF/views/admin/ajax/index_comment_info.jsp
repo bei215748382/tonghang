@@ -50,6 +50,8 @@
 					<thead>
 						<tr>
 							<th><label><input type="text" name="search_rate"
+									value="id" class="search_init" /></label></th>
+							<th><label><input type="text" name="search_rate"
 									value="内容" class="search_init" /></label></th>
 							<th><label><input type="text" name="search_rate"
 									value="作者状态" class="search_init" /></label></th>
@@ -59,6 +61,7 @@
 						<!-- Start: list_row -->
 						<c:forEach items="${dataList}" var="data">
 							<tr>
+								<td>${data.id}</td>
 								<td>${data.content}</td>
 								<td>${data.pname}<br/>
 								<fmt:formatDate value="${data.datetime}"

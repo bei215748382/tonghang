@@ -54,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private TAdminUserMapper tAdminUserMapper;
-    
+
     @Autowired
     private TBannerMapper tBannerMapper;
 
@@ -326,7 +326,28 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void saveBanner(TBanner banner) {
         tBannerMapper.insert(banner);
-        
+
+    }
+
+    @Override
+    public void updateArticleState(Integer id) {
+        TCircle circle = tCircleMapper.selectByPrimaryKey(id);
+        if (circle != null) {
+            if (circle.getChecked() == null || circle.getChecked() == 1) {
+                circle.setChecked(2);
+            } else {
+                circle.setChecked(1);
+            }
+        }
+        tCircleMapper.updateByPrimaryKey(circle);
+
+    }
+
+    @Override
+    public void deleteBanner(Integer id) {
+        TBanner banner = tBannerMapper.findById(id);
+        if (banner != null)
+            tBannerMapper.deleteByPrimaryKey(banner.getId());
     }
 
 }

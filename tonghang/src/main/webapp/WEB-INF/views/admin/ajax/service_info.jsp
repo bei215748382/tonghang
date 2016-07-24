@@ -22,8 +22,7 @@
         <div>阅读&nbsp;${service.pageView}&nbsp;&nbsp;喜欢&nbsp;${service.favour}&nbsp;&nbsp;评论&nbsp;${service.comment}&nbsp;&nbsp;分享&nbsp;${service.share}&nbsp;&nbsp;收藏&nbsp;1</div>
         <div>
           <c:forEach items="${service.pics}" var="pic">
-            <img src="${pic}" alt="${pic}"
-              onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' />
+            <img src="${pic}" alt="${pic}" />
           </c:forEach>
         </div>
       </div>

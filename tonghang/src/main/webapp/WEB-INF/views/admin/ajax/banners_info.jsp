@@ -42,9 +42,8 @@
               <tr>
                 <td>${data.id}</td>
                 <td>${data.url}</td>
-                <td><img src="${data.img}" alt="${data.img}"
-                  onerror='this.src="${ctx}/common/img/admin/avatar.jpg"' /><br/>${data.img}</td>
-                <td>1</td>
+                <td><img src="${data.img}" alt="${data.img}" /><br/>${data.img}</td>
+                <td ><button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('banner_del?id=${data.id}')">删除</button></button></td>
               </tr>
             </c:forEach>
             <!-- End: list_row -->

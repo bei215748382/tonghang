@@ -6,6 +6,16 @@ public class TBanner {
     private String url;
     private String img;
     private int state;
+    private int orderNo;
+
+    
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
 
     public Integer getId() {
         return id;

@@ -11,6 +11,9 @@ public interface TBannerMapper {
     int insert(TBanner record);
 
     List<TBanner> selectAll();
+
     List<TBanner> selectAllEnable();
+
+    TBanner findById(Integer id);
 
 }
