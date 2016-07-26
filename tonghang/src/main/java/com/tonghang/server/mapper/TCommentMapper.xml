@@ -91,7 +91,7 @@
   <select id="selectByCircleId" resultMap="BaseResultMap">
     select *
     from t_comment
-    where circle_id = #{circleId} and( checked != 0 or checked is null)
+    where circle_id = #{circleId} and( checked != 2 or checked is null)
   </select>
   <select id="getCommentByUserId" parameterType="java.lang.Integer"
     resultMap="BaseResultMap">

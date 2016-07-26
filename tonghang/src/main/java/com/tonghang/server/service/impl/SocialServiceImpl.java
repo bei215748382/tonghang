@@ -112,7 +112,7 @@ public class SocialServiceImpl {
         circle.setPics(pictures);
         circle.setArea(user.getCity());
         circleMapper.insert(circle);
-        List<TCircle> circles = circleMapper.getMyCircles(user.getId());
+        List<TCircle> circles = circleMapper.getMyCircles(user.getId(), 0, 10);
         List<TCircleDTO> result = new ArrayList<TCircleDTO>();
         for (TCircle bean : circles) {
             TPhone u = userMapper.getUserInfoById(bean.getPid());
@@ -175,7 +175,8 @@ public class SocialServiceImpl {
                         ErrorCode.code101.getHttpCode(),
                         "user  been  look up  not   exist");
             }
-            circles = circleMapper.getMyCircles(targetUser.getId());
+            circles = circleMapper.getMyCircles(targetUser.getId(),
+                    Integer.valueOf(pageNo), Integer.valueOf(pageSize));
         } else {
             circles = circleMapper.getAllCircleShow(Integer.valueOf(pageNo),
                     Integer.valueOf(pageSize));
@@ -536,9 +537,11 @@ public class SocialServiceImpl {
         List<ArticlesVo> result = new ArrayList<ArticlesVo>();
         List<ArticlesVo> articles = new ArrayList<ArticlesVo>();
         if (StringUtils.isNotBlank(tradeId) || StringUtils.isNumeric(tradeId)) {
-            articles = circleMapper.getTradeArticles(Integer.valueOf(tradeId));
+            articles = circleMapper.getTradeArticles(Integer.valueOf(tradeId),
+                    Integer.valueOf(pageNo), Integer.valueOf(pageSize));
         } else {
-            articles = circleMapper.getArticlesChecked();
+            articles = circleMapper.getArticlesChecked(Integer.valueOf(pageNo),
+                    Integer.valueOf(pageSize));
         }
         for (ArticlesVo bean : articles) {
             TCircleLike like = likeMapper.selectByCircleIdAndPid(bean.getId(),
@@ -780,7 +783,7 @@ public class SocialServiceImpl {
         }
         result.put("service", s);
         List<TCircle> circles = circleMapper
-                .getMyCircles(Integer.valueOf(targetUserId));
+                .getMyCircles(Integer.valueOf(targetUserId), 0, 1);
         if (CollectionUtils.isNotEmpty(circles)) {
             result.put("circle", new TCircleDTO(circles.get(0)));
         }

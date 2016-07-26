@@ -51,7 +51,7 @@ public class SearchServiceImpl {
                         bean.setService(new TCircleDTO(services.get(0)));
                     }
                     List<TCircle> ciecles = circleMapper
-                            .getMyCircles(user.getId());
+                            .getMyCircles(user.getId(),0,1);
                     if (CollectionUtils.isNotEmpty(ciecles)) {
                         bean.setCircle(new TCircleDTO(ciecles.get(0)));
                     }
@@ -70,7 +70,7 @@ public class SearchServiceImpl {
                         bean.setService(new TCircleDTO(services.get(0)));
                     }
                     List<TCircle> ciecles = circleMapper
-                            .getMyCircles(user.getId());
+                            .getMyCircles(user.getId(),0,1);
                     if (CollectionUtils.isNotEmpty(ciecles)) {
                         bean.setCircle(new TCircleDTO(ciecles.get(0)));
                     }

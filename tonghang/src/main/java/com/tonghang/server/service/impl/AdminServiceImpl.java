@@ -1,5 +1,6 @@
 package com.tonghang.server.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import com.tonghang.server.entity.TBanner;
 import com.tonghang.server.entity.TCircle;
 import com.tonghang.server.entity.TCity;
 import com.tonghang.server.entity.TComment;
+import com.tonghang.server.entity.TNotification;
 import com.tonghang.server.entity.TPhone;
 import com.tonghang.server.entity.TTrade;
 import com.tonghang.server.mapper.TAdminUserMapper;
@@ -19,11 +21,13 @@ import com.tonghang.server.mapper.TBannerMapper;
 import com.tonghang.server.mapper.TCircleMapper;
 import com.tonghang.server.mapper.TCityMapper;
 import com.tonghang.server.mapper.TCommentMapper;
+import com.tonghang.server.mapper.TNotificationMapper;
 import com.tonghang.server.mapper.TPhoneMapper;
 import com.tonghang.server.mapper.TTradeMapper;
 import com.tonghang.server.service.AdminService;
 import com.tonghang.server.util.EnumCollection.ResponseCode;
 import com.tonghang.server.util.MD5Util;
+import com.tonghang.server.util.NotificationTypeEnum;
 import com.tonghang.server.util.StringUtil;
 import com.tonghang.server.vo.ArticleInfo;
 import com.tonghang.server.vo.ArticlesVo;
@@ -57,6 +61,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private TBannerMapper tBannerMapper;
+
+    @Autowired
+    private TNotificationMapper notificationMapper;
 
     @Override
     public List<CircleVo> getCircleUnCheck() {
@@ -125,7 +132,23 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Boolean checkCircle(Integer id, Integer checked) {
-        return tCircleMapper.checkCircle(id, checked);
+        TCircle circle = tCircleMapper.selectByPrimaryKey(id);
+        boolean flag = false;
+        if (circle != null) {
+            if (checked != null && 2 == checked) {
+                TNotification notification = new TNotification();
+                notification.setContent("您的同行圈因存在违和信息审核失败");
+                notification.setDatetime(new Date());
+                notification.setContentId(id);
+                notification.setProId(1);
+                notification.setPid(circle.getPid());
+                notification.setTitle("您的同行圈审核失败");
+                notification.setType(NotificationTypeEnum.Check.getCode());
+                notificationMapper.insert(notification);
+            }
+            flag = tCircleMapper.checkCircle(id, checked);
+        }
+        return flag;
     }
 
     @Override
@@ -162,13 +185,46 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Boolean checkService(Integer id,Integer checked) {
-        return tCircleMapper.checkService(id,checked);
+    public Boolean checkService(Integer id, Integer checked) {
+        TCircle circle = tCircleMapper.selectByPrimaryKey(id);
+        boolean flag = false;
+        if (circle != null) {
+            if (checked != null && 2 == checked) {
+                TNotification notification = new TNotification();
+                notification.setContent("您的服务因存在违和信息审核失败");
+                notification.setDatetime(new Date());
+                notification.setContentId(id);
+                notification.setProId(1);
+                notification.setPid(circle.getPid());
+                notification.setTitle("您的服务审核失败");
+                notification.setType(NotificationTypeEnum.Check.getCode());
+                notificationMapper.insert(notification);
+            }
+            flag = tCircleMapper.checkCircle(id, checked);
+        }
+        return flag;
     }
 
     @Override
     public Boolean checkComment(Integer id, Integer checked) {
-        return tCommentMapper.checkComment(id, checked);
+        TComment comment = tCommentMapper.selectByPrimaryKey(id);
+        boolean flag = false;
+        if (comment != null) {
+            if (checked != null && 2 == checked) {
+                TNotification notification = new TNotification();
+                notification.setContent("您的同行圈因存在违和信息审核失败");
+                notification.setDatetime(new Date());
+                notification.setContentId(id);
+                notification.setProId(1);
+                notification.setPid(comment.getPidId());
+                notification.setTitle("您的同行圈审核失败");
+                notification.setType(NotificationTypeEnum.Check.getCode());
+                notificationMapper.insert(notification);
+            }
+            flag = tCommentMapper.checkComment(id, checked);
+        }
+        return flag;
+
     }
 
     @Override

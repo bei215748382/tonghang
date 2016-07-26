@@ -204,7 +204,7 @@
 		trade_id, content,url)
 		values
 		(#{id}, #{title}, #{hot},
-		#{datetime}, #{pic}, #{type},
+		now(), #{pic}, #{type},
 		#{pid}, #{checked}, #{pics}, #{area},
 		#{tradeId},
 		#{content},#{url})
@@ -291,16 +291,20 @@
 		WHERE
 		pid = #{userId}
 		AND
-		(checked !=0 or checked is null)
+		(checked !=2 or checked is null)
 		AND type = 1
-		ORDER BY
+		<if test="pageNo!=0">
+			AND id &lt; #{pageNo}
+		</if>
+		ORDER BY  
 		datetime desc
+		limit #{pageSize}
 	</select>
 
 	<select id="getAllCircleShow" parameterType="list" resultMap="BaseResultMap">
 		SELECT *
 		FROM t_circle
-		WHERE (checked !=0 or checked is null)
+		WHERE (checked !=2 or checked is null)
 		AND type = 1
 		<if test="pageNo!=0">
 			AND id &lt; #{pageNo}
@@ -368,7 +372,13 @@
 		from t_circle t
 		left outer join t_trade trade on trade.id =
 		t.trade_id
-		where type = 2 and checked != 2 order by id desc 
+		where type = 2 and checked != 2 
+		<if test="pageNo!=0">
+			AND id &lt; #{pageNo}
+		</if>
+		ORDER BY  
+		datetime desc
+		limit #{pageSize}
 	</select>
 	
 	<select id="getArticle" parameterType="java.lang.Integer"
@@ -477,6 +487,12 @@
 		left outer join t_trade trade on trade.id =
 		t.trade_id
 		where t.trade_id =#{tradeId} and type = 2  and checked != 2
+		<if test="pageNo!=0">
+			AND id &lt; #{pageNo}
+		</if>
+		ORDER BY  
+		datetime desc
+		limit #{pageSize}
 	</select>
 	<select id="getCircleByUserId" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
@@ -514,7 +530,8 @@
 	</select>
 	<select id="getServicesByUserId" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
-		select * from t_circle where pid = #{userId} and type =3 order by  datetime  desc
+		select * from t_circle where pid = #{userId} and type =3
+		and checked !=2 order by  datetime  desc
 	</select>
 	<select id="getServiceById" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
@@ -539,7 +556,8 @@
 		where type = 3 order by id desc 
 	</select>
 	<select id="getServiceByUid" resultMap="BaseResultMap">
-    	select * from t_circle where pid = #{userId} and type =3 order by  datetime  desc limit 1
+    	select * from t_circle where pid = #{userId} and type =3
+    	and checked !=2 order by  datetime  desc limit 1
 	</select>
 	<delete id="deleteLastServiceByPid" parameterType="integer">
 		delete from

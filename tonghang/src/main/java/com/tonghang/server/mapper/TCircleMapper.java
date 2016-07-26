@@ -25,11 +25,13 @@ public interface TCircleMapper {
 
     List<CircleVo> getCircleChecked();
 
-    List<TCircle> getMyCircles(int userId);
+    List<TCircle> getMyCircles(@Param("userId")int userId,@Param("pageNo") int pageNo,
+            @Param("pageSize") int pageSize);
 
     List<ArticlesVo> getArticles();
 
-    List<ArticlesVo> getArticlesChecked();
+    List<ArticlesVo> getArticlesChecked(@Param("pageNo") int pageNo,
+            @Param("pageSize") int pageSize);
 
     ArticlesVo getArticle(Integer id);
 
@@ -40,7 +42,8 @@ public interface TCircleMapper {
     Boolean checkCircle(@Param("id") Integer id,
             @Param("checked") Integer checked);
 
-    List<ArticlesVo> getTradeArticles(int tradeId);
+    List<ArticlesVo> getTradeArticles(@Param("tradeId")int tradeId,@Param("pageNo") int pageNo,
+            @Param("pageSize") int pageSize);
 
     List<ArticlesVo> getHotArticles();
 
