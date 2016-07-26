@@ -124,8 +124,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Boolean checkCircle(Integer id) {
-        return tCircleMapper.checkCircle(id);
+    public Boolean checkCircle(Integer id, Integer checked) {
+        return tCircleMapper.checkCircle(id, checked);
     }
 
     @Override
@@ -162,13 +162,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Boolean checkService(Integer id) {
-        return tCircleMapper.checkService(id);
+    public Boolean checkService(Integer id,Integer checked) {
+        return tCircleMapper.checkService(id,checked);
     }
 
     @Override
-    public Boolean checkComment(Integer id) {
-        return tCommentMapper.checkComment(id);
+    public Boolean checkComment(Integer id, Integer checked) {
+        return tCommentMapper.checkComment(id, checked);
     }
 
     @Override

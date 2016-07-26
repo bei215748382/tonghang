@@ -111,8 +111,8 @@ public class ShareController extends AppBaseController {
             }
 
             return;
-        } catch (Exception e1) {
-            log.error("get share info error");
+        } catch (Exception e) {
+            log.error("get share info error."+e.getMessage());
             request.getRequestDispatcher("/share/error.html").forward(request,
                     response);
             return;

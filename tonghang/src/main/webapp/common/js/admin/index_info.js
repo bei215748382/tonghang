@@ -12,15 +12,19 @@ function submitCheck(id){
 		url = "checkComment";
 	}
 	if($("#checked").val()==1){//说明是通过
-		var data = {id:id};
+		var data = {id:id,checked:1};
 		$.post(url,data,function(result){
 			console.log("审核通过,url:"+url+",id:"+id);
 			LoadAjaxContent('index_info');
 			CloseModalBox();
 		});
 	} else {
-		console.log("审核不通过");
-		CloseModalBox();
+		var data = {id:id,checked:2};
+		$.post(url,data,function(result){
+			console.log("审核通过,url:"+url+",id:"+id);
+			LoadAjaxContent('index_info');
+			CloseModalBox();
+		});
 	}
 	
 }

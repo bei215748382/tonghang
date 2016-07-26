@@ -212,7 +212,7 @@
 	<update id="checkCircle" parameterType="java.lang.Integer">
 		update t_circle
 		set
-		checked = 1
+		checked = #{checked}
 		where id = #{id}
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.tonghang.server.entity.TCircle">
@@ -341,6 +341,36 @@
 		t.trade_id
 		where type = 2 order by id desc 
 	</select>
+	
+	<select id="getArticlesChecked" resultMap="ArticlesVoResultMap">
+		select
+		t.id,
+		t.title,
+		t.hot,
+		t.datetime,
+		t.pic,
+		t.page_view,
+		t.favour,
+		t.comment,
+		t.share,
+		t.type,
+		t.pid,
+		t.checked,
+		t.pics,
+		t.area,
+		t.trade_id,
+		t.content,
+		t.url,
+		trade.name trade_name,
+		trade.parent_id trade_pid,
+		trade.en_name
+		trade_enName
+		from t_circle t
+		left outer join t_trade trade on trade.id =
+		t.trade_id
+		where type = 2 and checked != 2 order by id desc 
+	</select>
+	
 	<select id="getArticle" parameterType="java.lang.Integer"
 		resultMap="ArticlesVoResultMap">
 		select
@@ -446,7 +476,7 @@
 		from t_circle t
 		left outer join t_trade trade on trade.id =
 		t.trade_id
-		where t.trade_id =#{tradeId} and type = 2
+		where t.trade_id =#{tradeId} and type = 2  and checked != 2
 	</select>
 	<select id="getCircleByUserId" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
@@ -479,7 +509,7 @@
 		left outer join t_trade trade
 		on trade.id =
 		t.trade_id
-		where type = 2 and hot =1 
+		where type = 2 and hot =1 and checked != 2 
 		order by  datetime  desc
 	</select>
 	<select id="getServicesByUserId" parameterType="java.lang.Integer"
@@ -501,7 +531,7 @@
 	<update id="checkService" parameterType="java.lang.Integer">
 		update t_circle
 		set
-		checked = 1
+		checked = #{checked}
 		where id = #{id}
 	</update>
 	<select id="getServices" resultMap="ServiceVoResultMap">

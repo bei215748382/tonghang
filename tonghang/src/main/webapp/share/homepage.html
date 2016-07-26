@@ -36,6 +36,8 @@
 						$('#company').text(user.company);
 						$('#position').text(user.position);
 						$('#trade').append(user.trade);
+						$('#education').append(user.education);
+						$('#college').append(user.college);
 						$('#address').append(user.city);
 						if (user.remark != null) {
 							$('#tag').text("「" + user.remark + "」");
@@ -114,14 +116,23 @@
 			<div class="dynamicinfo"  id="circle">
 			</div>
 		</section>
+		<section class="school">
+        <div class="schoolinfo">
+            <span class="fl"><i class="icon-maozi"></i>毕业院校</span>
+            <span class="fr ml10" id="education"></span>
+            <span class="fr" id="college"></span>
+            <div class="clear"></div>
+        </div>
+    </section>
 
 	</section>
+	
 
-	<!-- <footer>
+	<footer>
     <div class="download">
         <a href="#"><img src="../../common/img/download.jpg"></a>
     </div>
-</footer> -->
+</footer>
 
 </body>
 <script type="text/javascript"

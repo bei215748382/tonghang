@@ -1090,3 +1090,53 @@ div.flicking_con a.on {
     width: 100%;
     vertical-align: bottom;
 }
+
+
+.usermessage .school{
+    padding: 4%;
+    background: #ffffff;
+}
+
+
+.w-bar {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    padding: 0 14px;
+    line-height: 45px;
+    color: #525252;
+    margin-bottom: -1px;
+    border-width: 1px 0;
+    background: #fff;
+}
+
+
+.w-bar-ext {
+    float: right;
+    color: #a9a9a9;
+}
+
+.ico-back, .ico-prev, .ico-next, .ico-fold, .ico-unfold {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border: 2px solid;
+    background: none;
+}
+
+.ico-next {
+    border-width: 0 2px 2px 0;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.school .icon-maozi{
+    display: inline-block;
+    width: 24px;
+    height: 20px;
+    background: url('../img/icon-maozi.png') 0 0 no-repeat;
+    background-size:100%;
+    margin-right: 3px;
+    margin-top: -2px;
+    vertical-align: middle;
+}

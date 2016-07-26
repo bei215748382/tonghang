@@ -21,42 +21,48 @@ public interface TCircleMapper {
 
     int updateByPrimaryKey(TCircle record);
 
-	List<CircleVo> getCircleUnCheck();
+    List<CircleVo> getCircleUnCheck();
 
-	List<CircleVo> getCircleChecked();
-	
-	List<TCircle> getMyCircles(int userId);
+    List<CircleVo> getCircleChecked();
+
+    List<TCircle> getMyCircles(int userId);
 
     List<ArticlesVo> getArticles();
 
+    List<ArticlesVo> getArticlesChecked();
+
     ArticlesVo getArticle(Integer id);
 
-	List<TCircle> getFriendCircles(List<Integer> firendsId);
+    List<TCircle> getFriendCircles(List<Integer> firendsId);
 
     ArticleInfo getArticleInfo(Integer id);
 
-    Boolean checkCircle(Integer id);
-    
+    Boolean checkCircle(@Param("id") Integer id,
+            @Param("checked") Integer checked);
+
     List<ArticlesVo> getTradeArticles(int tradeId);
-    
+
     List<ArticlesVo> getHotArticles();
 
-    List<TCircle> getAllCircleShow(@Param("pageNo")int pageNo,@Param("pageSize") int pageSize);
+    List<TCircle> getAllCircleShow(@Param("pageNo") int pageNo,
+            @Param("pageSize") int pageSize);
 
     List<TCircle> getCircleByUserId(Integer id);
-    
+
     List<TCircle> getServicesByUserId(Integer userId);
-    
+
     TCircle getServiceById(Integer id);
 
     List<CircleVo> getUncheckedServices();
-    
+
     List<CircleVo> getCheckedServices();
 
-    Boolean checkService(Integer id);
+    Boolean checkService(@Param("id") Integer id,
+            @Param("checked") Integer checked);
 
     List<ServiceVo> getServices();
-    
+
     TCircle getServiceByUid(Integer id);
+
     void deleteLastServiceByPid(Integer pid);
 }

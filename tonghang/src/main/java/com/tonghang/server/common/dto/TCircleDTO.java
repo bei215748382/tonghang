@@ -24,12 +24,12 @@ public class TCircleDTO extends TCircle implements Serializable {
     private String[] imgs;
 
     private TFavorite favorite;
-    
+
     private TCircleSeen seen;
-    
+
     private boolean like;
     private List<TPhone> usershares;
-    
+
     public List<TPhone> getUsershares() {
         return usershares;
     }
@@ -127,7 +127,7 @@ public class TCircleDTO extends TCircle implements Serializable {
             }
         }
         bean.setPics(null);
-        if (trade != null) {
+        if (trade != null && userinfo != null) {
             if (StringUtils.isNoneBlank(userinfo.getLanguage())
                     && "en_US".equals(userinfo.getLanguage())) {
                 userinfo.setTrade(trade.getEnName());
@@ -139,9 +139,10 @@ public class TCircleDTO extends TCircle implements Serializable {
         bean.setUserlikes(userlikes);
         return bean;
     }
-    
+
     public static TCircleDTO builder(TCircle circle, TPhone userinfo,
-            List<TCommentDTO> comments, TTrade trade, List<TPhone> userlikes,TCircleSeen seen) {
+            List<TCommentDTO> comments, TTrade trade, List<TPhone> userlikes,
+            TCircleSeen seen) {
         TCircleDTO bean = new TCircleDTO(circle);
         bean.setComments(comments);
 

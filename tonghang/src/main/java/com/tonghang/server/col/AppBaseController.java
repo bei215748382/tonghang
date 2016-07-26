@@ -15,8 +15,8 @@ import com.tonghang.server.exception.ServiceException;
 
 public class AppBaseController {
 
-    
-    public static final String ENCODER_UTF8        = "utf-8";
+    public static final String ENCODER_UTF8 = "utf-8";
+
     /**
      * 得到请求IP
      * 
@@ -41,8 +41,8 @@ public class AppBaseController {
                     ErrorCode.code20.getHttpCode(), "params can not be null ");
         }
         for (String key : params.keySet()) {
-            String param = params.get(key);
-            if (StringUtils.isEmpty(param)) {
+            Object param = params.get(key);
+            if (param != null && StringUtils.isEmpty(param.toString())) {
                 throw new ServiceException(ErrorCode.code20.getCode(),
                         ErrorCode.code20.getHttpCode(),
                         "param[" + key + "] is needed.");
@@ -59,13 +59,12 @@ public class AppBaseController {
                     ErrorCode.code117.getHttpCode(), "params can not be null ");
         }
     }
-    
+
     protected void html(HttpServletResponse _response) {
         _response.setContentType("text/html");
         _response.setCharacterEncoding(ENCODER_UTF8);
     }
 
-    
     /**
      * 直接跳转
      * 

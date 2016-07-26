@@ -46,7 +46,7 @@ public interface AdminService {
 
     TPhone getUserById(Integer id);//获取用户信息
 
-    Boolean checkCircle(Integer id);//设置通过
+    Boolean checkCircle(Integer id, Integer checked);//设置通过
 
     List<TAdminUser> getAdminUsers();//查找所有后台账户
 
@@ -60,9 +60,9 @@ public interface AdminService {
 
     List<CircleVo> getCheckedServices();//获取审核通过的服务
 
-    Boolean checkService(Integer id);//对服务审核
+    Boolean checkService(Integer id,Integer checked);//对服务审核
 
-    Boolean checkComment(Integer id);//对回复审核
+    Boolean checkComment(Integer id, Integer checked);//对回复审核
 
     UserVo getUser(Integer id);//根据id获取用户信息
 

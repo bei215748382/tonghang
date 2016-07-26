@@ -94,8 +94,8 @@ public class AdminCol {
 
     @RequestMapping(value = "checkCircle")
     @ResponseBody
-    public Boolean checkCircle(Integer id) {
-        return adminService.checkCircle(id);
+    public Boolean checkCircle(Integer id,Integer checked) {
+        return adminService.checkCircle(id, checked);
     }
 
     @RequestMapping(value = "get_circle_checked")
@@ -109,8 +109,8 @@ public class AdminCol {
 
     @RequestMapping(value = "checkService")
     @ResponseBody
-    public Boolean checkService(Integer id) {
-        return adminService.checkService(id);
+    public Boolean checkService(Integer id,Integer checked) {
+        return adminService.checkService(id,checked);
     }
 
     @RequestMapping(value = "get_service_unchecked")
@@ -133,8 +133,8 @@ public class AdminCol {
 
     @RequestMapping(value = "checkComment")
     @ResponseBody
-    public Boolean checkComment(Integer id) {
-        return adminService.checkComment(id);
+    public Boolean checkComment(Integer id,Integer checked) {
+        return adminService.checkComment(id, checked);
     }
 
     @RequestMapping(value = "get_comment_unchecked")
@@ -239,7 +239,7 @@ public class AdminCol {
             String pic = FileUtil.savePic(request, file);
             circle.setPic(pic);
         }
-        if (circle.getChecked() == 1) {
+        if (circle.getChecked()!=null && circle.getChecked() == 1) {
             circle.setDatetime(new Date());// 如果文章设置为发送，那么发布时间就设定
         }
         adminService.addArticle(circle);
@@ -283,7 +283,7 @@ public class AdminCol {
             String pic = FileUtil.savePic(request, file);
             circle.setPic(pic);
         }
-        if (circle.getChecked() == 1) {
+        if (circle.getChecked()!=null && circle.getChecked() == 1) {
             circle.setDatetime(new Date());// 如果文章设置为发送，那么发布时间就设定
         }
         adminService.updateArticle(circle);

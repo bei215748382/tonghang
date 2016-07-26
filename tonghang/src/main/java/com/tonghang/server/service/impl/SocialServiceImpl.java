@@ -538,7 +538,7 @@ public class SocialServiceImpl {
         if (StringUtils.isNotBlank(tradeId) || StringUtils.isNumeric(tradeId)) {
             articles = circleMapper.getTradeArticles(Integer.valueOf(tradeId));
         } else {
-            articles = circleMapper.getArticles();
+            articles = circleMapper.getArticlesChecked();
         }
         for (ArticlesVo bean : articles) {
             TCircleLike like = likeMapper.selectByCircleIdAndPid(bean.getId(),
@@ -911,21 +911,24 @@ public class SocialServiceImpl {
             if ("3".equals(f.getType())) {
                 TCircle service = circleMapper
                         .selectByPrimaryKey(f.getFavoriteId());
-                TPhone userinfo = userMapper.getUserInfoById(service.getPid());
-                if (userinfo.getCityId() != null
-                        && userinfo.getProvinceId() != null) {
-                    TProvince province = provinceMapper
-                            .selectByPrimaryKey(userinfo.getProvinceId());
-                    TCity city = cityMapper
-                            .selectByPrimaryKey(userinfo.getCityId());
-                    if (StringUtils.isNotBlank(user.getLanguage())
-                            && "en_US".equals(user.getLanguage())
-                            && province != null && city != null) {
-                        user.setProvince(province.getEnName());
-                        user.setCity(city.getEnName());
-                    } else {
-                        user.setProvince(province.getName());
-                        user.setCity(city.getName());
+                TPhone userinfo = null;
+                if (service != null) {
+                    userinfo = userMapper.getUserInfoById(service.getPid());
+                    if (userinfo.getCityId() != null
+                            && userinfo.getProvinceId() != null) {
+                        TProvince province = provinceMapper
+                                .selectByPrimaryKey(userinfo.getProvinceId());
+                        TCity city = cityMapper
+                                .selectByPrimaryKey(userinfo.getCityId());
+                        if (StringUtils.isNotBlank(user.getLanguage())
+                                && "en_US".equals(user.getLanguage())
+                                && province != null && city != null) {
+                            user.setProvince(province.getEnName());
+                            user.setCity(city.getEnName());
+                        } else {
+                            user.setProvince(province.getName());
+                            user.setCity(city.getName());
+                        }
                     }
                 }
                 TCircleDTO dto = TCircleDTO.builder(service, userinfo, null,

@@ -5,6 +5,8 @@ import com.tonghang.server.vo.CheckCommentVo;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface TCommentMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,13 +18,14 @@ public interface TCommentMapper {
 
     int updateByPrimaryKey(TComment record);
 
-	List<CheckCommentVo> getCommentUnCheck();
+    List<CheckCommentVo> getCommentUnCheck();
 
-	List<CheckCommentVo> getCommentChecked();
-	
-	List<TComment> selectByCircleId(Integer id);
+    List<CheckCommentVo> getCommentChecked();
 
-    Boolean checkComment(Integer id);
+    List<TComment> selectByCircleId(Integer id);
+
+    Boolean checkComment(@Param("id") Integer id,
+            @Param("checked") Integer checked);
 
     List<TComment> getCommentByUserId(Integer id);
 }

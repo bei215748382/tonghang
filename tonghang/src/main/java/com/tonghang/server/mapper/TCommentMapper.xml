@@ -59,7 +59,7 @@
   <update id="checkComment" parameterType="java.lang.Integer">
     update t_comment
     set
-    checked = 1
+    checked =  #{checked} 
     where id = #{id}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap"
