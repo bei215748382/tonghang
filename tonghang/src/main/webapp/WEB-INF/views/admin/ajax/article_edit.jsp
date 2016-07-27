@@ -68,14 +68,27 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">&nbsp;</label>
 						<div class="col-sm-4">
-								<div class="radio-inline">
-									<label> <input type="radio" name="checked" 
-										value="${article.checked}" id="checked"> 发送推送<i class="fa fa-circle-o"></i>
+								<div class="checkbox">
+									<label> <c:if test="${article.checked == 1}">
+									<input type="checkbox" name="checked" 
+										value="1"  checked="checked"/> 发送推送<i class="fa fa-square-o small"></i>
+									</c:if>
+									<c:if test="${article.checked != 1}">
+									<input type="checkbox" name="checked" 
+										value="1"  /> 发送推送<i class="fa fa-square-o small"></i>
+									</c:if>
 									</label>
 								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="hot" value="${article.hot}" id="hot">
-										设置推荐 <i class="fa fa-circle-o"></i>
+								<div class="checkbox">
+									<label> 
+										<c:if test="${article.hot == 1}">
+									<input type="checkbox" name="checked" 
+										value="1" id="checked" checked="checked"/> 设置推荐<i class="fa fa-square-o small"></i>
+									</c:if>
+									<c:if test="${article.hot != 1}">
+									<input type="checkbox" name="checked" 
+										value="1" id="checked" /> 设置推荐<i class="fa fa-square-o small"></i>
+									</c:if>
 									</label>
 								</div>
 						</div>
@@ -122,12 +135,6 @@ ${article.content}</script>
 		var cityValue = $("#cityValue").val();
 		$("#area").find("option[value='"+cityValue+"']").attr("selected",true);//设置区域
 
-		if($("#checked").val()==1){
-			$("#checked").attr("checked","checked");
-		}//是否发送
-		if($("#hot").val()){
-			$("#hot").attr("checked","checked");
-		}//是否推荐
 	}
 	$(document).ready(function() {
 // 		TinyMCEStart('#wysiwig_full', 'extreme');

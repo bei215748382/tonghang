@@ -221,7 +221,7 @@
 			<if test="title != null and title != ''">
 				title = #{title},
 			</if>
-			<if test="hot != null and hot != ''">
+			<if test="hot != ''">
 				hot = #{hot},
 			</if>
 			<if test="datetime != null and datetime != ''">
@@ -248,7 +248,7 @@
 			<if test="pid != null and pid != ''">
 				pid = #{pid},
 			</if>
-			<if test="checked != null and checked != ''">
+			<if test="checked != ''">
 				checked = #{checked},
 			</if>
 			<if test="pics != null and pics != ''">

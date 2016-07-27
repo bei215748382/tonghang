@@ -64,14 +64,14 @@
 						<label class="col-sm-2 control-label">&nbsp;</label>
 						<div class="col-sm-4">
 						<input type="hidden" name="type" value="2">
-								<div class="radio-inline">
-									<label> <input type="radio" name="checked" 
-										value="1"> 发送推送<i class="fa fa-circle-o"></i>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="checked" 
+										value="1"> 发送推送<i class="fa fa-square-o small"></i>
 									</label>
 								</div>
-								<div class="radio-inline">
-									<label> <input type="radio" name="hot" value="1">
-										设置推荐 <i class="fa fa-circle-o"></i>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="hot" value="1">
+										设置推荐 <i class="fa fa-square-o small"></i>
 									</label>
 								</div>
 						</div>
