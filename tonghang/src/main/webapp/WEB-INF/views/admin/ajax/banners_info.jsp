@@ -32,6 +32,8 @@
                   name="search_rate" value="url" class="search_init" /></label></th>
               <th><label><input type="text"
                   name="search_rate" value="img" class="search_init" /></label></th>
+                   <th><label><input type="text"
+                  name="search_rate" value="order" class="search_init" /></label></th>
               <th><label><input type="text"
                   name="search_rate" value="操作" class="search_init" /></label></th>
             </tr>
@@ -43,7 +45,8 @@
                 <td>${data.id}</td>
                 <td>${data.url}</td>
                 <td><img src="${data.img}" alt="${data.img}" /><br/>${data.img}</td>
-                <td ><button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('banner_del?id=${data.id}')">删除</button></button></td>
+                <td>${data.orderNo}</td>
+                <td ><button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('banner_del?id=${data.id}')">删除</button><button type="button" class="btn btn-default" onclick="javaScript:LoadAjaxContent('banner_edit?id=${data.id}')">编辑</button></td>
               </tr>
             </c:forEach>
             <!-- End: list_row -->
@@ -53,6 +56,7 @@
               <th>id</th>
               <th>url</th>
               <th>img</th>
+              <th>order</th>
               <th>操作</th>
             </tr>
           </tfoot>
@@ -62,13 +66,15 @@
   </div>
 </div>
 <script type="text/javascript">
+	function fun(id){
+	console.log(id+","+this);
+	}
 	// Run Datables plugin and create 3 variants of settings
 	function AllTables() {
 		TestTable2();
 		LoadSelect2Script(MakeSelect2);
 	}
 	function MakeSelect2() {
-		$('select').select2();
 		$('.dataTables_filter').each(
 				function() {
 					$(this).find('label input[type=text]').attr('placeholder',

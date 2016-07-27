@@ -20,16 +20,34 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into t_banner (id, img, url,
-		state,order_no 
+		state,order_no
 		)
 		values (#{id}, #{img},
 		#{url},
 		#{state},
-		#{order_no} 
+		#{orderNo}
 		)
 	</insert>
+	<update id="update" parameterType="com.tonghang.server.entity.TBanner">
+		update t_banner
+		<set>
+			<if test="img != null and img != ''">
+				img = #{img},
+			</if>
+			<if test="url != null and url != ''">
+				url = #{url},
+			</if>
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				order_no = #{orderNo}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
 	<select id="selectAll" resultMap="BaseResultMap">
-		select id, img, url,order_no, 
+		select id, img, url,order_no,
 		state from
 		t_banner order by id desc
 	</select>
@@ -38,8 +56,7 @@
 		state from t_banner where state =1 order by order_no
 	</select>
 	<select id="findById" resultMap="BaseResultMap">
-		select id, img, url,
-		state from
+		select * from
 		t_banner where id =#{id}
 	</select>
 

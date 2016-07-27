@@ -406,4 +406,14 @@ public class AdminServiceImpl implements AdminService {
             tBannerMapper.deleteByPrimaryKey(banner.getId());
     }
 
+	@Override
+	public TBanner getBannerById(Integer id) {
+		return tBannerMapper.findById(id);
+	}
+
+	@Override
+	public void updateBanner(TBanner tBanner) {
+		tBannerMapper.update(tBanner);
+	}
+
 }

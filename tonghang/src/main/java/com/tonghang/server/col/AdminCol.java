@@ -363,6 +363,15 @@ public class AdminCol {
         mav.addObject("banners", list);
         return mav;
     }
+    
+    @RequestMapping(value = "banner_edit")
+    public ModelAndView banner_edit(Integer id) throws IOException {
+    	   ModelAndView mav = new ModelAndView("admin/ajax/banner_edit");
+    	   TBanner banner = adminService.getBannerById(id);
+    	   mav.addObject("banner", banner);
+        return mav;
+    }
+
 
     @RequestMapping(value = "set_banner")
     public void set_banner(MultipartFile file, TBanner tBanner,
@@ -373,6 +382,18 @@ public class AdminCol {
             tBanner.setImg(pic);
         }
         adminService.saveBanner(tBanner);
+        response.sendRedirect("index#banners_info");
+    }
+    
+    @RequestMapping(value = "update_banner")
+    public void update_banner(MultipartFile file, TBanner tBanner,
+            HttpServletRequest request, HttpServletResponse response)
+                    throws IOException {
+        if (file != null && file.getOriginalFilename() != "") {
+            String pic = FileUtil.savePic(request, file);
+            tBanner.setImg(pic);
+        }
+        adminService.updateBanner(tBanner);
         response.sendRedirect("index#banners_info");
     }
 }

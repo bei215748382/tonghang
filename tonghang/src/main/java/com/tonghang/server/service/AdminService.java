@@ -94,8 +94,12 @@ public interface AdminService {
 
     void saveBanner(TBanner banner);//保存banner
 
-    void updateArticleState(Integer id);
+    void updateArticleState(Integer id);//更新文章状态
 
-    void deleteBanner(Integer id);
+    void deleteBanner(Integer id);//删除banner
+
+	TBanner getBannerById(Integer id);//根据id获取banner
+
+	void updateBanner(TBanner tBanner);//更新banner
     
 }

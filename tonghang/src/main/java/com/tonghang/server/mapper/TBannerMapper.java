@@ -16,4 +16,6 @@ public interface TBannerMapper {
 
     TBanner findById(Integer id);
 
+	void update(TBanner tBanner);//更新banner
+
 }

@@ -3,50 +3,53 @@ package com.tonghang.server.entity;
 public class TBanner {
 
     private Integer id;
+    
     private String url;
+    
     private String img;
+    
     private int state;
+    
     private int orderNo;
 
-    
-    public int getOrderNo() {
-        return orderNo;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public String getImg() {
+		return img;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setImg(String img) {
+		this.img = img;
+	}
 
-    public String getImg() {
-        return img;
-    }
+	public int getState() {
+		return state;
+	}
 
-    public void setImg(String img) {
-        this.img = img;
-    }
+	public void setState(int state) {
+		this.state = state;
+	}
 
-    public int getState() {
-        return state;
-    }
+	public int getOrderNo() {
+		return orderNo;
+	}
 
-    public void setState(int state) {
-        this.state = state;
-    }
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
+	}
 
 }

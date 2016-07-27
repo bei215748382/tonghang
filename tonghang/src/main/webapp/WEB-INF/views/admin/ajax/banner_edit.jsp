@@ -5,7 +5,7 @@
   <div id="breadcrumb" class="col-md-12">
     <ol class="breadcrumb">
       <li><a href="#" onclick="LoadAjaxContent('index#banners_info')">banner管理</a></li>
-      <li>添加banner</li>
+      <li>修改banner</li>
     </ol>
   </div>
 </div>
@@ -27,18 +27,19 @@
       <div class="box-content">
         <h4 class="page-header">填写banner信息</h4>
         <form class="form-horizontal" role="form" method="POST"
-          id="bannerForm" action="set_banner"
+          id="bannerForm" action="update_banner"
           enctype="multipart/form-data">
+          <input type="hidden" name="id" value="${banner.id}" />
           <div class="form-group">
             <label class="col-sm-2 control-label">url</label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" name="url" />
+              <input type="text" class="form-control" name="url" value="${banner.url}"/>
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label">添加封面</label>
             <div id="localImag" class="col-sm-4">
-              <img id="preview" class="img-rounded" src="" alt="封面预览图" />
+              <img id="preview" class="img-rounded" src="${banner.img}" alt="封面预览图" />
               <div class="margin-top-15">
                 <input id="doc" type="file" name="file"
                   onchange="javascript:setImagePreview(this,localImag,preview);">
@@ -51,7 +52,7 @@
            <div class="form-group">
             <label class="col-sm-2 control-label">order</label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" name="orderNo" />
+              <input type="text" class="form-control" name="orderNo" value="${banner.orderNo}"/>
             </div>
           </div>
           <div class="form-group">

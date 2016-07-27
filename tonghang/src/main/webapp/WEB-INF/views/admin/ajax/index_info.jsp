@@ -68,6 +68,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
+							<th>id</th>
 							<th>图片</th>
 							<th>内容</th>
 							<th>作者状态</th>
